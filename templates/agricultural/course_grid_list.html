@@ -1,0 +1,78 @@
+{% if course_set %}
+    <div class="card border-danger">
+        <div class="card-header" style="background-color: rgb(167,31,31);">
+            <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Listado de cursos</h6>
+        </div>
+        <div class="card-body pb-1">
+            <div class="table-responsive small dataTables_wrapper">
+                <table id="table-course-list"
+                       class="table   align-content-center table-bordered response"
+                       cellspacing="0" width="100%" style="border-collapse:collapse;">
+                    <thead>
+                    <tr class="text-center  text-white"
+                        style="background-color: rgba(167,31,31, 1.0);">
+                        <th class="th-sm font-weight-normal">N°</th>
+                        <th class="th-sm font-weight-normal">Codigo</th>
+                        <th class="th-sm font-weight-normal">Nombre Curso</th>
+                        <th class="th-sm font-weight-normal">Descripcion</th>
+                        <th class="th-sm font-weight-normal">Fecha</th>
+                        <th class="th-sm font-weight-normal">Estado</th>
+                        <th class="th-sm font-weight-normal">Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody style="font-size: 12px;">
+                    {% for c in course_set %}
+                        <tr class="text-center">
+                            <td class="align-middle"><strong>{{ c.id }}</strong></td>
+                            <td class="align-middle">{{ c.code }}</td>
+                            <td class="align-middle">{{ c.name }}</td>
+                            <td class="align-middle">{{ c.description }}</td>
+                            <td class="align-middle">{{ c.create_at }}</td>
+                            <td class="align-middle">{{ c.is_state }}</td>
+                            <td class="p-1 align-middle">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success  dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            style="font-size: 11px;">
+                                        Acción
+                                    </button>
+                                    <div class="dropdown-menu border-info font-italic">
+                                        <a class="dropdown-item btn-update-person"
+                                           style="cursor: pointer; font-size: 11px;" pk="{{ c.id }}"><i
+                                                class="fas fa-edit pr-1"></i> Modificar curso </a>
+{#                                        {% if e.user %}#}
+{#                                            <a class="dropdown-item btn-update-user"#}
+{#                                               style="cursor: pointer; font-size: 11px;"#}
+{#                                               pk="{{ e.user.id }}">#}
+{#                                                <i class="fas fa-sync-alt"></i> Modificar usuario#}
+{#                                            </a>#}
+{#                                        {% else %}#}
+{#                                            <a class="dropdown-item btn-create-user"#}
+{#                                               style="cursor: pointer; font-size: 11px;" pk="{{ e.id }}">#}
+{#                                                <i class="fas fa-sync-alt"></i> Creacion de usuario#}
+{#                                            </a>#}
+{#                                        {% endif %}#}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center text-white" style="background-color: rgba(141,20,20, 1.0);">
+                        <th class="th-sm font-weight-normal">N°</th>
+                        <th class="th-sm font-weight-normal">Codigo</th>
+                        <th class="th-sm font-weight-normal">Nombre Curso</th>
+                        <th class="th-sm font-weight-normal">Descripcion</th>
+                        <th class="th-sm font-weight-normal">Fecha</th>
+                        <th class="th-sm font-weight-normal">Estado</th>
+                        <th class="th-sm font-weight-normal">Acción</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <h6>No existen cursos registrados</h6>
+{% endif %}

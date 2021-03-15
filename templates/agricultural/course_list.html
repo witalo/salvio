@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Jcarrillo | Cursos
+{% endblock title %}
+
+{% block body %}
+
+    <div class="card-header p-1 m-0 small roboto-medium">
+        <button type="button" onclick="showModalView('get_course_form')"
+                class="btn btn-outline-danger" style="font-size: 13px;"><i class="fas fa-database"></i> Nuevo Curso
+        </button>
+    </div>
+    <div class="container-fluid montserrat p-0 pb-4 roboto-medium">
+        <div id="employee-grid-list" class="small h-100">{% include "agricultural/course_grid_list.html" %}</div>
+    </div>
+    <div class="container-fluid roboto-medium">
+        <div class="table-responsive bg-info" id="table-fuel_list"></div>
+    </div>
+    <div class="modal fade roboto-medium" id="modal-course-form" tabindex="-1" role="dialog"
+         aria-labelledby="ModalHelpTitle"
+         aria-hidden="true"></div>
+{% endblock body %}
+
+{% block extrajs %}
+
+    <script type="text/javascript">
+        $('#table-course-list').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+            },
+            fixedHeader: {
+                header: true,
+                {#footer: true#}
+            }
+        });
+
+        function showModalView(route) {
+            $.ajax({
+                url: '/certification/' + route + '/',
+                dataType: 'json',
+                type: 'GET',
+                data: {'pk': 1},
+                success: function (response) {
+                    $('#modal-course-form').html(response.form);
+                    $('#modal-course-form').modal('show');
+                },
+                fail: function (response) {
+                    toastr.error('Problemas al abrir el formulario', '¡Mensaje!');
+                }
+            });
+        };
+        $(document).on('click', '.btn-update-course', function () {
+            let search = $(this).attr('pk');
+            $.ajax({
+                url: '/certification/get_employee_update_form/',
+                dataType: 'json',
+                type: 'GET',
+                data: {'pk': search},
+                success: function (response) {
+                    console.log(response);
+                    if (response.success) {
+                        $('#modal-course-form').html(response.form);
+                        $('#modal-course-form').modal('show');
+                    }
+                },
+                fail: function (response) {
+                    toastr.error('Problemas al mostrar formulario', '¡Mensaje!');
+                }
+            });
+        });
+    </script>
+{% endblock extrajs %}
