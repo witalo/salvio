@@ -1,69 +1,96 @@
+{% load static %}
 {% if employee_set %}
-    <div class="card border-danger">
-        <div class="card-header" style="background-color: rgb(167,31,31);">
-            <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Lista de trabajadores de la
-                empresa</h6>
+    <div class="card border-info">
+        <div class="card-header" style="background-color: rgba(11,119,169,0.8);">
+            <h6 class="card-title text-center text-white mb-0" style="font-size: 14px;">Listado de usuarios</h6>
         </div>
         <div class="card-body pb-1">
-            <div class="table-responsive small dataTables_wrapper">
+            <div class="table-responsive dataTables_wrapper">
                 <table id="table-employee-list"
                        class="table   align-content-center table-bordered response"
                        cellspacing="0" width="100%" style="border-collapse:collapse;">
                     <thead>
                     <tr class="text-center  text-white"
-                        style="background-color: rgba(167,31,31, 1.0);">
-                        <th class="th-sm font-weight-normal">N°</th>
-                        <th class="th-sm font-weight-normal">Documento</th>
-                        <th class="th-sm font-weight-normal">Nombres y apellidos</th>
-                        <th class="th-sm font-weight-normal">Fecha nacimiento</th>
-                        <th class="th-sm font-weight-normal">Telefono</th>
-                        <th class="th-sm font-weight-normal">Correo</th>
-                        <th class="th-sm font-weight-normal">Dirección</th>
-                        <th class="th-sm font-weight-normal">Tipo</th>
-                        <th class="th-sm font-weight-normal">Empresa</th>
-                        <th class="th-sm font-weight-normal">Foto</th>
-                        <th class="th-sm font-weight-normal">Acción</th>
+                        style="background-color: rgba(11,119,169, 0.8);">
+                        <th class="font-weight-normal">N°</th>
+                        <th class="font-weight-normal">Documento</th>
+                        <th class="font-weight-normal">Nombres y apellidos</th>
+                        <th class="font-weight-normal">Informacion</th>
+                        <th class="font-weight-normal">Correo</th>
+                        <th class="font-weight-normal">Cargo</th>
+                        <th class="font-weight-normal">Estado</th>
+                        <th class="font-weight-normal">Foto</th>
+                        <th class="font-weight-normal">Acción</th>
                     </tr>
                     </thead>
-                    <tbody style="font-size: 12px;">
-                    {% for e in employee_set %}
+                    <tbody style="font-size: 13px;">
+                    {% for u in employee_set %}
                         <tr class="text-center">
-                            <td class="align-middle"><strong>{{ e.id }}</strong></td>
-                            <td class="align-middle">{{ e.document }}</td>
-                            <td class="align-middle">{{ e.full_name }}</td>
-                            <td class="align-middle">{{ e.birth_date }}</td>
-                            <td class="align-middle">{{ e.telephone }}</td>
-                            <td class="align-middle">{{ e.email }}</td>
-                            <td class="align-middle">{{ e.address }}</td>
-                            <td class="align-middle">{{ e.get_type_display }}</td>
-                            <td class="align-middle">{{ e.business.business_name }}</td>
+                            <td class="align-middle"><strong>{{ u.id }}</strong></td>
                             <td class="align-middle">
-                                <img class="img-thumbnail" src="{{ e.photo.url }}" id="img-photo-employee" width="100px"
-                                     height="80px">
+                                {% if u.person %}
+                                    {{ u.person.document }}
+                                {% else %}
+                                    ********
+                                {% endif %}
+                            </td>
+                            <td class="align-middle">
+                                {% if u.person %}
+                                    {{ u.first_name }}
+                                {% else %}
+                                    Administrador
+                                {% endif %}
+                            </td>
+                            </td>
+                            <td class="align-middle text-left">
+                                {% if u.person %}
+                                    Fecha Nacimiento: {{ u.person.birth_date }}<br>
+                                    Telefono: {{ u.person.telephone }}<br>
+                                    Direccion: {{ u.person.address }}
+                                {% else %}
+                                    Fecha Nacimiento: -<br>
+                                    Telefono: -<br>
+                                    Direccion: -
+                                {% endif %}
+                            </td>
+                            <td class="align-middle">{{ u.email }}</td>
+                            <td class="align-middle">
+                                {% if u.person %}
+                                    {{ u.person.get_charge_display }}
+                                {% else %}
+                                    Admin
+                                {% endif %}
+                            </td>
+                            <td class="align-middle">
+                                {% if u.is_active %}
+                                    Activo
+                                {% else %}
+                                    Inactivo
+                                {% endif %}
+                            </td>
+                            <td class="align-middle">
+                                {% if u.person.photo != '' %}
+                                    <img class="img-thumbnail" src="{{ u.person.photo.url }}" id="img-photo-employee"
+                                         width="100px"
+                                         height="80px">
+                                {% else %}
+                                    <img class="img-thumbnail" src="{% static 'img/logo1.jpg' %}"
+                                         id="img-photo-employee"
+                                         width="100px"
+                                         height="80px">
+                                {% endif %}
                             </td>
                             <td class="p-1 align-middle">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success  dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            style="font-size: 11px;">
+                                            style="font-size: 12px;">
                                         Acción
                                     </button>
                                     <div class="dropdown-menu border-info font-italic">
                                         <a class="dropdown-item btn-update-person"
-                                           style="cursor: pointer; font-size: 11px;" pk="{{ e.id }}"><i
+                                           style="cursor: pointer; font-size: 11px;" pk="{{ u.id }}"><i
                                                 class="fas fa-edit pr-1"></i> Modificar datos </a>
-{#                                        {% if e.user %}#}
-{#                                            <a class="dropdown-item btn-update-user"#}
-{#                                               style="cursor: pointer; font-size: 11px;"#}
-{#                                               pk="{{ e.user.id }}">#}
-{#                                                <i class="fas fa-sync-alt"></i> Modificar usuario#}
-{#                                            </a>#}
-{#                                        {% else %}#}
-{#                                            <a class="dropdown-item btn-create-user"#}
-{#                                               style="cursor: pointer; font-size: 11px;" pk="{{ e.id }}">#}
-{#                                                <i class="fas fa-sync-alt"></i> Creacion de usuario#}
-{#                                            </a>#}
-{#                                        {% endif %}#}
                                     </div>
                                 </div>
                             </td>
@@ -71,18 +98,16 @@
                     {% endfor %}
                     </tbody>
                     <tfoot>
-                    <tr class="text-center text-white" style="background-color: rgba(141,20,20, 1.0);">
-                        <th class="th-sm font-weight-normal">N°</th>
-                        <th class="th-sm font-weight-normal">Documento</th>
-                        <th class="th-sm font-weight-normal">Nombres y apellidos</th>
-                        <th class="th-sm font-weight-normal">Fecha nacimiento</th>
-                        <th class="th-sm font-weight-normal">Telefono</th>
-                        <th class="th-sm font-weight-normal">Correo</th>
-                        <th class="th-sm font-weight-normal">Dirección</th>
-                        <th class="th-sm font-weight-normal">Tipo</th>
-                        <th class="th-sm font-weight-normal">Empresa</th>
-                        <th class="th-sm font-weight-normal">Foto</th>
-                        <th class="th-sm font-weight-normal">Acción</th>
+                    <tr class="text-center text-white" style="background-color: rgba(11,119,169, 0.8);">
+                        <th class="font-weight-normal">N°</th>
+                        <th class="font-weight-normal">Documento</th>
+                        <th class="font-weight-normal">Nombres y apellidos</th>
+                        <th class="font-weight-normal">Informacion</th>
+                        <th class="font-weight-normal">Correo</th>
+                        <th class="font-weight-normal">Cargo</th>
+                        <th class="font-weight-normal">Estado</th>
+                        <th class="font-weight-normal">Foto</th>
+                        <th class="font-weight-normal">Acción</th>
                     </tr>
                     </tfoot>
                 </table>

@@ -7,20 +7,24 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django.template import loader
 from apps.agricultural.models import Person, Business
+from apps.user.views import create_user
 
 
 class Home(TemplateView):
     template_name = 'index.html'
 
+
 # lista de empleados
 def get_employee_list(request):
     if request.method == 'GET':
-        employee_set = Person.objects.all()
-        my_date = datetime.now()
-        date_now = my_date.strftime("%Y-%m")
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        if user_obj.is_staff:
+            user_set = User.objects.all()
+        else:
+            user_set = User.objects.filter(id=int(user_id))
         return render(request, 'agricultural/employee_list.html', {
-            'date_now': date_now,
-            'employee_set': employee_set,
+            'employee_set': user_set,
         })
 
 
@@ -29,56 +33,45 @@ def get_employee_form(request):
     if request.method == 'GET':
         my_date = datetime.now()
         date_now = my_date.strftime("%Y-%m-%d")
-        business_set = Business.objects.all()
         t = loader.get_template('agricultural/employee_form.html')
         c = ({
             'date_now': date_now,
-            'type': Person._meta.get_field('type').choices,
-            'business_set': business_set,
+            'charge': Person._meta.get_field('charge').choices,
         })
         return JsonResponse({
             'form': t.render(c, request),
         })
 
 
-#
 # # registrar empleado
 @csrf_exempt
 def save_person(request):
     if request.method == 'POST':
         user_id = request.user.id
         user_obj = User.objects.get(id=int(user_id))
-        _document = request.POST.get('document', '')
-        _paternal_last_name = request.POST.get('paternal', '')
-        _maternal_last_name = request.POST.get('maternal', '')
-        _names = request.POST.get('names', '')
-        _birth_date = request.POST.get('birth_date', '')
-        _occupation = request.POST.get('occupation', '')
-        _telephone = request.POST.get('telephone', '')
-        _email = request.POST.get('email', '')
-        _address = request.POST.get('address', '')
-        _state = bool(request.POST.get('checkbox', ''))
-        _business_id = request.POST.get('business', '')
-        business_obj = Business.objects.get(id=int(_business_id))
+        _document = request.POST.get('id-document', '')
+        _last_name = request.POST.get('id-last-name', '')
+        _first_name = request.POST.get('id-first-name', '')
+        _birth_date = request.POST.get('id-birth-date', '')
+        _charge = request.POST.get('id-charge', '')
+        _telephone = request.POST.get('id-telephone', '')
+        _email = request.POST.get('id-email', '')
+        _address = request.POST.get('id-address', '')
+        _user = request.POST.get('id-user', '')
+        _password = request.POST.get('id-password', '')
         try:
             _photo = request.FILES['customFile']
         except Exception as e:
             _photo = 'person/employee0.jpg'
 
         person_obj = Person(
+            user=create_user(_first_name, _last_name, _email, _user, _password),
             document=_document,
-            paternal_last_name=_paternal_last_name,
-            maternal_last_name=_maternal_last_name,
-            names=_names,
             birth_date=_birth_date,
             telephone=_telephone,
-            email=_email,
             address=_address,
-            type=_occupation,
-            is_state=_state,
+            charge=_charge,
             photo=_photo,
-            business=business_obj,
-            user=user_obj,
         )
         person_obj.save()
         return JsonResponse({
@@ -141,5 +134,3 @@ def update_person(request):
         return JsonResponse({
             'success': True,
         }, status=HTTPStatus.OK)
-
-

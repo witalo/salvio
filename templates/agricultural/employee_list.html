@@ -8,7 +8,7 @@
 
     <div class="card-header p-1 m-0 small roboto-medium">
         <button type="button" onclick="showModalView('get_employee_form')"
-                class="btn btn-outline-danger" style="font-size: 13px;"><i class="fas fa-database"></i> Nuevo usuario
+                class="btn btn-outline-success" style="font-size: 13px;"><i class="fas fa-database"></i> Nuevo usuario
         </button>
     </div>
     <div class="container-fluid montserrat p-0 pb-4 roboto-medium">
@@ -38,10 +38,10 @@
 
         function showModalView(route) {
             $.ajax({
-                url: '/certification/' + route + '/',
+                url: '/agricultural/' + route + '/',
                 dataType: 'json',
                 type: 'GET',
-                data: {'pk': 1},
+                data: {},
                 success: function (response) {
                     $('#modal-person-form').html(response.form);
                     $('#modal-person-form').modal('show');

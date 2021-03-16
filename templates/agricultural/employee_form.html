@@ -1,8 +1,8 @@
 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 
     <div class="modal-content montserrat">
-        <div class="modal-header" style="background-color: rgb(167,31,31);">
-            <h5 class="modal-title  text-white" style="font-size: 14px;">Formulario de registro</h5>
+        <div class="modal-header" style="background-color: rgb(5,138,224);">
+            <h6 class="modal-title  text-white">Formulario de registro</h6>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -13,24 +13,25 @@
             {% csrf_token %}
 
             <div class="modal-body">
-                <div class="card border-danger">
-                    <div class="card-header" style="background-color: rgb(167,31,31);">
-                        <h6 class="card-title text-center text-white mb-0" style="font-size: 14px;">Registro de informacion</h6>
+                <div class="card border-info">
+                    <div class="card-header" style="background-color: rgb(6,117,203);">
+                        <h6 class="card-title text-center text-white mb-0">Informacion</h6>
                     </div>
                     <div class="card-body table-responsive">
-                        <table class="table table-sm" style="width: 100%;">
+                        <table class="table-sm" style="width: 100%;">
                             <tbody>
                             <tr>
                                 <td class="align-middle">Documento</td>
                                 <td>
                                     <input type="text"
-                                           class="form-control" name="document" id="id_document"
-                                           placeholder="" style="font-size: 12px;" required>
+                                           class="form-control" name="id-document" id="id-document"
+                                           placeholder="" value=""
+                                           required>
                                 </td>
-                                <td class="align-middle text-center" rowspan="3" colspan="4">
+                                <td class="align-middle text-center p-0" rowspan="4" colspan="2">
                                     <label class="new_btn border rounded-lg">
-                                        <img id="blah" class="img-thumbnail"
-                                             src="http://placehold.it/120x120" width="140px" height="120px">
+                                        <img id="blah" class="img-thumbnail" width="160px" height="150px"
+                                             src="http://placehold.it/120x120">
                                     </label>
                                 </td>
                             </tr>
@@ -38,100 +39,85 @@
                                 <td class="align-middle">Nombres</td>
                                 <td>
                                     <input type="text"
-                                           class="form-control" name="names" id="id_names"
-                                           placeholder="" style="font-size: 12px;" required>
-                                </td>
-                                <td colspan="4"></td>
-                            </tr>
-                            <tr>
-                                <td class="align-middle">Apellido paterno</td>
-                                <td>
-                                    <input type="text" class="form-control" id="id_paternal"
-                                           name="paternal"
-                                           placeholder="" style="font-size: 12px;" required>
-                                </td>
-                                <td colspan="4"></td>
-                            </tr>
-                            <tr>
-                                <td class="align-middle">Apellido materno</td>
-                                <td>
-                                    <input type="text" class="form-control" id="id_maternal"
-                                           name="maternal"
-                                           placeholder="" style="font-size: 12px;" required>
-                                </td>
-                                <td colspan="4" class="text-center">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="customFile" name="customFile"
-                                               onchange="readURL(this);">
-                                        <label class="custom-file-label text-center" for="customFile" name="customFile">Seleccione
-                                            imagen</label>
-                                    </div>
+                                           class="form-control" name="id-first-name" id="id-first-name"
+                                           placeholder="" value=""
+                                           required>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="align-middle">Fecha nacimiento</td>
+                                <td class="align-middle">Apellidos</td>
                                 <td>
-                                    <input type="date" class="form-control" id="id_birth_date"
-                                           name="birth_date"
-                                           value="{{ date_now }}" style="font-size: 12px;" required>
+                                    <input type="text" class="form-control" id="id-last-name"
+                                           name="id-last-name"
+                                           placeholder=""
+                                           value="" required>
                                 </td>
-                                <td class="align-middle text-center" colspan="4">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input"
-                                               id="customCheck" name="checkbox">
-                                        <label class="custom-control-label"
-                                               for="customCheck">Estado</label>
-                                    </div>
+                            </tr>
+                            <tr>
+                                <td class="align-middle">Fecha Nacimiento</td>
+                                <td>
+                                    <input type="date" class="form-control" id="id-birth-date"
+                                           name="id-birth-date"
+                                           value="{{ date_now }}">
                                 </td>
+
+
                             </tr>
                             <tr>
                                 <td class="align-middle">Telefono</td>
                                 <td>
                                     <input type="text"
-                                           class="form-control" name="telephone" id="id_telephone"
-                                           placeholder="" style="font-size: 12px;" required>
+                                           class="form-control" name="id-telephone" id="id-telephone"
+                                           placeholder="" value="">
                                 </td>
-                                <td class="align-middle text-center" colspan="2">Correo</td>
-                                <td class="align-middle" colspan="2">
+                                <td colspan="2" class="text-center p-0 pl-1 pr-1">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input " id="customFile" name="customFile"
+                                               onchange="readURL(this);">
+                                        <label class="custom-file-label text-center" for="customFile" name="customFile">
+                                            Seleccione Imagen</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle">Correo</td>
+                                <td class="align-middle">
                                     <input type="text"
-                                           class="form-control" name="email" id="id_email"
-                                           placeholder="correo@email.com" style="font-size: 12px;" required>
+                                           class="form-control" name="id-email" id="id-email"
+                                           placeholder="empresa@email.com"
+                                           value="" required>
+                                </td>
+                                <td class="align-middle">Cargo</td>
+                                <td>
+                                    <select class="form-control" id="id-charge" name="id-charge"
+                                            required>
+                                        <option disabled selected value="">Seleccione</option>
+                                        {% for item in charge %}
+                                            <option value="{{ item.0 }}">{{ item.1 }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="align-middle">Direccion</td>
-                                <td colspan="5">
+                                <td colspan="3">
                                     <input type="text"
-                                           class="form-control" name="address" id="id_address"
-                                           placeholder="" style="font-size: 12px;"
-                                           required>
+                                           class="form-control" name="id-address" id="id-address"
+                                           placeholder="" value="">
                                 </td>
                             </tr>
                             <tr>
-                                <td class="align-middle">Ocupaciòn</td>
-                                <td colspan="2">
-                                    <select class="form-control" id="id_occupation" name="occupation" style="font-size: 13px;"
-                                            required>
-                                        <option disabled selected value="">Seleccione</option>
-                                        {% for item in type %}
-                                            <option value="{{ item.0 }}">
-                                                {{ item.1 }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
+                                <td class="align-middle">Usuario</td>
+                                <td>
+                                    <input type="text"
+                                           class="form-control" name="id-user" id="id-user"
+                                           placeholder="" value="" required>
                                 </td>
-                                <td class="align-middle text-center">Empresa</td>
-                                <td colspan="2">
-                                    <select class="form-control" id="id_business" name="business"
-                                            style="font-size: 13px;"
-                                            required>
-                                        <option disabled selected value="0">Seleccione</option>
-                                        {% for b in business_set %}
-                                            <option value="{{ b.id }}">
-                                                {{ b.business_name }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
+                                <td class="align-middle">Contraseña</td>
+                                <td>
+                                    <input type="password"
+                                           class="form-control" name="id-password" id="id-password"
+                                           placeholder="" value="" required>
                                 </td>
                             </tr>
                             </tbody>
@@ -139,24 +125,17 @@
                     </div>
                 </div>
             </div><!-- modal-body -->
-            <div class="modal-footer p-1">
-                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="fa fa-window-close"></i> Cerrar</button> &nbsp;
-                <button id="save-employee" type="submit" class="btn btn-sm btn-success"><i class="fas fa-house-user"></i> Registrar
+            <div class="modal-footer p-1 roboto-medium">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"> Cerrar
+                </button> &nbsp;
+                <button id="save-employee" type="submit" class="btn btn-sm btn-success"><i
+                        class="fa fa-school"></i> Registrar
                 </button>
             </div>
         </form>
         <style>
-
-            #id_photo {
-                /* display: none; */
-            }
-
             .new_btn {
                 cursor: pointer;
-            }
-
-            #blah {
-                height: 130px;
             }
 
             .custom-file-label {

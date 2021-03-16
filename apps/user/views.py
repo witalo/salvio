@@ -36,42 +36,33 @@ def logout_user(request):
 
 
 # creacion de usuario
-@csrf_exempt
-def create_user(request):
-    if request.method == 'POST':
-        _id = int(request.POST.get('pk'))
-        employee_obj = Person.objects.get(id=_id)
-        _username = request.POST.get('username')
-        _password = request.POST.get('password')
-        _user_email = _username + '@system.com'
-        is_staff = False
-        if request.POST.get('is_staff') is not None:
-            is_staff = bool(request.POST.get('is_staff'))
+def create_user(first_name_=None, last_name_=None, email_=None, user_=None, password_=None):
+    staff = False
+    if user_ != '' and user_ != None:
+        try:
+            user_obj = User.objects.get(username=user_)
+        except User.DoesNotExist:
+            user_obj = None
 
-        if _username != '':
-            try:
-                user_obj = User.objects.get(username=_username)
-            except User.DoesNotExist:
-                user_obj = None
-
-            if user_obj is not None:
-                response = JsonResponse({'error': "Este usuario ya existe."})
-                response.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
-                return response
-
-            user_obj = User(
-                username=_username,
-                email=_user_email,
-            )
-            user_obj.set_password(_password)
-            user_obj.is_staff = is_staff
-            user_obj.save()
-            if user_obj.id != '':
-                employee_obj.user = user_obj
-                employee_obj.save()
-            return JsonResponse({
-                'success': True,
-            }, status=HTTPStatus.OK)
+        if user_obj is not None:
+            message = 'El usuario ya se encuentra registrado'
+            return message
+        if password_ == '' or password_ == None:
+            message = 'Ingrese una contraseña valida'
+            return message
+        user_obj = User(
+            first_name=first_name_,
+            last_name=last_name_,
+            username=user_,
+            email=email_,
+        )
+        user_obj.set_password(password_)
+        user_obj.is_staff = staff
+        user_obj.save()
+        return user_obj
+    else:
+        message = 'Ingrese un usuario valido'
+        return message
 
 
 # creacion de usuario

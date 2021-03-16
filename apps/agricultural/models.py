@@ -5,30 +5,21 @@ from imagekit.processors import ResizeToFill, Adjust
 
 
 class Person(models.Model):
-    TYPE_CHOICES = (('1', 'Administrador'), ('2', 'Empleado'), ('3', 'Otro'))
+    CHARGE_CHOICES = (('1', 'Administrador'), ('2', 'Trabajador'), ('3', 'Otro'))
     id = models.AutoField(primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     document = models.CharField(max_length=15, null=True, blank=True)
-    paternal_last_name = models.CharField(max_length=40, null=True, blank=True)
-    maternal_last_name = models.CharField(max_length=40, null=True, blank=True)
-    names = models.CharField(max_length=40, null=True, blank=True)
     birth_date = models.DateField('Fecha de nacimiento', null=True, blank=True)
     telephone = models.CharField(max_length=9, null=True, blank=True)
-    email = models.EmailField(max_length=50, null=True, blank=True)
     address = models.CharField('Direccion', max_length=200, null=True, blank=True)
-    business = models.ForeignKey('Business', on_delete=models.CASCADE, null=True, blank=True)
     photo = models.ImageField(upload_to='person/',
                               default='person/employee0.jpg', blank=True)
     photo_thumbnail = ImageSpecField([Adjust(contrast=1.2, sharpness=1.1), ResizeToFill(
         100, 100)], source='photo', format='JPEG', options={'quality': 90})
-    user = models.ForeignKey(User, verbose_name='Usuario', on_delete=models.SET_NULL, null=True, blank=True)
-    type = models.CharField('Tipo', max_length=50, choices=TYPE_CHOICES, default='1', )
-    is_state = models.BooleanField('Estado', default=False)
+    charge = models.CharField('Cargo', max_length=1, choices=CHARGE_CHOICES, default='1', )
 
     def _str_(self):
-        return str(self.names)
-
-    def full_name(self):
-        return '{} {} {}'.format(self.names, self.paternal_last_name, self.maternal_last_name)
+        return str(self.document)
 
     class Meta:
         verbose_name = 'Persona'
