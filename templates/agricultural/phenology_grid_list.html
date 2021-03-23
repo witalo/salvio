@@ -1,31 +1,32 @@
-{% if module_set %}
+{% if phenology_set %}
     <div class="card border-primary">
         <div class="card-header" style="background-color: rgba(6,107,184, 0.9);">
-            <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Listado de modulos</h6>
+            <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Listado de variedades</h6>
         </div>
         <div class="card-body pb-1">
             <div class="table-responsive dataTables_wrapper">
-                <table id="table-module-list"
+                <table id="table-phenology-list"
                        class="table   align-content-center table-bordered response"
                        cellspacing="0" width="100%" style="border-collapse:collapse;">
                     <thead>
                     <tr class="text-center  text-white"
                         style="background-color: rgba(6,107,184, 0.9);">
                         <th class="th-sm font-weight-normal">N°</th>
-                        <th class="th-sm font-weight-normal">Fundo</th>
-                        <th class="th-sm font-weight-normal">Modulo</th>
+                        <th class="th-sm font-weight-normal">Index</th>
+                        <th class="th-sm font-weight-normal">Nombre fenologia</th>
+                        <th class="th-sm font-weight-normal">Cultivo</th>
                         <th class="th-sm font-weight-normal">Estado</th>
                         <th class="th-sm font-weight-normal">Acción</th>
                     </tr>
                     </thead>
                     <tbody style="font-size: 12px;">
-                    {% for m in module_set %}
+                    {% for p in phenology_set %}
                         <tr class="text-center">
-                            <td class="align-middle"><strong>{{ m.id }}</strong></td>
-                            <td class="align-middle">{{ m.ruc }}</td>
-                            <td class="align-middle">{{ m.domain.name }}</td>
-                            <td class="align-middle">{{ m.name }}</td>
-                            <td class="align-middle">{{ m.state.name }}</td>
+                            <td class="align-middle"><strong>{{ p.id }}</strong></td>
+                            <td class="align-middle">{{ p.index }}</td>
+                            <td class="align-middle">{{ p.name }}</td>
+                            <td class="align-middle">{{ p.cultivation.name }}</td>
+                            <td class="align-middle">{{ p.state.name }}</td>
                             <td class="p-1 align-middle">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success  dropdown-toggle"
@@ -34,9 +35,9 @@
                                         Acción
                                     </button>
                                     <div class="dropdown-menu border-info font-italic">
-                                        <a class="dropdown-item btn-update-module"
-                                           style="cursor: pointer; font-size: 11px;" pk="{{ m.id }}"><i
-                                                class="fas fa-edit pr-1"></i> Modificar modulo </a>
+                                        <a class="dropdown-item btn-update-phenology"
+                                           style="cursor: pointer; font-size: 11px;" pk="{{ p.id }}"><i
+                                                class="fas fa-edit pr-1"></i> Modificar fenologia </a>
                                     </div>
                                 </div>
                             </td>
@@ -46,8 +47,9 @@
                     <tfoot>
                     <tr class="text-center text-white" style="background-color: rgb(12,106,177);">
                         <th class="th-sm font-weight-normal">N°</th>
-                        <th class="th-sm font-weight-normal">Fundo</th>
-                        <th class="th-sm font-weight-normal">Modulo</th>
+                        <th class="th-sm font-weight-normal">Index</th>
+                        <th class="th-sm font-weight-normal">Nombre fenologia</th>
+                        <th class="th-sm font-weight-normal">Cultivo</th>
                         <th class="th-sm font-weight-normal">Estado</th>
                         <th class="th-sm font-weight-normal">Acción</th>
                     </tr>
@@ -57,5 +59,5 @@
         </div>
     </div>
 {% else %}
-    <h6>No existen modulos registrados</h6>
+    <h6>No existen fenologias registradas</h6>
 {% endif %}

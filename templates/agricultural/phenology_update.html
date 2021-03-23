@@ -2,14 +2,14 @@
 
     <div class="modal-content">
         <div class="modal-header" style="background-color: rgba(4,102,169, 1.0);">
-            <h5 class="modal-title  text-white" style="font-size: 13px;">Actualizacion de modulos</h5>
+            <h5 class="modal-title  text-white" style="font-size: 13px;">Actualizacion de fenologias</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
 
-        <form id="form-module" class="embed-responsive" enctype="multipart/form-data"
-              style="font-size: 13px;" action="{% url 'agricultural:update_modulo' %}" method="POST">
+        <form id="form-phenology" class="embed-responsive" enctype="multipart/form-data"
+              style="font-size: 13px;" action="{% url 'agricultural:update_phenology' %}" method="POST">
             {% csrf_token %}
 
             <div class="modal-body">
@@ -19,32 +19,39 @@
                     </div>
                     <div class="card-body m-2">
                         <div class="row col-md-12 m-0 p-0">
-                            <div class="col-md-12 align-self-center">
-                                <label class="m-0">Fundo</label>
-                                <select class="form-control" id="id-domain" name="id-domain"
-                                        required>
-                                    <option disabled selected value="">Seleccione</option>
-                                    {% for d in domain_set %}
-                                        {% if module_obj.domain.id == d.id %}
-                                            <option selected value="{{ d.id }}">{{ d.name }}</option>
-                                        {% else %}
-                                            <option value="{{ d.id }}">{{ d.name }}</option>
-                                        {% endif %}
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row col-md-12 m-0 p-0">
-                            <div class="col-md-12  align-self-center">
-                                <label class="m-0">Nombre modulo</label>
+                            <div class="col-md-6  align-self-center">
+                                <label class="m-0">Indice</label>
                                 <input type="text"
-                                       class="form-control" name="id-module" id="id-module"
+                                       class="form-control" name="id-index" id="id-index"
                                        placeholder="" required
-                                       value="{{ module_obj.name }}" maxlength="100">
+                                       value="{{ phenology_obj.index }}" maxlength="10">
                                 <input type="hidden"
                                        class="form-control" name="id-pk" id="id-pk"
                                        placeholder="" required
-                                       value="{{ module_obj.id }}">
+                                       value="{{ phenology_obj.id }}">
+                            </div>
+                            <div class="col-md-6  align-self-center">
+                                <label class="m-0">Nombre fenologia</label>
+                                <input type="text"
+                                       class="form-control" name="id-phenology" id="id-phenology"
+                                       placeholder="" required
+                                       value="{{ phenology_obj.name }}" maxlength="100">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12 align-self-center">
+                                <label class="m-0">Cultivo</label>
+                                <select class="form-control" id="id-cultivation" name="id-cultivation"
+                                        required>
+                                    <option disabled selected value="">Seleccione</option>
+                                    {% for c in cultivation_set %}
+                                        {% if phenology_obj.cultivation.id == c.id %}
+                                            <option selected value="{{ c.id }}">{{ c.name }}</option>
+                                        {% else %}
+                                            <option value="{{ c.id }}">{{ c.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
@@ -54,7 +61,7 @@
                                         required>
                                     <option disabled selected value="">Seleccione</option>
                                     {% for s in state_set %}
-                                        {% if module_obj.state.id == s.id %}
+                                        {% if phenology_obj.cultivation.id == s.id %}
                                             <option selected value="{{ s.id }}">{{ s.name }}</option>
                                         {% else %}
                                             <option value="{{ s.id }}">{{ s.name }}</option>
@@ -63,12 +70,13 @@
                                 </select>
                             </div>
                         </div>
+                    </div><!-- modal-body -->
+                    <div class="modal-footer p-1">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                        &nbsp;
+                        <button id="update-phenology" type="submit" class="btn btn-sm btn-success"> Actualizar
+                        </button>
                     </div>
-                </div><!-- modal-body -->
-                <div class="modal-footer p-1">
-                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button> &nbsp;
-                    <button id="update-module" type="submit" class="btn btn-sm btn-warning"> Actualizar
-                    </button>
                 </div>
             </div>
         </form>
@@ -76,9 +84,9 @@
 </div>
 <script type="text/javascript">
 
-    $('#form-module').submit(function (event) {
+    $('#form-phenology').submit(function (event) {
         event.preventDefault();
-        let data = new FormData($('#form-module').get(0));
+        let data = new FormData($('#form-phenology').get(0));
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),

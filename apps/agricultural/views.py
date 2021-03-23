@@ -8,7 +8,7 @@ from django.views.generic import TemplateView
 from django.template import loader
 
 from apps.agricultural.consult import query_api_amigo
-from apps.agricultural.models import Person, Business, Module, Domain, State
+from apps.agricultural.models import Person, Business, Module, Domain, State, Zone, Lot, Cultivation, Variety, Phenology
 from apps.user.views import create_user
 
 
@@ -327,6 +327,542 @@ def update_modulo(request):
         module_obj.state = state_obj
         module_obj.user = user_obj
         module_obj.save()
+
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+# --------------------domain-------------------------------------
+def get_domain_list(request):
+    if request.method == 'GET':
+        domain_set = Domain.objects.all()
+        return render(request, 'agricultural/domain_list.html', {
+            'domain_set': domain_set,
+        })
+
+
+def modal_domain_save(request):
+    if request.method == 'GET':
+        business_set = Business.objects.all()
+        zone_set = Zone.objects.all()
+        state_set = State.objects.all()
+        t = loader.get_template('agricultural/domain_register.html')
+        c = ({
+            'business_set': business_set,
+            'zone_set': zone_set,
+            'state_set': state_set
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def save_domain(request):
+    if request.method == 'POST':
+        _abbreviation = request.POST.get('id-abbreviation', '')
+        _name = request.POST.get('id-domain', '')
+        _zone_pk = request.POST.get('id-zone', '')
+        zone_obj = Zone.objects.get(id=int(_zone_pk))
+        _business_pk = request.POST.get('id-business', '')
+        business_obj = Business.objects.get(id=int(_business_pk))
+        _state_pk = request.POST.get('id-state', '')
+        state_obj = State.objects.get(id=int(_state_pk))
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        domain_obj = Domain(
+            abbreviation=_abbreviation,
+            name=_name,
+            zone=zone_obj,
+            business=business_obj,
+            state=state_obj,
+            user=user_obj
+        )
+        domain_obj.save()
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+def modal_domain_update(request):
+    if request.method == 'GET':
+        pk = request.GET.get('pk', '')
+        domain_obj = Domain.objects.get(id=int(pk))
+        zone_set = Zone.objects.all()
+        business_set = Business.objects.all()
+        state_set = State.objects.all()
+        t = loader.get_template('agricultural/domain_update.html')
+        c = ({
+            'domain_obj': domain_obj,
+            'zone_set': zone_set,
+            'business_set': business_set,
+            'state_set': state_set
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def update_domain(request):
+    if request.method == 'POST':
+        _pk = request.POST.get('id-pk', '')
+        domain_obj = Domain.objects.get(id=int(_pk))
+        _abbreviation = request.POST.get('id-abbreviation', '')
+        _name = request.POST.get('id-domain', '')
+        _zone_pk = request.POST.get('id-zone', '')
+        zone_obj = Zone.objects.get(id=int(_zone_pk))
+        _business_pk = request.POST.get('id-business', '')
+        business_obj = Business.objects.get(id=int(_business_pk))
+        _state_pk = request.POST.get('id-state', '')
+        state_obj = State.objects.get(id=int(_state_pk))
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+
+        domain_obj.abbreviation = _abbreviation
+        domain_obj.name = _name
+        domain_obj.zone = zone_obj
+        domain_obj.business = business_obj
+        domain_obj.state = state_obj
+        domain_obj.user = user_obj
+        domain_obj.save()
+
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+# --------------------zone-------------------------------------
+def get_zone_list(request):
+    if request.method == 'GET':
+        zone_set = Zone.objects.all()
+        return render(request, 'agricultural/zone_list.html', {
+            'zone_set': zone_set,
+        })
+
+
+def modal_zone_save(request):
+    if request.method == 'GET':
+        t = loader.get_template('agricultural/zone_register.html')
+        c = ({
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def save_zone(request):
+    if request.method == 'POST':
+        _code = request.POST.get('id-code', '')
+        _name = request.POST.get('id-zone', '')
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        zone_obj = Zone(
+            code=_code,
+            name=_name,
+            user=user_obj
+        )
+        zone_obj.save()
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+def modal_zone_update(request):
+    if request.method == 'GET':
+        pk = request.GET.get('pk', '')
+        zone_obj = Zone.objects.get(id=int(pk))
+        t = loader.get_template('agricultural/zone_update.html')
+        c = ({
+            'zone_obj': zone_obj,
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def update_zone(request):
+    if request.method == 'POST':
+        _pk = request.POST.get('id-pk', '')
+        zone_obj = Zone.objects.get(id=int(_pk))
+        _code = request.POST.get('id-code', '')
+        _name = request.POST.get('id-zone', '')
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+
+        zone_obj.code = _code
+        zone_obj.name = _name
+        zone_obj.user = user_obj
+        zone_obj.save()
+
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+# --------------------lot-------------------------------------
+def get_lot_list(request):
+    if request.method == 'GET':
+        lot_set = Lot.objects.all()
+        return render(request, 'agricultural/lot_list.html', {
+            'lot_set': lot_set
+        })
+
+
+def modal_lot_save(request):
+    if request.method == 'GET':
+        module_set = Module.objects.all()
+        state_set = State.objects.all()
+        t = loader.get_template('agricultural/lot_register.html')
+        c = ({
+            'module_set': module_set,
+            'state_set': state_set,
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def save_lot(request):
+    if request.method == 'POST':
+        _name = request.POST.get('id-lot', '')
+        _module_pk = request.POST.get('id-module', '')
+        module_obj = Module.objects.get(id=int(_module_pk))
+        _latitude = request.POST.get('id-latitude', '')
+        _longitude = request.POST.get('id-longitude', '')
+        _code1 = request.POST.get('id-code1', '')
+        _code2 = request.POST.get('id-code2', '')
+        _state_pk = request.POST.get('id-state', '')
+        state_obj = State.objects.get(id=int(_state_pk))
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        lot_obj = Lot(
+            name=_name,
+            module=module_obj,
+            latitude=_latitude,
+            longitude=_longitude,
+            code_alternate1=_code1,
+            code_alternate2=_code2,
+            state=state_obj,
+            user=user_obj
+        )
+        lot_obj.save()
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+def modal_lot_update(request):
+    if request.method == 'GET':
+        pk = request.GET.get('pk', '')
+        lot_obj = Lot.objects.get(id=int(pk))
+        t = loader.get_template('agricultural/lot_update.html')
+        c = ({
+            'lot_obj': lot_obj,
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def update_lot(request):
+    if request.method == 'POST':
+        _pk = request.POST.get('id-pk', '')
+        lot_obj = Lot.objects.get(id=int(_pk))
+        _name = request.POST.get('id-lot', '')
+        _module_pk = request.POST.get('id-module', '')
+        module_obj = Module.objects.get(id=int(_module_pk))
+        _latitude = request.POST.get('id-latitude', '')
+        _longitude = request.POST.get('id-longitude', '')
+        _code1 = request.POST.get('id-code1', '')
+        _code2 = request.POST.get('id-code2', '')
+        _state_pk = request.POST.get('id-state', '')
+        state_obj = State.objects.get(id=int(_state_pk))
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+
+        lot_obj.name = _name
+        lot_obj.module = module_obj
+        lot_obj.latitude = _latitude
+        lot_obj.longitude = _longitude
+        lot_obj.code_alternate1 = _code1
+        lot_obj.code_alternate2 = _code2
+        lot_obj.state = state_obj
+        lot_obj.user = user_obj
+        lot_obj.save()
+
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+# --------------------cultivation-------------------------------------
+def get_cultivation_list(request):
+    if request.method == 'GET':
+        cultivation_set = Cultivation.objects.all()
+        return render(request, 'agricultural/cultivation_list.html', {
+            'cultivation_set': cultivation_set
+        })
+
+
+def modal_cultivation_save(request):
+    if request.method == 'GET':
+        state_set = State.objects.all()
+        t = loader.get_template('agricultural/cultivation_register.html')
+        c = ({
+            'state_set': state_set,
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def save_cultivation(request):
+    if request.method == 'POST':
+        _abbreviation = request.POST.get('id-abbreviation', '')
+        _name = request.POST.get('id-cultivation', '')
+        _state_pk = request.POST.get('id-state', '')
+        state_obj = State.objects.get(id=int(_state_pk))
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        cultivation_obj = Cultivation(
+            abbreviation=_abbreviation,
+            name=_name,
+            state=state_obj,
+            user=user_obj
+        )
+        cultivation_obj.save()
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+def modal_cultivation_update(request):
+    if request.method == 'GET':
+        pk = request.GET.get('pk', '')
+        cultivation_obj = Cultivation.objects.get(id=int(pk))
+        t = loader.get_template('agricultural/cultivation_update.html')
+        c = ({
+            'cultivation_obj': cultivation_obj,
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def update_cultivation(request):
+    if request.method == 'POST':
+        _pk = request.POST.get('id-pk', '')
+        cultivation_obj = Cultivation.objects.get(id=int(_pk))
+        _abbreviation = request.POST.get('id-abbreviation', '')
+        _name = request.POST.get('id-cultivation', '')
+        _state_pk = request.POST.get('id-state', '')
+        state_obj = State.objects.get(id=int(_state_pk))
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+
+        cultivation_obj.abbreviation = _abbreviation
+        cultivation_obj.name = _name
+        cultivation_obj.state = state_obj
+        cultivation_obj.user = user_obj
+        cultivation_obj.save()
+
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+# --------------------variety-------------------------------------
+def get_variety_list(request):
+    if request.method == 'GET':
+        variety_set = Variety.objects.all()
+        return render(request, 'agricultural/variety_list.html', {
+            'variety_set': variety_set
+        })
+
+
+def modal_variety_save(request):
+    if request.method == 'GET':
+        cultivation_set = Cultivation.objects.all()
+        state_set = State.objects.all()
+        t = loader.get_template('agricultural/variety_register.html')
+        c = ({
+            'cultivation_set': cultivation_set,
+            'state_set': state_set,
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def save_variety(request):
+    if request.method == 'POST':
+        _abbreviation = request.POST.get('id-abbreviation', '')
+        _name = request.POST.get('id-variety', '')
+        _cultivation_pk = request.POST.get('id-cultivation', '')
+        cultivation_obj = Cultivation.objects.get(id=int(_cultivation_pk))
+        _state_pk = request.POST.get('id-state', '')
+        state_obj = State.objects.get(id=int(_state_pk))
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        variety_obj = Variety(
+            abbreviation=_abbreviation,
+            name=_name,
+            cultivation=cultivation_obj,
+            state=state_obj,
+            user=user_obj
+        )
+        variety_obj.save()
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+def modal_variety_update(request):
+    if request.method == 'GET':
+        pk = request.GET.get('pk', '')
+        variety_obj = Variety.objects.get(id=int(pk))
+        cultivation_set = Cultivation.objects.all()
+        state_set = State.objects.all()
+        t = loader.get_template('agricultural/variety_update.html')
+        c = ({
+            'variety_obj': variety_obj,
+            'cultivation_set': cultivation_set,
+            'state_set': state_set,
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def update_variety(request):
+    if request.method == 'POST':
+        _pk = request.POST.get('id-pk', '')
+        variety_obj = Variety.objects.get(id=int(_pk))
+        _abbreviation = request.POST.get('id-abbreviation', '')
+        _name = request.POST.get('id-variety', '')
+        _cultivation_pk = request.POST.get('id-cultivation', '')
+        cultivation_obj = Cultivation.objects.get(id=int(_cultivation_pk))
+        _state_pk = request.POST.get('id-state', '')
+        state_obj = State.objects.get(id=int(_state_pk))
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        variety_obj.abbreviation = _abbreviation
+        variety_obj.name = _name
+        variety_obj.cultivation = cultivation_obj
+        variety_obj.state = state_obj
+        variety_obj.user = user_obj
+        variety_obj.save()
+
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+# --------------------phenology-------------------------------------
+def get_phenology_list(request):
+    if request.method == 'GET':
+        phenology_set = Phenology.objects.all()
+        return render(request, 'agricultural/phenology_list.html', {
+            'phenology_set': phenology_set
+        })
+
+
+def modal_phenology_save(request):
+    if request.method == 'GET':
+        cultivation_set = Cultivation.objects.all()
+        state_set = State.objects.all()
+        t = loader.get_template('agricultural/phenology_register.html')
+        c = ({
+            'cultivation_set': cultivation_set,
+            'state_set': state_set,
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def save_phenology(request):
+    if request.method == 'POST':
+        _index = request.POST.get('id-index', '')
+        _name = request.POST.get('id-phenology', '')
+        _cultivation_pk = request.POST.get('id-cultivation', '')
+        cultivation_obj = Cultivation.objects.get(id=int(_cultivation_pk))
+        _state_pk = request.POST.get('id-state', '')
+        state_obj = State.objects.get(id=int(_state_pk))
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        phenology_obj = Phenology(
+            index=_index,
+            name=_name,
+            cultivation=cultivation_obj,
+            state=state_obj,
+            user=user_obj
+        )
+        phenology_obj.save()
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+def modal_phenology_update(request):
+    if request.method == 'GET':
+        pk = request.GET.get('pk', '')
+        phenology_obj = Phenology.objects.get(id=int(pk))
+        cultivation_set = Cultivation.objects.all()
+        state_set = State.objects.all()
+        t = loader.get_template('agricultural/phenology_update.html')
+        c = ({
+            'phenology_obj': phenology_obj,
+            'cultivation_set': cultivation_set,
+            'state_set': state_set,
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def update_phenology(request):
+    if request.method == 'POST':
+        _pk = request.POST.get('id-pk', '')
+        phenology_obj = Phenology.objects.get(id=int(_pk))
+        _index = request.POST.get('id-index', '')
+        _name = request.POST.get('id-phenology', '')
+        _cultivation_pk = request.POST.get('id-cultivation', '')
+        cultivation_obj = Cultivation.objects.get(id=int(_cultivation_pk))
+        _state_pk = request.POST.get('id-state', '')
+        state_obj = State.objects.get(id=int(_state_pk))
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        phenology_obj.index = _index
+        phenology_obj.name = _name
+        phenology_obj.cultivation = cultivation_obj
+        phenology_obj.state = state_obj
+        phenology_obj.user = user_obj
+        phenology_obj.save()
 
         return JsonResponse({
             'success': True,

@@ -1,0 +1,77 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: rgba(4,102,169, 1.0);">
+            <h5 class="modal-title  text-white" style="font-size: 13px;">Registro de zonas</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <form id="form-zone" class="embed-responsive" enctype="multipart/form-data"
+              style="font-size: 13px;" action="{% url 'agricultural:save_zone' %}" method="POST">
+            {% csrf_token %}
+
+            <div class="modal-body">
+                <div class="card border-primary">
+                    <div class="card-header" style="background-color: rgb(4,102,169);">
+                        <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Información</h6>
+                    </div>
+                    <div class="card-body m-2">
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Codigo</label>
+                                <input type="text"
+                                       class="form-control" name="id-code" id="id-code"
+                                       placeholder="" required
+                                       value="" maxlength="20">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Nombre zona</label>
+                                <input type="text"
+                                       class="form-control" name="id-zone" id="id-zone"
+                                       placeholder="" required
+                                       value="" maxlength="100">
+                            </div>
+                        </div>
+                    </div><!-- modal-body -->
+                    <div class="modal-footer p-1">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                        &nbsp;
+                        <button id="save-zone" type="submit" class="btn btn-sm btn-success"> Registrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $('#form-zone').submit(function (event) {
+        event.preventDefault();
+        let data = new FormData($('#form-zone').get(0));
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            headers: {"X-CSRFToken": '{{ csrf_token }}'},
+            success: function (response) {
+                if (response.success) {
+                    toastr.success('Informacion registrada con exito');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 400);
+                }
+            },
+            error: function (response) {
+                toastr.error('La informacion no se logro regitrar');
+            }
+        });
+    });
+</script>

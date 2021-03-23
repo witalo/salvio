@@ -1,0 +1,71 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Lista | Lotes
+{% endblock title %}
+
+{% block body %}
+
+    <div class="card-header p-1 m-0 small roboto-medium">
+        <button type="button" onclick="showModalView('modal_lot_save')"
+                class="btn btn-outline-success" style="font-size: 13px;"><i class="fas fa-database"></i> Nuevo lote
+        </button>
+    </div>
+    <div class="container-fluid montserrat p-0 pb-4 roboto-medium">
+        <div id="lot-grid-list" style="overflow-y: scroll; height: 480px; width: auto;">{% include "agricultural/lot_grid_list.html" %}</div>
+    </div>
+    <div class="modal fade roboto-medium" id="modal-lot-save" tabindex="-1" role="dialog"
+         aria-labelledby="ModalHelpTitle"
+         aria-hidden="true"></div>
+    <div class="modal fade roboto-medium" id="modal-lot-update" tabindex="-1" role="dialog"
+         aria-labelledby="ModalHelpTitle"
+         aria-hidden="true"></div>
+{% endblock body %}
+
+{% block extrajs %}
+    <script type="text/javascript">
+        $('#table-lot-list').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+            },
+            fixedHeader: {
+                header: true,
+                {#footer: true#}
+            }
+        });
+
+        function showModalView(route) {
+            $.ajax({
+                url: '/agricultural/' + route + '/',
+                dataType: 'json',
+                type: 'GET',
+                data: {},
+                success: function (response) {
+                    $('#modal-lot-save').html(response.form);
+                    $('#modal-lot-save').modal('show');
+                },
+                fail: function (response) {
+                    toastr.error('Ocurrio un problema al mostrar el formulario', '¡Mensaje!');
+                }
+            });
+        };
+        $(document).on('click', '.btn-update-lot', function () {
+            let search = $(this).attr('pk');
+            $.ajax({
+                url: '/agricultural/modal_lot_update/',
+                dataType: 'json',
+                type: 'GET',
+                data: {'pk': search},
+                success: function (response) {
+                    if (response.success) {
+                        $('#modal-lot-update').html(response.form);
+                        $('#modal-lot-update').modal('show');
+                    }
+                },
+                fail: function (response) {
+                    toastr.error('Ocurrio un problema al mostrar el formulario', '¡Mensaje!');
+                }
+            });
+        });
+    </script>
+{% endblock extrajs %}

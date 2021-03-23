@@ -98,6 +98,7 @@ class Zone(models.Model):
     code = models.CharField('Codigo', max_length=20, null=True, blank=True)
     name = models.CharField('Nombre zona', max_length=100, null=True, blank=True)
     create_at = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, verbose_name='Usuario', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name

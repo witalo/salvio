@@ -2,14 +2,14 @@
 
     <div class="modal-content">
         <div class="modal-header" style="background-color: rgba(4,102,169, 1.0);">
-            <h5 class="modal-title  text-white" style="font-size: 13px;">Actualizacion de modulos</h5>
+            <h5 class="modal-title  text-white" style="font-size: 13px;">Registro de fundos</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
 
-        <form id="form-module" class="embed-responsive" enctype="multipart/form-data"
-              style="font-size: 13px;" action="{% url 'agricultural:update_modulo' %}" method="POST">
+        <form id="form-domain" class="embed-responsive" enctype="multipart/form-data"
+              style="font-size: 13px;" action="{% url 'agricultural:save_domain' %}" method="POST">
             {% csrf_token %}
 
             <div class="modal-body">
@@ -19,32 +19,45 @@
                     </div>
                     <div class="card-body m-2">
                         <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Abreviacion</label>
+                                <input type="text"
+                                       class="form-control" name="id-abbreviation" id="id-abbreviation"
+                                       placeholder="" required
+                                       value="" maxlength="20">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Nombre fundo</label>
+                                <input type="text"
+                                       class="form-control" name="id-domain" id="id-domain"
+                                       placeholder="" required
+                                       value="" maxlength="100">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12 align-self-center">
-                                <label class="m-0">Fundo</label>
-                                <select class="form-control" id="id-domain" name="id-domain"
+                                <label class="m-0">Zona</label>
+                                <select class="form-control" id="id-zone" name="id-zone"
                                         required>
                                     <option disabled selected value="">Seleccione</option>
-                                    {% for d in domain_set %}
-                                        {% if module_obj.domain.id == d.id %}
-                                            <option selected value="{{ d.id }}">{{ d.name }}</option>
-                                        {% else %}
-                                            <option value="{{ d.id }}">{{ d.name }}</option>
-                                        {% endif %}
+                                    {% for z in zone_set %}
+                                        <option value="{{ z.id }}">{{ z.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
-                            <div class="col-md-12  align-self-center">
-                                <label class="m-0">Nombre modulo</label>
-                                <input type="text"
-                                       class="form-control" name="id-module" id="id-module"
-                                       placeholder="" required
-                                       value="{{ module_obj.name }}" maxlength="100">
-                                <input type="hidden"
-                                       class="form-control" name="id-pk" id="id-pk"
-                                       placeholder="" required
-                                       value="{{ module_obj.id }}">
+                            <div class="col-md-12 align-self-center">
+                                <label class="m-0">Empresa</label>
+                                <select class="form-control" id="id-business" name="id-business"
+                                        required>
+                                    <option disabled selected value="">Seleccione</option>
+                                    {% for b in business_set %}
+                                        <option value="{{ b.id }}">{{ b.name }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
@@ -54,11 +67,7 @@
                                         required>
                                     <option disabled selected value="">Seleccione</option>
                                     {% for s in state_set %}
-                                        {% if module_obj.state.id == s.id %}
-                                            <option selected value="{{ s.id }}">{{ s.name }}</option>
-                                        {% else %}
-                                            <option value="{{ s.id }}">{{ s.name }}</option>
-                                        {% endif %}
+                                        <option value="{{ s.id }}">{{ s.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -67,7 +76,7 @@
                 </div><!-- modal-body -->
                 <div class="modal-footer p-1">
                     <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button> &nbsp;
-                    <button id="update-module" type="submit" class="btn btn-sm btn-warning"> Actualizar
+                    <button id="save-domain" type="submit" class="btn btn-sm btn-success"> Registrar
                     </button>
                 </div>
             </div>
@@ -76,9 +85,9 @@
 </div>
 <script type="text/javascript">
 
-    $('#form-module').submit(function (event) {
+    $('#form-domain').submit(function (event) {
         event.preventDefault();
-        let data = new FormData($('#form-module').get(0));
+        let data = new FormData($('#form-domain').get(0));
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),
@@ -89,14 +98,14 @@
             headers: {"X-CSRFToken": '{{ csrf_token }}'},
             success: function (response) {
                 if (response.success) {
-                    toastr.success('Informacion actualizada con exito');
+                    toastr.success('Informacion registrada con exito');
                     setTimeout(() => {
                         location.reload();
                     }, 400);
                 }
             },
             error: function (response) {
-                toastr.error('La informacion no se logro actualizar');
+                toastr.error('La informacion no se logro regitrar');
             }
         });
     });

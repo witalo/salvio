@@ -1,0 +1,136 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: rgba(4,102,169, 1.0);">
+            <h5 class="modal-title  text-white" style="font-size: 13px;">Actualizacion de lote</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <form id="form-lot" class="embed-responsive" enctype="multipart/form-data"
+              style="font-size: 13px;" action="{% url 'agricultural:update_lot' %}" method="POST">
+            {% csrf_token %}
+
+            <div class="modal-body">
+                <div class="card border-primary">
+                    <div class="card-header" style="background-color: rgb(4,102,169);">
+                        <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Información</h6>
+                    </div>
+                    <div class="card-body m-2">
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Nombre lote</label>
+                                <input type="text"
+                                       class="form-control" name="id-lot" id="id-lot"
+                                       placeholder="" required
+                                       value="{{ lot_obj.name }}" maxlength="100">
+                                <input type="hidden"
+                                       class="form-control" name="id-pk" id="id-pk"
+                                       placeholder="" required
+                                       value="{{ lot_obj.id }}">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12 align-self-center">
+                                <label class="m-0">Modulo</label>
+                                <select class="form-control" id="id-module" name="id-module"
+                                        required>
+                                    <option disabled selected value="">Seleccione</option>
+                                    {% for m in module_set %}
+                                        {% if lot_obj.module.id == m.id %}
+                                            <option selected value="{{ m.id }}">{{ m.name }}</option>
+                                        {% else %}
+                                            <option value="{{ m.id }}">{{ m.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-6  align-self-center">
+                                <label class="m-0">Latitud</label>
+                                <input type="text"
+                                       class="form-control" name="id-latitude" id="id-latitude"
+                                       placeholder="" required
+                                       value="{{ lot_obj.latitude }}" maxlength="60">
+                            </div>
+                            <div class="col-md-6  align-self-center">
+                                <label class="m-0">Longitud</label>
+                                <input type="text"
+                                       class="form-control" name="id-longitude" id="id-longitude"
+                                       placeholder="" required
+                                       value="{{ lot_obj.longitude }}" maxlength="60">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-6  align-self-center">
+                                <label class="m-0">Codigo 1</label>
+                                <input type="text"
+                                       class="form-control" name="id-code1" id="id-code1"
+                                       placeholder="" required
+                                       value="{{ lot_obj.code_alternate1 }}" maxlength="20">
+                            </div>
+                            <div class="col-md-6  align-self-center">
+                                <label class="m-0">Codigo 2</label>
+                                <input type="text"
+                                       class="form-control" name="id-code2" id="id-code2"
+                                       placeholder="" required
+                                       value="{{ lot_obj.code_alternate2 }}" maxlength="20">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12 align-self-center">
+                                <label class="m-0">Estado</label>
+                                <select class="form-control" id="id-state" name="id-state"
+                                        required>
+                                    <option disabled selected value="">Seleccione</option>
+                                    {% for s in state_set %}
+                                        {% if lot_obj.state.id == s.id %}
+                                            <option selected value="{{ s.id }}">{{ s.name }}</option>
+                                        {% else %}
+                                            <option value="{{ s.id }}">{{ s.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div><!-- modal-body -->
+                    <div class="modal-footer p-1">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                        &nbsp;
+                        <button id="update-lot" type="submit" class="btn btn-sm btn-success"> Actualizar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $('#form-lot').submit(function (event) {
+        event.preventDefault();
+        let data = new FormData($('#form-lot').get(0));
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            headers: {"X-CSRFToken": '{{ csrf_token }}'},
+            success: function (response) {
+                if (response.success) {
+                    toastr.success('Informacion actualizada con exito');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 400);
+                }
+            },
+            error: function (response) {
+                toastr.error('La informacion no se logro actualizar');
+            }
+        });
+    });
+</script>

@@ -2,14 +2,14 @@
 
     <div class="modal-content">
         <div class="modal-header" style="background-color: rgba(4,102,169, 1.0);">
-            <h5 class="modal-title  text-white" style="font-size: 13px;">Registro de modulos</h5>
+            <h5 class="modal-title  text-white" style="font-size: 13px;">Registro de cultivos</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
 
-        <form id="form-module" class="embed-responsive" enctype="multipart/form-data"
-              style="font-size: 13px;" action="{% url 'agricultural:save_modulo' %}" method="POST">
+        <form id="form-cultivation" class="embed-responsive" enctype="multipart/form-data"
+              style="font-size: 13px;" action="{% url 'agricultural:save_cultivation' %}" method="POST">
             {% csrf_token %}
 
             <div class="modal-body">
@@ -18,23 +18,20 @@
                         <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Información</h6>
                     </div>
                     <div class="card-body m-2">
-                        <div class="row col-md-12 m-0 p-0">
-                            <div class="col-md-12 align-self-center">
-                                <label class="m-0">Fundo</label>
-                                <select class="form-control" id="id-domain" name="id-domain"
-                                        required>
-                                    <option disabled selected value="">Seleccione</option>
-                                    {% for d in domain_set %}
-                                        <option value="{{ d.id }}">{{ d.name }}</option>
-                                    {% endfor %}
-                                </select>
+                       <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Abreviatura</label>
+                                <input type="text"
+                                       class="form-control" name="id-abbreviation" id="id-abbreviation"
+                                       placeholder="" required
+                                       value="" maxlength="20">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">Nombre modulo</label>
+                                <label class="m-0">Nombre cultivo</label>
                                 <input type="text"
-                                       class="form-control" name="id-module" id="id-module"
+                                       class="form-control" name="id-cultivation" id="id-cultivation"
                                        placeholder="" required
                                        value="" maxlength="100">
                             </div>
@@ -51,12 +48,13 @@
                                 </select>
                             </div>
                         </div>
+                    </div><!-- modal-body -->
+                    <div class="modal-footer p-1">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                        &nbsp;
+                        <button id="save-cultivation" type="submit" class="btn btn-sm btn-success"> Registrar
+                        </button>
                     </div>
-                </div><!-- modal-body -->
-                <div class="modal-footer p-1">
-                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button> &nbsp;
-                    <button id="save-module" type="submit" class="btn btn-sm btn-success"> Registrar
-                    </button>
                 </div>
             </div>
         </form>
@@ -64,9 +62,9 @@
 </div>
 <script type="text/javascript">
 
-    $('#form-module').submit(function (event) {
+    $('#form-cultivation').submit(function (event) {
         event.preventDefault();
-        let data = new FormData($('#form-module').get(0));
+        let data = new FormData($('#form-cultivation').get(0));
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),
