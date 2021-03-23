@@ -8,23 +8,23 @@
             </button>
         </div>
 
-        <form id="form-person" class="embed-responsive p-1" action="{% url 'agricultural:save_person' %}"
+        <form id="form-person" class="embed-responsive p-0" action="{% url 'agricultural:save_person' %}"
               method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
-            <div class="modal-body">
+            <div class="modal-body p-2">
                 <div class="card border-info">
                     <div class="card-header" style="background-color: rgb(6,117,203);">
                         <h6 class="card-title text-center text-white mb-0">Informacion</h6>
                     </div>
-                    <div class="card-body table-responsive">
+                    <div class="card-body table-responsive p-1">
                         <table class="table-sm" style="width: 100%;">
                             <tbody>
                             <tr>
                                 <td class="align-middle">Documento</td>
                                 <td>
                                     <input type="text"
-                                           class="form-control" name="id-document" id="id-document"
+                                           class="form-control" name="id-document" maxlength="15" id="id-document"
                                            placeholder="" value=""
                                            required>
                                 </td>
@@ -39,7 +39,7 @@
                                 <td class="align-middle">Nombres</td>
                                 <td>
                                     <input type="text"
-                                           class="form-control" name="id-first-name" id="id-first-name"
+                                           class="form-control" name="id-first-name" maxlength="30" id="id-first-name"
                                            placeholder="" value=""
                                            required>
                                 </td>
@@ -47,7 +47,7 @@
                             <tr>
                                 <td class="align-middle">Apellidos</td>
                                 <td>
-                                    <input type="text" class="form-control" id="id-last-name"
+                                    <input type="text" class="form-control" id="id-last-name" maxlength="150"
                                            name="id-last-name"
                                            placeholder=""
                                            value="" required>
@@ -67,7 +67,7 @@
                                 <td class="align-middle">Telefono</td>
                                 <td>
                                     <input type="text"
-                                           class="form-control" name="id-telephone" id="id-telephone"
+                                           class="form-control" name="id-telephone" maxlength="9" id="id-telephone"
                                            placeholder="" value="">
                                 </td>
                                 <td colspan="2" class="text-center p-0 pl-1 pr-1">
@@ -110,12 +110,12 @@
                                 <td class="align-middle">Usuario</td>
                                 <td>
                                     <input type="text"
-                                           class="form-control" name="id-user" id="id-user"
+                                           class="form-control" name="id-user" id="id-user" maxlength="100"
                                            placeholder="" value="" required>
                                 </td>
                                 <td class="align-middle">Contraseña</td>
                                 <td>
-                                    <input type="password"
+                                    <input type="password" maxlength="100"
                                            class="form-control" name="id-password" id="id-password"
                                            placeholder="" value="" required>
                                 </td>

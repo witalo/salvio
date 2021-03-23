@@ -6,7 +6,9 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django.template import loader
-from apps.agricultural.models import Person, Business
+
+from apps.agricultural.consult import query_api_amigo
+from apps.agricultural.models import Person, Business, Module, Domain, State
 from apps.user.views import create_user
 
 
@@ -47,8 +49,6 @@ def get_employee_form(request):
 @csrf_exempt
 def save_person(request):
     if request.method == 'POST':
-        user_id = request.user.id
-        user_obj = User.objects.get(id=int(user_id))
         _document = request.POST.get('id-document', '')
         _last_name = request.POST.get('id-last-name', '')
         _first_name = request.POST.get('id-first-name', '')
@@ -83,13 +83,11 @@ def save_person(request):
 def get_employee_update_form(request):
     if request.method == 'GET':
         pk = int(request.GET.get('pk', ''))
-        person_obj = Person.objects.get(id=pk)
-        business_set = Business.objects.all()
+        user_obj = User.objects.get(id=pk)
         t = loader.get_template('agricultural/employee_update_form.html')
         c = ({
-            'person_obj': person_obj,
-            'type': Person._meta.get_field('type').choices,
-            'business_set': business_set,
+            'user_obj': user_obj,
+            'charge': Person._meta.get_field('charge').choices,
         })
         return JsonResponse({
             'success': True,
@@ -102,35 +100,234 @@ def get_employee_update_form(request):
 def update_person(request):
     if request.method == 'POST':
         _id = int(request.POST.get('pk', ''))
-        person_obj = Person.objects.get(id=_id)
-        _document = request.POST.get('document', '')
-        _paternal_last_name = request.POST.get('paternal', '')
-        _maternal_last_name = request.POST.get('maternal', '')
-        _names = request.POST.get('names', '')
-        _birth_date = request.POST.get('birth_date', '')
-        _occupation = request.POST.get('occupation', '')
-        _telephone = request.POST.get('telephone', '')
-        _email = request.POST.get('email', '')
-        _address = request.POST.get('address', '')
-        _business_id = request.POST.get('business', '')
-        business_obj = Business.objects.get(id=int(_business_id))
+        user_obj = User.objects.get(id=_id)
+        _document = request.POST.get('id-document', '')
+        _last_name = request.POST.get('id-last-name', '')
+        _first_name = request.POST.get('id-first-name', '')
+        _birth_date = request.POST.get('id-birth-date', '')
+        _charge = request.POST.get('id-charge', '')
+        _telephone = request.POST.get('id-telephone', '')
+        _email = request.POST.get('id-email', '')
+        _address = request.POST.get('id-address', '')
+        _user = request.POST.get('id-user', '')
+        _password = request.POST.get('id-password', '')
         _photo = request.FILES.get('customFile', False)
-        _state = bool(request.POST.get('checkbox', ''))
 
-        person_obj.document = _document
-        person_obj.birth_date = _birth_date
-        person_obj.paternal_last_name = _paternal_last_name
-        person_obj.maternal_last_name = _maternal_last_name
-        person_obj.names = _names
-        person_obj.type = _occupation
-        person_obj.telephone = _telephone
-        person_obj.email = _email
-        person_obj.address = _address
-        person_obj.business = business_obj
-        if _photo is not False:
-            person_obj.photo = _photo
-        person_obj.is_state = _state
-        person_obj.save()
+        if _user != '':
+            try:
+                _search = User.objects.get(username=_user).id
+            except User.DoesNotExist:
+                _search = None
+            if _search is not None:
+                if _search != user_obj.id:
+                    response = JsonResponse({'error': "Este usuario ya existe."})
+                    response.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
+                    return response
+
+            user_obj.email = _email
+            user_obj.first_name = _first_name
+            user_obj.last_name = _last_name
+            user_obj.username = _user
+            user_obj.set_password(_password)
+            user_obj.save()
+
+            person_obj = Person.objects.get(user=user_obj)
+            person_obj.document = _document
+            person_obj.birth_date = _birth_date
+            person_obj.charge = _charge
+            person_obj.telephone = _telephone
+            person_obj.address = _address
+            if _photo is not False:
+                person_obj.photo = _photo
+            person_obj.save()
+            return JsonResponse({
+                'success': True,
+            }, status=HTTPStatus.OK)
+
+
+def get_business_list(request):
+    if request.method == 'GET':
+        business_set = Business.objects.all()
+        return render(request, 'agricultural/business_list.html', {
+            'business_set': business_set,
+        })
+
+
+def get_business_by_document(request):
+    data = {}
+    if request.method == 'GET':
+        number_document = request.GET.get('number_document', '')
+        type_document = request.GET.get('type_document', '')
+        if type_document == '06':
+            type_name = 'RUC'
+            r = query_api_amigo(number_document, type_name)
+            if r.get('ruc') == number_document:
+                name_business = (r.get('business_name')).strip()
+                address_business = (r.get('address')).strip()
+                return JsonResponse({
+                    'names': name_business,
+                    'address': address_business},
+                    status=HTTPStatus.OK)
+            else:
+                data = {'error': 'No hay resultados con este numero de RUC'}
+                response = JsonResponse(data)
+                response.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
+                return response
+
+
+@csrf_exempt
+def save_business(request):
+    if request.method == 'POST':
+        _ruc = request.POST.get('id-ruc', '')
+        _business = request.POST.get('id-business', '')
+        _telephone = request.POST.get('id-telephone', '')
+        _address = request.POST.get('id-address', '')
+        _document = request.POST.get('id-document', '')
+        _representative = request.POST.get('id-legal_representative', '')
+        business_obj = Business(
+            ruc=_ruc,
+            business_name=_business,
+            phone=_telephone,
+            address=_address,
+            legal_representative_name=_representative,
+            legal_representative_dni=_document
+        )
+        business_obj.save()
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+def get_business_form(request):
+    if request.method == 'GET':
+        t = loader.get_template('agricultural/register_business.html')
+        c = ({})
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+def modal_update_business(request):
+    if request.method == 'GET':
+        pk = request.GET.get('pk', '')
+        business_obj = Business.objects.get(id=int(pk))
+        t = loader.get_template('agricultural/update_business.html')
+        c = ({'business_obj': business_obj})
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def update_business(request):
+    if request.method == 'POST':
+        _id = int(request.POST.get('pk', ''))
+        business_obj = Business.objects.get(id=_id)
+        _ruc = request.POST.get('id-ruc', '')
+        _business_name = request.POST.get('id-business', '')
+        _phone = request.POST.get('id-telephone', '')
+        _address = request.POST.get('id-address', '')
+        _document = request.POST.get('id-document', '')
+        _representative = request.POST.get('id-legal_representative', '')
+
+        business_obj.ruc = _ruc
+        business_obj.business_name = _business_name
+        business_obj.phone = _phone
+        business_obj.address = _address
+        business_obj.legal_representative_dni = _document
+        business_obj.legal_representative_name = _representative
+        business_obj.save()
+
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+# --------------------module-------------------------------------
+def get_module_list(request):
+    if request.method == 'GET':
+        module_set = Module.objects.all()
+        return render(request, 'agricultural/module_list.html', {
+            'module_set': module_set,
+        })
+
+
+def modal_module_save(request):
+    if request.method == 'GET':
+        domain_set = Domain.objects.all()
+        state_set = State.objects.all()
+        t = loader.get_template('agricultural/register_module.html')
+        c = ({
+            'domain_set': domain_set,
+            'state_set': state_set
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def save_modulo(request):
+    if request.method == 'POST':
+        _pk = request.POST.get('id-domain', '')
+        domain_obj = Domain.objects.get(id=int(_pk))
+        _name = request.POST.get('id-module', '')
+        _state = request.POST.get('id-state', '')
+        state_obj = State.objects.get(id=int(_state))
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        module_obj = Module(
+            domain=domain_obj,
+            name=_name,
+            state=state_obj,
+            user=user_obj
+        )
+        module_obj.save()
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+def modal_module_update(request):
+    if request.method == 'GET':
+        pk = request.GET.get('pk', '')
+        module_obj = Module.objects.get(id=int(pk))
+        domain_set = Domain.objects.all()
+        state_set = State.objects.all()
+        t = loader.get_template('agricultural/update_module.html')
+        c = ({
+            'module_obj': module_obj,
+            'domain_set': domain_set,
+            'state_set': state_set
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def update_modulo(request):
+    if request.method == 'POST':
+        _id = int(request.POST.get('id-pk', ''))
+        _name = int(request.POST.get('id-module', ''))
+        module_obj = Module.objects.get(id=_id)
+        _domain = request.POST.get('id-domain', '')
+        domain_obj = Domain.objects.get(id=int(_domain))
+        _state = request.POST.get('id-state', '')
+        state_obj = State.objects.get(id=int(_state))
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+
+        module_obj.name = _name
+        module_obj.domain = domain_obj
+        module_obj.state = state_obj
+        module_obj.user = user_obj
+        module_obj.save()
+
         return JsonResponse({
             'success': True,
         }, status=HTTPStatus.OK)

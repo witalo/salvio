@@ -1,0 +1,71 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Lista | Modulos
+{% endblock title %}
+
+{% block body %}
+
+    <div class="card-header p-1 m-0 small roboto-medium">
+        <button type="button" onclick="showModalView('modal_module_save')"
+                class="btn btn-outline-success" style="font-size: 13px;"><i class="fas fa-database"></i> Nuevo modulo
+        </button>
+    </div>
+    <div class="container-fluid montserrat p-0 pb-4 roboto-medium">
+        <div id="business-grid-list" style="overflow-y: scroll; height: 480px; width: auto;">{% include "agricultural/module_grid_list.html" %}</div>
+    </div>
+    <div class="modal fade roboto-medium" id="modal-module-save" tabindex="-1" role="dialog"
+         aria-labelledby="ModalHelpTitle"
+         aria-hidden="true"></div>
+    <div class="modal fade roboto-medium" id="modal-module-update" tabindex="-1" role="dialog"
+         aria-labelledby="ModalHelpTitle"
+         aria-hidden="true"></div>
+{% endblock body %}
+
+{% block extrajs %}
+    <script type="text/javascript">
+        $('#table-module-list').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+            },
+            fixedHeader: {
+                header: true,
+                {#footer: true#}
+            }
+        });
+
+        function showModalView(route) {
+            $.ajax({
+                url: '/agricultural/' + route + '/',
+                dataType: 'json',
+                type: 'GET',
+                data: {},
+                success: function (response) {
+                    $('#modal-module-save').html(response.form);
+                    $('#modal-module-save').modal('show');
+                },
+                fail: function (response) {
+                    toastr.error('Ocurrio un problema al mostrar el formulario', '¡Mensaje!');
+                }
+            });
+        };
+        $(document).on('click', '.btn-update-module', function () {
+            let search = $(this).attr('pk');
+            $.ajax({
+                url: '/agricultural/modal_module_update/',
+                dataType: 'json',
+                type: 'GET',
+                data: {'pk': search},
+                success: function (response) {
+                    if (response.success) {
+                        $('#modal-module-update').html(response.form);
+                        $('#modal-module-update').modal('show');
+                    }
+                },
+                fail: function (response) {
+                    toastr.error('Ocurrio un problema al mostrar el formulario', '¡Mensaje!');
+                }
+            });
+        });
+    </script>
+{% endblock extrajs %}

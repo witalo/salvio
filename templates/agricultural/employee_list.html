@@ -12,7 +12,7 @@
         </button>
     </div>
     <div class="container-fluid montserrat p-0 pb-4 roboto-medium">
-        <div id="employee-grid-list" class="small h-100">{% include "agricultural/employee_grid_list.html" %}</div>
+        <div id="employee-grid-list" style="overflow-y: scroll; height: 480px; width: auto;">{% include "agricultural/employee_grid_list.html" %}</div>
     </div>
     <!-- Content -->
     <div class="container-fluid roboto-medium">
@@ -113,7 +113,7 @@
         $(document).on('click', '.btn-update-person', function () {
             let search = $(this).attr('pk');
             $.ajax({
-                url: '/certification/get_employee_update_form/',
+                url: '/agricultural/get_employee_update_form/',
                 dataType: 'json',
                 type: 'GET',
                 data: {'pk': search},

@@ -1,0 +1,81 @@
+{% if business_set %}
+    <div class="card border-primary">
+        <div class="card-header" style="background-color: rgba(6,107,184, 0.9);">
+            <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Listado de empresas</h6>
+        </div>
+        <div class="card-body pb-1">
+            <div class="table-responsive small dataTables_wrapper">
+                <table id="table-business-list"
+                       class="table   align-content-center table-bordered response"
+                       cellspacing="0" width="100%" style="border-collapse:collapse;">
+                    <thead>
+                    <tr class="text-center  text-white"
+                        style="background-color: rgba(6,107,184, 0.9);">
+                        <th class="th-sm font-weight-normal">N°</th>
+                        <th class="th-sm font-weight-normal">Ruc</th>
+                        <th class="th-sm font-weight-normal">Razon Social</th>
+                        <th class="th-sm font-weight-normal">Direccion</th>
+                        <th class="th-sm font-weight-normal">Telefono</th>
+                        <th class="th-sm font-weight-normal">Representante</th>
+                        <th class="th-sm font-weight-normal">Documento</th>
+                        <th class="th-sm font-weight-normal">Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody style="font-size: 12px;">
+                    {% for b in business_set %}
+                        <tr class="text-center">
+                            <td class="align-middle"><strong>{{ b.id }}</strong></td>
+                            <td class="align-middle">{{ b.ruc }}</td>
+                            <td class="align-middle">{{ b.business_name }}</td>
+                            <td class="align-middle">{{ b.address }}</td>
+                            <td class="align-middle">{{ b.phone }}</td>
+                            <td class="align-middle">{{ b.legal_representative_name }}</td>
+                            <td class="align-middle">{{ b.legal_representative_dni }}</td>
+                            <td class="p-1 align-middle">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success  dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            style="font-size: 11px;">
+                                        Acción
+                                    </button>
+                                    <div class="dropdown-menu border-info font-italic">
+                                        <a class="dropdown-item btn-update-business"
+                                           style="cursor: pointer; font-size: 11px;" pk="{{ b.id }}"><i
+                                                class="fas fa-edit pr-1"></i> Modificar empresa </a>
+{#                                        {% if e.user %}#}
+{#                                            <a class="dropdown-item btn-update-user"#}
+{#                                               style="cursor: pointer; font-size: 11px;"#}
+{#                                               pk="{{ e.user.id }}">#}
+{#                                                <i class="fas fa-sync-alt"></i> Modificar usuario#}
+{#                                            </a>#}
+{#                                        {% else %}#}
+{#                                            <a class="dropdown-item btn-create-user"#}
+{#                                               style="cursor: pointer; font-size: 11px;" pk="{{ e.id }}">#}
+{#                                                <i class="fas fa-sync-alt"></i> Creacion de usuario#}
+{#                                            </a>#}
+{#                                        {% endif %}#}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center text-white" style="background-color: rgb(12,106,177);">
+                        <th class="th-sm font-weight-normal">N°</th>
+                        <th class="th-sm font-weight-normal">Ruc</th>
+                        <th class="th-sm font-weight-normal">Razon Social</th>
+                        <th class="th-sm font-weight-normal">Direccion</th>
+                        <th class="th-sm font-weight-normal">Telefono</th>
+                        <th class="th-sm font-weight-normal">Representante</th>
+                        <th class="th-sm font-weight-normal">Documento</th>
+                        <th class="th-sm font-weight-normal">Acción</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <h6>No existen empresas registradas</h6>
+{% endif %}

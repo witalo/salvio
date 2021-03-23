@@ -69,33 +69,6 @@
         <!-- Divider -->
         <hr class="sidebar-divider">
 
-        <!-- Heading -->
-        <div class="sidebar-heading font-weight-normal">
-            Configuracion
-        </div>
-
-        <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-               aria-expanded="true" aria-controls="collapseTwo">
-                <i class="fas fa-cog"></i>
-                <span>Configuracion</span>
-            </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h5 class="collapse-header">Personal - Usuarios</h5>
-                    <a class="collapse-item" href="{% url 'agricultural:employee_list' %}"><i
-                            class="fas fa-house-user"></i> Usuarios</a>
-                    <a class="collapse-item" href="#"><i class="fas fa-cart-plus fa-x text-gray-300"></i> Usuarios</a>
-                    <a class="collapse-item" href="#"><i class="fas fa-cart-plus fa-x text-gray-300"></i> Empresa</a>
-                    <a class="collapse-item" href="#"><i class="fas fa-cart-plus fa-x text-gray-300"></i> Cultivos</a>
-                    <a class="collapse-item" href="#"><i class="fas fa-cart-plus fa-x text-gray-300"></i> Zonas</a>
-                    {#                    <a class="collapse-item" href="{% url 'sale:order_sales_list' %}"><i#}
-                    {#                            class="fas fa-cart-plus fa-x text-gray-300"></i> Ventas realizadas</a>#}
-                    {#                    <a class="collapse-item" href="{% url 'sale:get_client_list' %}"><i class="fas fa-cart-plus fa-x text-gray-300"></i> Clientes</a>#}
-                </div>
-            </div>
-        </li>
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
@@ -106,12 +79,13 @@
             <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Administracion</h6>
-                    <a class="collapse-item" href="#"><i class="fas fa-book"></i>
-                        Cursos</a>
-                    {#                    <a class="collapse-item" href="{% url 'purchase:provider_list' %}">Proveedores</a>#}
-                    {#                    <a class="collapse-item" href="{% url 'sale:client_list' %}">Clientes</a>#}
-                    {#                    <a class="collapse-item" href="utilities-other.html">Other</a>#}
+                    <h6 class="collapse-header">Agricola</h6>
+                    <a class="collapse-item" href="{% url 'agricultural:business_list' %}"><i class="fa fa-home"></i>
+                        Empresas</a>
+                    <a class="collapse-item" href="#"><i class="fa fa-home"></i> Fundo</a>
+                    <a class="collapse-item" href="{% url 'agricultural:module_list' %}"><i class="fa fa-home"></i> Modulo</a>
+                    <a class="collapse-item" href="#"><i class="fa fa-home"></i> Zonas</a>
+                    <a class="collapse-item" href="#"><i class="fa fa-home"></i> Cultivo</a>
                 </div>
             </div>
         </li>
@@ -152,7 +126,7 @@
                 </button>
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
-                   <!-- <li class="nav-item dropdown no-arrow align-self-center">
+                    <!-- <li class="nav-item dropdown no-arrow align-self-center">
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg-12">
                                 {% include "menu.html" %}

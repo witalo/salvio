@@ -1,0 +1,161 @@
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+
+    <div class="modal-content">
+
+        <div class="modal-header" style="background-color: rgba(4,102,169, 1.0);">
+            <h5 class="modal-title  text-white" style="font-size: 13px;">Registro de empresas</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <form id="form-business" class="embed-responsive" enctype="multipart/form-data"
+              style="font-size: 13px;" action="{% url 'agricultural:save_business' %}" method="POST">
+            {% csrf_token %}
+
+            <div class="modal-body">
+                <div class="card border-primary">
+                    <div class="card-header" style="background-color: rgb(4,102,169);">
+                        <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Información</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row col-md-12">
+                            <div class="col-md-4 align-self-center">
+                                <label class="m-0">Ruc</label>
+                                <input type="text"
+                                       class="form-control" name="id-ruc" id="id-ruc"
+                                       placeholder="" maxlength="11"
+                                       value="" required>
+                            </div>
+                            <div class="col-md-8 align-self-center">
+                                <label class="m-0">Rason Social</label>
+                                <input type="text"
+                                       class="form-control" name="id-business" id="id-business"
+                                       placeholder=""
+                                       value="" required>
+                            </div>
+                        </div>
+                        <div class="row col-md-12">
+                            <div class="col-md-4  align-self-center">
+                                <label class="m-0">Telefono</label>
+                                <input type="text"
+                                       class="form-control" name="id-telephone" id="id-telephone"
+                                       placeholder=""
+                                       value="" maxlength="9">
+                            </div>
+                            <div class="col-md-8 align-self-center">
+                                <label class="m-0">Direccion</label>
+                                <input type="text"
+                                       class="form-control" name="id-address" id="id-address"
+                                       placeholder="" required
+                                       value="">
+                            </div>
+
+                        </div>
+                        <div class="row col-md-12">
+                            <div class="col-md-4 align-self-center">
+                                <label class="m-0">Documento</label>
+                                <input type="text"
+                                       class="form-control" name="id-document" id="id-document"
+                                       placeholder=""
+                                       value="">
+                            </div>
+                            <div class="col-md-8 align-self-center">
+                                <label class="m-0">Representante legal</label>
+                                <input type="text"
+                                       class="form-control" name="id-legal_representative" id="id-legal_representative"
+                                       placeholder=""
+                                       value="">
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- modal-body -->
+                <div class="modal-footer p-1">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button> &nbsp;
+                    <button id="update-employee" type="submit" class="btn btn-sm btn-success"> Registrar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $('#form-business').submit(function (event) {
+        event.preventDefault();
+        let data = new FormData($('#form-business').get(0));
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            headers: {"X-CSRFToken": '{{ csrf_token }}'},
+            success: function (response) {
+                if (response.success) {
+                    toastr.success('Empresa registrada con exito');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 400);
+                }
+            },
+            error: function (response) {
+                toastr.error('Problemas al registrar la empresa');
+            }
+        });
+    });
+    $('#id-ruc').keypress(function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault()
+            $(this).trigger("enterKey");
+            let _document = $('#id-ruc').val();
+            if (_document.length === 11) {
+                Consult(_document);
+            } else {
+                if (_document.length != 11) {
+                    toastr.warning('Numero de ruc incorrecto');
+                    return false;
+                }
+            }
+        }
+    });
+
+    function Consult($document) {
+
+        $.ajax({
+            url: '/agricultural/get_business_by_document/',
+            async: true,
+            dataType: 'json',
+            type: 'GET',
+            data: {
+                'number_document': $document,
+                'type_document': '06'
+            },
+            contentType: 'application/json;charset=UTF-8',
+            headers: {"X-CSRFToken": '{{ csrf_token }}'},
+            success: function (response, textStatus, xhr) {
+                if (xhr.status === 200) {
+                    toastr.success(response.message, '¡Bien hecho!');
+                    let names = (response.names).toString();
+                    let address = (response.address).toString();
+                    $("#id-business").val(names);
+                    $("#id-address").val(address);
+                }
+            },
+            error: function (jqXhr, textStatus, xhr) {
+                if (jqXhr.status === 500) {
+                    toastr.error(jqXhr.responseJSON.error, 'Mensaje');
+                } else {
+                    if (textStatus === 'timeout') {
+                        toastr.error('Fallo al consultar', 'Mensaje');
+                    } else {
+                        toastr.error(" STATUS: " + xhr + " " + textStatus);
+                    }
+                }
+                $("#id-business").val('');
+                $("#id-address").val('');
+            }
+        });
+    }
+</script>
