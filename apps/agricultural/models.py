@@ -111,13 +111,14 @@ class Zone(models.Model):
 class Variety(models.Model):
     id = models.AutoField(primary_key=True)
     abbreviation = models.CharField('Abreviatura', max_length=20, null=True, blank=True)
-    name = models.CharField('Nombre variable', max_length=100, null=True, blank=True)
+    name = models.CharField('Nombre variedad', max_length=100, null=True, blank=True)
     cultivation = models.ForeignKey('Cultivation', on_delete=models.CASCADE, null=True, blank=True)
     state = models.ForeignKey('State', on_delete=models.CASCADE, null=True, blank=True)
     create_at = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, verbose_name='Usuario', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return self.abbreviation
+        return self.name
 
     class Meta:
         verbose_name = 'Variadad'
@@ -131,6 +132,7 @@ class Phenology(models.Model):
     cultivation = models.ForeignKey('Cultivation', on_delete=models.CASCADE, null=True, blank=True)
     state = models.ForeignKey('State', on_delete=models.CASCADE, null=True, blank=True)
     create_at = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, verbose_name='Usuario', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -160,8 +162,8 @@ class Lot(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField('Nombre lote', max_length=100, null=True, blank=True)
     module = models.ForeignKey('Module', verbose_name='Modulo', on_delete=models.CASCADE, null=True, blank=True)
-    latitude = models.DecimalField('Latitud', max_digits=30, decimal_places=30, default=0)
-    longitude = models.DecimalField('Longitud', max_digits=30, decimal_places=30, default=0)
+    latitude = models.DecimalField('Latitud', max_digits=30, decimal_places=6, default=0)
+    longitude = models.DecimalField('Longitud', max_digits=30, decimal_places=6, default=0)
     code_alternate1 = models.CharField('Codigo alterno 1', max_length=20, null=True, blank=True)
     code_alternate2 = models.CharField('Codigo alterno 2', max_length=20, null=True, blank=True)
     state = models.ForeignKey('State', verbose_name='Estado', on_delete=models.CASCADE, null=True, blank=True)

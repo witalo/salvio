@@ -4,7 +4,7 @@
             <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Listado de modulos</h6>
         </div>
         <div class="card-body pb-1">
-            <div class="table-responsive dataTables_wrapper">
+            <div class="table-responsive small dataTables_wrapper">
                 <table id="table-module-list"
                        class="table   align-content-center table-bordered response"
                        cellspacing="0" width="100%" style="border-collapse:collapse;">
@@ -22,7 +22,6 @@
                     {% for m in module_set %}
                         <tr class="text-center">
                             <td class="align-middle"><strong>{{ m.id }}</strong></td>
-                            <td class="align-middle">{{ m.ruc }}</td>
                             <td class="align-middle">{{ m.domain.name }}</td>
                             <td class="align-middle">{{ m.name }}</td>
                             <td class="align-middle">{{ m.state.name }}</td>

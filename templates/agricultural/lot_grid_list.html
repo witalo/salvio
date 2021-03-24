@@ -4,7 +4,7 @@
             <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Listado de lotes</h6>
         </div>
         <div class="card-body pb-1">
-            <div class="table-responsive dataTables_wrapper">
+            <div class="table-responsive small dataTables_wrapper">
                 <table id="table-lot-list"
                        class="table   align-content-center table-bordered response"
                        cellspacing="0" width="100%" style="border-collapse:collapse;">
@@ -28,8 +28,8 @@
                             <td class="align-middle"><strong>{{ l.id }}</strong></td>
                             <td class="align-middle">{{ l.name }}</td>
                             <td class="align-middle">{{ l.module.name }}</td>
-                            <td class="align-middle">{{ l.latitude }}</td>
-                            <td class="align-middle">{{ l.longitude }}</td>
+                            <td class="align-middle">{{ l.latitude|safe }}</td>
+                            <td class="align-middle">{{ l.longitude|safe }}</td>
                             <td class="align-middle">{{ l.code_alternate1 }}</td>
                             <td class="align-middle">{{ l.code_alternate2 }}</td>
                             <td class="align-middle">{{ l.state.name }}</td>

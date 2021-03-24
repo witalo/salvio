@@ -52,15 +52,15 @@
                                 <label class="m-0">Latitud</label>
                                 <input type="text"
                                        class="form-control" name="id-latitude" id="id-latitude"
-                                       placeholder="" required
-                                       value="{{ lot_obj.latitude }}" maxlength="60">
+                                       placeholder=""
+                                       value="{{ lot_obj.latitude|safe }}" maxlength="60">
                             </div>
                             <div class="col-md-6  align-self-center">
                                 <label class="m-0">Longitud</label>
                                 <input type="text"
                                        class="form-control" name="id-longitude" id="id-longitude"
-                                       placeholder="" required
-                                       value="{{ lot_obj.longitude }}" maxlength="60">
+                                       placeholder=""
+                                       value="{{ lot_obj.longitude|safe }}" maxlength="60">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
@@ -68,14 +68,14 @@
                                 <label class="m-0">Codigo 1</label>
                                 <input type="text"
                                        class="form-control" name="id-code1" id="id-code1"
-                                       placeholder="" required
+                                       placeholder=""
                                        value="{{ lot_obj.code_alternate1 }}" maxlength="20">
                             </div>
                             <div class="col-md-6  align-self-center">
                                 <label class="m-0">Codigo 2</label>
                                 <input type="text"
                                        class="form-control" name="id-code2" id="id-code2"
-                                       placeholder="" required
+                                       placeholder=""
                                        value="{{ lot_obj.code_alternate2 }}" maxlength="20">
                             </div>
                         </div>

@@ -1,3 +1,4 @@
+import decimal
 from datetime import datetime
 from http import HTTPStatus
 from django.contrib.auth.models import User
@@ -537,8 +538,12 @@ def save_lot(request):
         _name = request.POST.get('id-lot', '')
         _module_pk = request.POST.get('id-module', '')
         module_obj = Module.objects.get(id=int(_module_pk))
-        _latitude = request.POST.get('id-latitude', '')
-        _longitude = request.POST.get('id-longitude', '')
+        _latitude = None
+        _longitude = None
+        if request.POST.get('id-latitude', '') != '':
+            _latitude = decimal.Decimal((request.POST.get('id-latitude', '')).replace(',', '.'))
+        if request.POST.get('id-longitude', '') != '':
+            _longitude = decimal.Decimal((request.POST.get('id-longitude', '')).replace(',', '.'))
         _code1 = request.POST.get('id-code1', '')
         _code2 = request.POST.get('id-code2', '')
         _state_pk = request.POST.get('id-state', '')
@@ -565,9 +570,13 @@ def modal_lot_update(request):
     if request.method == 'GET':
         pk = request.GET.get('pk', '')
         lot_obj = Lot.objects.get(id=int(pk))
+        module_set = Module.objects.all()
+        state_set = State.objects.all()
         t = loader.get_template('agricultural/lot_update.html')
         c = ({
             'lot_obj': lot_obj,
+            'module_set': module_set,
+            'state_set': state_set,
         })
         return JsonResponse({
             'success': True,
@@ -583,8 +592,12 @@ def update_lot(request):
         _name = request.POST.get('id-lot', '')
         _module_pk = request.POST.get('id-module', '')
         module_obj = Module.objects.get(id=int(_module_pk))
-        _latitude = request.POST.get('id-latitude', '')
-        _longitude = request.POST.get('id-longitude', '')
+        _latitude = None
+        _longitude = None
+        if request.POST.get('id-latitude', '') != '':
+            _latitude = decimal.Decimal((request.POST.get('id-latitude', '')).replace(',', '.'))
+        if request.POST.get('id-longitude', '') != '':
+            _longitude = decimal.Decimal((request.POST.get('id-longitude', '')).replace(',', '.'))
         _code1 = request.POST.get('id-code1', '')
         _code2 = request.POST.get('id-code2', '')
         _state_pk = request.POST.get('id-state', '')
@@ -653,10 +666,12 @@ def save_cultivation(request):
 def modal_cultivation_update(request):
     if request.method == 'GET':
         pk = request.GET.get('pk', '')
+        state_set = State.objects.all()
         cultivation_obj = Cultivation.objects.get(id=int(pk))
         t = loader.get_template('agricultural/cultivation_update.html')
         c = ({
             'cultivation_obj': cultivation_obj,
+            'state_set': state_set,
         })
         return JsonResponse({
             'success': True,

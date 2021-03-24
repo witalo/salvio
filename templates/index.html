@@ -68,7 +68,9 @@
         </li>
         <!-- Divider -->
         <hr class="sidebar-divider">
-
+        <div class="sidebar-heading">
+            Agricola
+        </div>
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
@@ -82,13 +84,19 @@
                     <h6 class="collapse-header">Agricola</h6>
                     <a class="collapse-item" href="{% url 'agricultural:business_list' %}"><i class="fa fa-home"></i>
                         Empresa</a>
-                    <a class="collapse-item" href="{% url 'agricultural:domain_list' %}"><i class="fa fa-home"></i> Fundo</a>
-                    <a class="collapse-item" href="{% url 'agricultural:module_list' %}"><i class="fa fa-home"></i> Modulo</a>
+                    <a class="collapse-item" href="{% url 'agricultural:domain_list' %}"><i class="fa fa-home"></i>
+                        Fundo</a>
+                    <a class="collapse-item" href="{% url 'agricultural:module_list' %}"><i class="fa fa-home"></i>
+                        Modulo</a>
                     <a class="collapse-item" href="{% url 'agricultural:zone_list' %}"><i class="fa fa-home"></i> Zonas</a>
-                    <a class="collapse-item" href="{% url 'agricultural:lot_list' %}"><i class="fa fa-home"></i> Lotes</a>
-                    <a class="collapse-item" href="{% url 'agricultural:cultivation_list' %}"><i class="fa fa-home"></i> Cultivo</a>
-                    <a class="collapse-item" href="{% url 'agricultural:variety_list' %}"><i class="fa fa-home"></i> Variedad</a>
-                    <a class="collapse-item" href="{% url 'agricultural:phenology_list' %}"><i class="fa fa-home"></i> Fenologia</a>
+                    <a class="collapse-item" href="{% url 'agricultural:lot_list' %}"><i class="fa fa-home"></i>
+                        Lotes</a>
+                    <a class="collapse-item" href="{% url 'agricultural:cultivation_list' %}"><i class="fa fa-home"></i>
+                        Cultivo</a>
+                    <a class="collapse-item" href="{% url 'agricultural:variety_list' %}"><i class="fa fa-home"></i>
+                        Variedad</a>
+                    <a class="collapse-item" href="{% url 'agricultural:phenology_list' %}"><i class="fa fa-home"></i>
+                        Fenologia</a>
                 </div>
             </div>
         </li>
@@ -98,7 +106,7 @@
 
         <!-- Heading -->
         <div class="sidebar-heading">
-            Programacion
+            Capacitacion
         </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
@@ -106,12 +114,12 @@
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                aria-expanded="true" aria-controls="collapsePages">
                 <i class="fas fa-fw fa-folder"></i>
-                <span>Programaciones</span>
+                <span>Capacitacion</span>
             </a>
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Programacion</h6>
-                    <a class="collapse-item" href="#"><i class="fab fa-accusoft"></i> Programacion</a>
+                    <h6 class="collapse-header">Capacitacion</h6>
+                    <a class="collapse-item" href="#"><i class="fab fa-accusoft"></i> Capacitacion</a>
                 </div>
             </div>
         </li>
@@ -127,6 +135,18 @@
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                     <i class="fa fa-bars"></i>
                 </button>
+                <!-- Topbar Search -->
+                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-0 my-2 my-md-0 mw-100 navbar-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control bg-light border-1 small" placeholder="Buscar..."
+                               aria-label="Search" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <!-- <li class="nav-item dropdown no-arrow align-self-center">
@@ -136,6 +156,29 @@
                             </div>
                         </div>
                     </li>-->
+                    <div class="topbar-divider d-none d-sm-block"></div>
+                    <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                    <li class="nav-item dropdown no-arrow mx-1">
+                        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                             aria-labelledby="searchDropdown">
+                            <form class="form-inline mr-auto w-100 navbar-search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control bg-light border-1 small"
+                                           placeholder="Buscar..." aria-label="Search"
+                                           aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
                     <div class="topbar-divider d-none d-sm-block"></div>
                     <li class="nav-item dropdown no-arrow align-self-center">
                         <div class="custom-control custom-switch">
