@@ -164,8 +164,6 @@ class Lot(models.Model):
     module = models.ForeignKey('Module', verbose_name='Modulo', on_delete=models.CASCADE, null=True, blank=True)
     latitude = models.DecimalField('Latitud', max_digits=30, decimal_places=6, default=0)
     longitude = models.DecimalField('Longitud', max_digits=30, decimal_places=6, default=0)
-    code_alternate1 = models.CharField('Codigo alterno 1', max_length=20, null=True, blank=True)
-    code_alternate2 = models.CharField('Codigo alterno 2', max_length=20, null=True, blank=True)
     state = models.ForeignKey('State', verbose_name='Estado', on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey(User, verbose_name='Usuario', on_delete=models.SET_NULL, null=True, blank=True)
     create_at = models.DateTimeField(auto_now=True)

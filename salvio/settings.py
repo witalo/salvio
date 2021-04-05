@@ -26,7 +26,7 @@ SECRET_KEY = '(#8_n21%yo5-#_$(zvju0o7pzl0oi^ro*x8dhdnq%&t!6h6+e%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.87', 'localhost']
+ALLOWED_HOSTS = ['144.126.131.185', 'localhost']
 
 # Application definition
 
@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'salvio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Business',
+        'NAME': 'business',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': '127.0.0.1',
@@ -109,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es-pe'
 
-TIME_ZONE = 'America/lima'
+TIME_ZONE = 'America/Lima'
 
 USE_I18N = True
 

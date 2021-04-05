@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django.template import loader
+from django.core import serializers
 
 from apps.agricultural.consult import query_api_amigo
 from apps.agricultural.models import Person, Business, Module, Domain, State, Zone, Lot, Cultivation, Variety, Phenology
@@ -519,10 +520,12 @@ def get_lot_list(request):
 
 def modal_lot_save(request):
     if request.method == 'GET':
+        domain_set = Domain.objects.all()
         module_set = Module.objects.all()
         state_set = State.objects.all()
         t = loader.get_template('agricultural/lot_register.html')
         c = ({
+            'domain_set': domain_set,
             'module_set': module_set,
             'state_set': state_set,
         })
@@ -544,8 +547,6 @@ def save_lot(request):
             _latitude = decimal.Decimal((request.POST.get('id-latitude', '')).replace(',', '.'))
         if request.POST.get('id-longitude', '') != '':
             _longitude = decimal.Decimal((request.POST.get('id-longitude', '')).replace(',', '.'))
-        _code1 = request.POST.get('id-code1', '')
-        _code2 = request.POST.get('id-code2', '')
         _state_pk = request.POST.get('id-state', '')
         state_obj = State.objects.get(id=int(_state_pk))
         user_id = request.user.id
@@ -555,8 +556,6 @@ def save_lot(request):
             module=module_obj,
             latitude=_latitude,
             longitude=_longitude,
-            code_alternate1=_code1,
-            code_alternate2=_code2,
             state=state_obj,
             user=user_obj
         )
@@ -881,4 +880,16 @@ def update_phenology(request):
 
         return JsonResponse({
             'success': True,
+        }, status=HTTPStatus.OK)
+
+
+def get_module_by_domain(request):
+    if request.method == 'GET':
+        pk = request.GET.get('ip', '')
+        domain_obj = Domain.objects.get(pk=int(pk))
+        module_set = Module.objects.filter(domain=domain_obj)
+        module_serialized_obj = serializers.serialize('json', module_set)
+
+        return JsonResponse({
+            'module': module_serialized_obj
         }, status=HTTPStatus.OK)

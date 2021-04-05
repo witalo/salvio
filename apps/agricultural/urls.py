@@ -57,4 +57,5 @@ urlpatterns = [
     path('modal_phenology_update/', login_required(modal_phenology_update), name='modal_phenology_update'),
     path('save_phenology/', login_required(save_phenology), name='save_phenology'),
     path('update_phenology/', login_required(update_phenology), name='update_phenology'),
+    path('get_module_by_domain/', login_required(get_module_by_domain), name='get_module_by_domain'),
 ]
