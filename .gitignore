@@ -6,8 +6,8 @@ __pycache__
 
 # Backup files #
 *.bak
-#ventura/settings.py
-# /static
+salvio/settings.py
+static
+media
 migrations
 .idea
-# media
