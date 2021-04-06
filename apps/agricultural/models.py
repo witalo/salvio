@@ -174,3 +174,29 @@ class Lot(models.Model):
     class Meta:
         verbose_name = 'Lote'
         verbose_name_plural = 'Lotes'
+
+
+class ProgramProduction(models.Model):
+    SOWING_CHOICES = ((1, 'Si'), (2, 'No'))
+    STATUS_CHOICES = (('A', 'Activo'), ('P', 'Activo planificado'), ('C', 'Cerrado'), ('H', 'Cerrado historia'),)
+    id = models.AutoField(primary_key=True)
+    lot = models.ForeignKey('Lot', verbose_name='Lote', on_delete=models.CASCADE, null=True, blank=True)
+    campaign_number = models.CharField('Numero campaña', max_length=20, null=True, blank=True)
+    campaign_year = models.CharField('Año campaña', max_length=20, null=True, blank=True)
+    variety = models.ForeignKey('Variety', verbose_name='Variedad', on_delete=models.CASCADE, null=True, blank=True)
+    area = models.IntegerField('Area', default=0)
+    campaign_closure = models.DateField('Cierre campaña', null=True, blank=True)
+    harvest_year = models.CharField('Año cosecha', max_length=20, null=True, blank=True)
+    variety_pep = models.CharField('Variedad pep', max_length=100, null=True, blank=True)
+    sowing = models.IntegerField('Siembra', choices=SOWING_CHOICES, default=2)
+    responsible = models.CharField('Responsable', max_length=200, null=True, blank=True)
+    status = models.CharField('Estado', max_length=1, choices=STATUS_CHOICES, default='A', )
+    user = models.ForeignKey(User, verbose_name='Usuario', on_delete=models.SET_NULL, null=True, blank=True)
+    create_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.responsible
+
+    class Meta:
+        verbose_name = 'Programa de produccion'
+        verbose_name_plural = 'Programas de produccion'

@@ -10,7 +10,8 @@ from django.template import loader
 from django.core import serializers
 
 from apps.agricultural.consult import query_api_amigo
-from apps.agricultural.models import Person, Business, Module, Domain, State, Zone, Lot, Cultivation, Variety, Phenology
+from apps.agricultural.models import Person, Business, Module, Domain, State, Zone, Lot, Cultivation, Variety, \
+    Phenology, ProgramProduction
 from apps.user.views import create_user
 
 
@@ -893,3 +894,27 @@ def get_module_by_domain(request):
         return JsonResponse({
             'module': module_serialized_obj
         }, status=HTTPStatus.OK)
+
+
+# --------------------program of production-------------------------------------
+def get_program_production_list(request):
+    if request.method == 'GET':
+        program_production_set = ProgramProduction.objects.all()
+        return render(request, 'agricultural/production_program_list.html', {
+            'program_production_set': program_production_set
+        })
+
+
+def modal_program_production_save(request):
+    if request.method == 'GET':
+        domain_set = Domain.objects.all()
+        state_set = State.objects.all()
+        t = loader.get_template('agricultural/production_program_register.html')
+        c = ({
+            'domain_set': domain_set,
+            'state_set': state_set,
+            })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })

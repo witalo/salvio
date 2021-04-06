@@ -1,0 +1,70 @@
+{% load static %}
+{% if program_production_set %}
+    <div class="card border-info">
+        <div class="card-header" style="background-color: rgba(11,119,169,0.8);">
+            <h6 class="card-title text-center text-white mb-0" style="font-size: 14px;">Programas de produccion</h6>
+        </div>
+        <div class="card-body pb-1">
+            <div class="table-responsive small dataTables_wrapper">
+                <table id="table-program-list"
+                       class="table   align-content-center table-bordered response"
+                       cellspacing="0" width="100%" style="border-collapse:collapse;">
+                    <thead>
+                    <tr class="text-center  text-white"
+                        style="background-color: rgba(11,119,169, 0.8);">
+                        <th class="font-weight-normal">N°</th>
+                        <th class="font-weight-normal">Zona</th>
+                        <th class="font-weight-normal">Fundo</th>
+                        <th class="font-weight-normal">Modulo</th>
+                        <th class="font-weight-normal">Lote</th>
+                        <th class="font-weight-normal">Campaña</th>
+                        <th class="font-weight-normal">Año campaña</th>
+                        <th class="font-weight-normal">Cultivo</th>
+                        <th class="font-weight-normal">Variedad</th>
+                        <th class="font-weight-normal">Area</th>
+                        <th class="font-weight-normal">Responsable</th>
+                        <th class="font-weight-normal">Estado</th>
+                        <th class="font-weight-normal">Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody style="font-size: 13px;">
+                    {% for p in program_production_set %}
+                        <tr class="text-center">
+                            <td class="align-middle">{{ p.id }}</td>
+                            <td class="align-middle">{{ p.id }}</td>
+                            <td class="align-middle">{{ p.id }}</td>
+                            <td class="align-middle">{{ p.id }}</td>
+                            <td class="align-middle">{{ p.id }}</td>
+                            <td class="align-middle">{{ p.id }}</td>
+                            <td class="align-middle">{{ p.id }}</td>
+                            <td class="align-middle">{{ p.id }}</td>
+                            <td class="align-middle">{{ p.id }}</td>
+                            <td class="align-middle">{{ p.id }}</td>
+                            <td class="align-middle">{{ p.id }}</td>
+                            <td class="align-middle">{{ p.id }}</td>
+                            <td class="p-1 align-middle">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success  dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            style="font-size: 12px;">
+                                        Acción
+                                    </button>
+                                    <div class="dropdown-menu border-info font-italic">
+                                        <a class="dropdown-item btn-update-person"
+                                           style="cursor: pointer; font-size: 11px;" pk="{{ p.id }}"><i
+                                                class="fas fa-edit pr-1"></i> Modificar datos </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <h6>No existen registros de programas de produccion</h6>
+    </div>
+{% endif %}

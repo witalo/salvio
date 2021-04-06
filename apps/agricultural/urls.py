@@ -58,4 +58,7 @@ urlpatterns = [
     path('save_phenology/', login_required(save_phenology), name='save_phenology'),
     path('update_phenology/', login_required(update_phenology), name='update_phenology'),
     path('get_module_by_domain/', login_required(get_module_by_domain), name='get_module_by_domain'),
+    # program production
+    path('program_production/', login_required(get_program_production_list), name='program_production'),
+    path('program_production_save/', login_required(modal_program_production_save), name='program_production_save'),
 ]
