@@ -6,18 +6,18 @@
 
 {% block body %}
 
-    <div class="card-header p-1 m-0 small roboto-medium">
+    <div class="card-header p-1 m-0 small roboto-condensed-regular">
         <button type="button" onclick="showModalView('modal_module_save')"
-                class="btn btn-outline-success" style="font-size: 13px;"><i class="fas fa-database"></i> Nuevo modulo
+                class="btn btn-outline-success"><i class="fas fa-database"></i> Nuevo modulo
         </button>
     </div>
-    <div class="container-fluid montserrat p-0 pb-4 roboto-medium">
+    <div class="container-fluid p-0 pb-4 roboto-condensed-regular">
         <div id="business-grid-list" style="overflow-y: scroll; height: 480px; width: auto;">{% include "agricultural/module_grid_list.html" %}</div>
     </div>
-    <div class="modal fade roboto-medium" id="modal-module-save" tabindex="-1" role="dialog"
+    <div class="modal fade roboto-condensed-regular" id="modal-module-save" tabindex="-1" role="dialog"
          aria-labelledby="ModalHelpTitle"
          aria-hidden="true"></div>
-    <div class="modal fade roboto-medium" id="modal-module-update" tabindex="-1" role="dialog"
+    <div class="modal fade roboto-condensed-regular" id="modal-module-update" tabindex="-1" role="dialog"
          aria-labelledby="ModalHelpTitle"
          aria-hidden="true"></div>
 {% endblock body %}

@@ -316,7 +316,7 @@ def modal_module_update(request):
 def update_modulo(request):
     if request.method == 'POST':
         _id = int(request.POST.get('id-pk', ''))
-        _name = int(request.POST.get('id-module', ''))
+        _name = request.POST.get('id-module', '')
         module_obj = Module.objects.get(id=_id)
         _domain = request.POST.get('id-domain', '')
         domain_obj = Domain.objects.get(id=int(_domain))
@@ -522,12 +522,10 @@ def get_lot_list(request):
 def modal_lot_save(request):
     if request.method == 'GET':
         domain_set = Domain.objects.all()
-        module_set = Module.objects.all()
         state_set = State.objects.all()
         t = loader.get_template('agricultural/lot_register.html')
         c = ({
             'domain_set': domain_set,
-            'module_set': module_set,
             'state_set': state_set,
         })
         return JsonResponse({
@@ -570,11 +568,13 @@ def modal_lot_update(request):
     if request.method == 'GET':
         pk = request.GET.get('pk', '')
         lot_obj = Lot.objects.get(id=int(pk))
+        domain_set = Domain.objects.all()
         module_set = Module.objects.all()
         state_set = State.objects.all()
         t = loader.get_template('agricultural/lot_update.html')
         c = ({
             'lot_obj': lot_obj,
+            'domain_set': domain_set,
             'module_set': module_set,
             'state_set': state_set,
         })
@@ -908,13 +908,147 @@ def get_program_production_list(request):
 def modal_program_production_save(request):
     if request.method == 'GET':
         domain_set = Domain.objects.all()
-        state_set = State.objects.all()
+        cultivation_set = Cultivation.objects.all()
         t = loader.get_template('agricultural/production_program_register.html')
         c = ({
             'domain_set': domain_set,
-            'state_set': state_set,
-            })
+            'cultivation_set': cultivation_set,
+            'sowing_set': ProgramProduction._meta.get_field('sowing').choices,
+            'state_set': ProgramProduction._meta.get_field('status').choices,
+        })
         return JsonResponse({
             'success': True,
             'form': t.render(c, request),
         })
+
+
+def modal_update_form(request):
+    if request.method == 'GET':
+        program_id = request.GET.get('pk', '')
+        program_obj = ProgramProduction.objects.get(id=int(program_id))
+        domain_set = Domain.objects.all()
+        module_set = Module.objects.all()
+        lot_set = Lot.objects.all()
+        cultivation_set = Cultivation.objects.all()
+        variety_set = Variety.objects.all()
+        t = loader.get_template('agricultural/production_program_update.html')
+        c = ({
+            'program_obj': program_obj,
+            'domain_set': domain_set,
+            'module_set': module_set,
+            'lot_set': lot_set,
+            'cultivation_set': cultivation_set,
+            'variety_set': variety_set,
+            'sowing_set': ProgramProduction._meta.get_field('sowing').choices,
+            'state_set': ProgramProduction._meta.get_field('status').choices,
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+def get_module_by_domain(request):
+    if request.method == 'GET':
+        domain_id = request.GET.get('_pk', '')
+        domain_obj = Domain.objects.get(id=int(domain_id))
+        module_set = Module.objects.filter(domain=domain_obj)
+        module_serialized_obj = serializers.serialize('json', module_set)
+        return JsonResponse({
+            'modules_set': module_serialized_obj,
+        }, status=HTTPStatus.OK)
+
+
+def get_lot_by_module(request):
+    if request.method == 'GET':
+        module_id = request.GET.get('_pk', '')
+        module_obj = Module.objects.get(id=int(module_id))
+        lot_set = Lot.objects.filter(module=module_obj)
+        lot_serialized_obj = serializers.serialize('json', lot_set)
+        return JsonResponse({
+            'lot_set': lot_serialized_obj,
+        }, status=HTTPStatus.OK)
+
+
+def get_variety_by_cultivation(request):
+    if request.method == 'GET':
+        cultivation_id = request.GET.get('_pk', '')
+        cultivation_obj = Cultivation.objects.get(id=int(cultivation_id))
+        variety_set = Variety.objects.filter(cultivation=cultivation_obj)
+        variety_set_serialized_obj = serializers.serialize('json', variety_set)
+        return JsonResponse({
+            'variety_set': variety_set_serialized_obj,
+        }, status=HTTPStatus.OK)
+
+
+@csrf_exempt
+def save_program(request):
+    if request.method == 'POST':
+        id_lot = request.POST.get('id_lot', '')
+        lot_obj = Lot.objects.get(id=int(id_lot))
+        number_campaign = request.POST.get('number_campaign', '')
+        year_campaign = request.POST.get('year_campaign', '')
+        id_variety = request.POST.get('id_variety', '')
+        variety_obj = Variety.objects.get(id=int(id_variety))
+        id_area = decimal.Decimal(request.POST.get('id_area', ''))
+        date_campaign = request.POST.get('date_campaign', '')
+        id_density = request.POST.get('density', '')
+        id_sowing = request.POST.get('id_sowing', '')
+        id_state = request.POST.get('id_state', '')
+        id_responsible = request.POST.get('id_responsible', '')
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        program_production_obj = ProgramProduction(
+            lot=lot_obj,
+            campaign_number=number_campaign,
+            campaign_year=year_campaign,
+            variety=variety_obj,
+            area=id_area,
+            campaign_closure=date_campaign,
+            density=id_density,
+            sowing=id_sowing,
+            responsible=id_responsible,
+            status=id_state,
+            user=user_obj
+        )
+        program_production_obj.save()
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+@csrf_exempt
+def update_program(request):
+    if request.method == 'POST':
+        pk = request.POST.get('id-pk', '')
+        program_obj = ProgramProduction.objects.get(id=int(pk))
+        id_lot = request.POST.get('id_lot', '')
+        lot_obj = Lot.objects.get(id=int(id_lot))
+        number_campaign = request.POST.get('number_campaign', '')
+        year_campaign = request.POST.get('year_campaign', '')
+        id_variety = request.POST.get('id_variety', '')
+        variety_obj = Variety.objects.get(id=int(id_variety))
+        id_area = decimal.Decimal(request.POST.get('id_area', ''))
+        date_campaign = request.POST.get('date_campaign', '')
+        id_density = request.POST.get('density', '')
+        id_sowing = request.POST.get('id_sowing', '')
+        id_state = request.POST.get('id_state', '')
+        id_responsible = request.POST.get('id_responsible', '')
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        program_obj.lot = lot_obj
+        program_obj.variety = variety_obj
+        program_obj.campaign_number = number_campaign
+        program_obj.campaign_year = year_campaign
+        program_obj.area = id_area
+        program_obj.campaign_closure = date_campaign
+        program_obj.density = id_density
+        program_obj.sowing = id_sowing
+        program_obj.status = id_state
+        program_obj.responsible = id_responsible
+        program_obj.user = user_obj
+        program_obj.save()
+
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)

@@ -1,0 +1,208 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+
+    <div class="modal-content roboto-condensed-regular">
+        <div class="modal-header" style="background-color: rgba(4,102,169, 1.0);">
+            <h6 class="modal-title  text-white roboto-condensed-regular">Actualizacion del Programa de Produccion</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <form id="form-program-update" class="embed-responsive" enctype="multipart/form-data"
+              action="{% url 'agricultural:update_program' %}" method="POST">
+            {% csrf_token %}
+
+            <div class="modal-body">
+                <div class="card border-primary">
+                    <div class="card-header" style="background-color: rgb(4,102,169);">
+                        <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Información</h6>
+                    </div>
+                    <div class="card-body m-1">
+                        <div class="form-row">
+                            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+                                <label for="id_domain" class="mb-1">Fundo</label>
+                                <select id="id_domain" name="id_domain" class="form-control form-control-sm">
+                                    <option value="0">Seleccione</option>
+                                    {% for d in domain_set %}
+                                        {% if program_obj.lot.module.domain.id == d.id %}
+                                            <option selected value="{{ d.id }}">{{ d.name }}</option>
+                                        {% else %}
+                                            <option value="{{ d.id }}">{{ d.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <input type="hidden" id="id-pk" name="id-pk"
+                                       class="form-control form-control-sm" value="{{ program_obj.id }}" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+                                <label for="id_module" class="mb-1">Modulo</label>
+                                <select id="id_module" name="id_module" class="form-control form-control-sm">
+                                    <option value="0">Seleccione</option>
+                                    {% for m in module_set %}
+                                        {% if program_obj.lot.module.id == m.id %}
+                                            <option selected value="{{ m.id }}">{{ m.name }}</option>
+                                        {% else %}
+                                            <option value="{{ m.id }}">{{ m.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+                                <label for="id_lot" class="mb-1">Lote</label>
+                                <select id="id_lot" name="id_lot" class="form-control form-control-sm">
+                                    <option value="0">Seleccione</option>
+                                    {% for l in lot_set %}
+                                        {% if program_obj.lot.id == l.id %}
+                                            <option selected value="{{ l.id }}">{{ l.name }}</option>
+                                        {% else %}
+                                            <option value="{{ l.id }}">{{ l.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
+                                <label for="number_campaign" class="mb-1">Numero campaña</label>
+                                <input type="number" id="number_campaign" name="number_campaign"
+                                       class="form-control form-control-sm" maxlength="20"
+                                       value="{{ program_obj.campaign_number }}" placeholder="">
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
+                                <label for="year_campaign" class="mb-1">Año campaña</label>
+                                <input type="number" id="year_campaign" name="year_campaign"
+                                       class="form-control form-control-sm" maxlength="20"
+                                       value="{{ program_obj.campaign_year }}" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+                                <label for="id_cultivation" class="mb-1">Cultivo</label>
+                                <select id="id_cultivation" name="id_cultivation" class="form-control form-control-sm">
+                                    <option value="0">Seleccione</option>
+                                    {% for c in cultivation_set %}
+                                        {% if program_obj.variety.cultivation.id == c.id %}
+                                            <option selected value="{{ c.id }}">{{ c.name }}</option>
+                                        {% else %}
+                                            <option value="{{ c.id }}">{{ c.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+                                <label for="id_variety" class="mb-1">Variedad</label>
+                                <select id="id_variety" name="id_variety" class="form-control form-control-sm">
+                                    <option value="0">Seleccione</option>
+                                    {% for v in variety_set %}
+                                        {% if program_obj.variety.id == v.id %}
+                                            <option selected value="{{ v.id }}">{{ v.name }}</option>
+                                        {% else %}
+                                            <option value="{{ v.id }}">{{ v.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
+                                <label for="id_area" class="mb-1">Area</label>
+                                <input type="number" id="id_area" name="id_area"
+                                       class="form-control form-control-sm" maxlength="32"
+                                       value="{{ program_obj.area|safe }}" placeholder="">
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
+                                <label for="date_campaign" class="mb-1">Cierre campaña</label>
+                                <input type="date" id="date_campaign" name="date_campaign"
+                                       class="form-control form-control-sm" maxlength="20"
+                                       value="{{ program_obj.campaign_closure|date:'Y-m-d' }}" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
+                                <label for="density" class="mb-1">Densidad</label>
+                                <input type="number" id="density" name="density" maxlength="20"
+                                       class="form-control form-control-sm" value="{{ program_obj.density }}"
+                                       placeholder="">
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
+                                <label for="id_sowing" class="mb-1">Siembra</label>
+                                <select id="id_sowing" name="id_sowing" class="form-control form-control-sm">
+                                    <option value="0">Seleccione</option>
+                                    {% for s in sowing_set %}
+                                        {% if program_obj.sowing == s.0 %}
+                                            <option selected value="{{ s.0 }}">{{ s.1 }}</option>
+                                        {% else %}
+                                            <option value="{{ s.0 }}">{{ s.1 }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+                                <label for="id_state" class="mb-1">Estado</label>
+                                <select id="id_state" name="id_state" class="form-control form-control-sm">
+                                    <option value="0">Seleccione</option>
+                                    {% for s in state_set %}
+                                        {% if program_obj.status == s.0 %}
+                                            <option selected value="{{ s.0 }}">{{ s.1 }}</option>
+                                        {% else %}
+                                            <option value="{{ s.0 }}">{{ s.1 }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+                                <label for="id_responsible" class="mb-1">Responsable</label>
+                                <input type="text" maxlength="200" class="form-control form-control-sm"
+                                       id="id_responsible" name="id_responsible" value="{{ program_obj.responsible }}"
+                                       required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer p-1">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                &nbsp;
+                <button id="update-program" type="submit" class="btn btn-sm btn-warning"> Actualizar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $('#form-program-update').submit(function (event) {
+        event.preventDefault();
+        let data = new FormData($('#form-program-update').get(0));
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            headers: {"X-CSRFToken": '{{ csrf_token }}'},
+            success: function (response) {
+                if (response.success) {
+                    toastr.success('Programa de produccion actualizada');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 400);
+                }
+            },
+            error: function (response) {
+                toastr.error('El prorama de produccion no se actualizo');
+            }
+        });
+    });
+</script>

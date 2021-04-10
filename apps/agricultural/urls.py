@@ -60,5 +60,12 @@ urlpatterns = [
     path('get_module_by_domain/', login_required(get_module_by_domain), name='get_module_by_domain'),
     # program production
     path('program_production/', login_required(get_program_production_list), name='program_production'),
+    path('modal_update_form/', login_required(modal_update_form), name='modal_update_form'),
     path('program_production_save/', login_required(modal_program_production_save), name='program_production_save'),
+    path('save_program/', login_required(save_program), name='save_program'),
+    path('update_program/', login_required(update_program), name='update_program'),
+    # combo cascade
+    path('get_module_by_domain/', login_required(get_module_by_domain), name='get_module_by_domain'),
+    path('get_lot_by_module/', login_required(get_lot_by_module), name='get_lot_by_module'),
+    path('get_variety_by_cultivation/', login_required(get_variety_by_cultivation), name='get_variety_by_cultivation'),
 ]

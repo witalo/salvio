@@ -1,24 +1,24 @@
 {% if business_set %}
-    <div class="card border-primary">
+    <div class="card border-primary roboto-condensed-regular">
         <div class="card-header" style="background-color: rgba(6,107,184, 0.9);">
-            <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Listado de empresas</h6>
+            <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Listado de empresas</h6>
         </div>
         <div class="card-body pb-1">
             <div class="table-responsive small dataTables_wrapper">
                 <table id="table-business-list"
-                       class="table   align-content-center table-bordered response"
+                       class="table align-content-center table-bordered"
                        cellspacing="0" width="100%" style="border-collapse:collapse;">
                     <thead>
                     <tr class="text-center  text-white"
                         style="background-color: rgba(6,107,184, 0.9);">
-                        <th class="th-sm font-weight-normal">N°</th>
-                        <th class="th-sm font-weight-normal">Ruc</th>
-                        <th class="th-sm font-weight-normal">Razon Social</th>
-                        <th class="th-sm font-weight-normal">Direccion</th>
-                        <th class="th-sm font-weight-normal">Telefono</th>
-                        <th class="th-sm font-weight-normal">Representante</th>
-                        <th class="th-sm font-weight-normal">Documento</th>
-                        <th class="th-sm font-weight-normal">Acción</th>
+                        <th class="font-weight-normal">N°</th>
+                        <th class="font-weight-normal">Ruc</th>
+                        <th class="font-weight-normal">Razon Social</th>
+                        <th class="font-weight-normal">Direccion</th>
+                        <th class="font-weight-normal">Telefono</th>
+                        <th class="font-weight-normal">Representante</th>
+                        <th class="font-weight-normal">Documento</th>
+                        <th class="font-weight-normal">Acción</th>
                     </tr>
                     </thead>
                     <tbody style="font-size: 12px;">
@@ -38,9 +38,9 @@
                                             style="font-size: 11px;">
                                         Acción
                                     </button>
-                                    <div class="dropdown-menu border-info font-italic">
+                                    <div class="dropdown-menu border-info">
                                         <a class="dropdown-item btn-update-business"
-                                           style="cursor: pointer; font-size: 11px;" pk="{{ b.id }}"><i
+                                           style="cursor: pointer; font-size: 13px;" pk="{{ b.id }}"><i
                                                 class="fas fa-edit pr-1"></i> Modificar empresa </a>
 {#                                        {% if e.user %}#}
 {#                                            <a class="dropdown-item btn-update-user"#}
@@ -62,14 +62,14 @@
                     </tbody>
                     <tfoot>
                     <tr class="text-center text-white" style="background-color: rgb(12,106,177);">
-                        <th class="th-sm font-weight-normal">N°</th>
-                        <th class="th-sm font-weight-normal">Ruc</th>
-                        <th class="th-sm font-weight-normal">Razon Social</th>
-                        <th class="th-sm font-weight-normal">Direccion</th>
-                        <th class="th-sm font-weight-normal">Telefono</th>
-                        <th class="th-sm font-weight-normal">Representante</th>
-                        <th class="th-sm font-weight-normal">Documento</th>
-                        <th class="th-sm font-weight-normal">Acción</th>
+                         <th class="font-weight-normal">N°</th>
+                        <th class="font-weight-normal">Ruc</th>
+                        <th class="font-weight-normal">Razon Social</th>
+                        <th class="font-weight-normal">Direccion</th>
+                        <th class="font-weight-normal">Telefono</th>
+                        <th class="font-weight-normal">Representante</th>
+                        <th class="font-weight-normal">Documento</th>
+                        <th class="font-weight-normal">Acción</th>
                     </tr>
                     </tfoot>
                 </table>

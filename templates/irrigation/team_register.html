@@ -1,0 +1,120 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: rgba(4,102,169, 1.0);">
+            <h6 class="modal-title  text-white roboto-condensed-regular">Registro de equipo</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <form id="form-team" class="embed-responsive" enctype="multipart/form-data"
+              action="{% url 'irrigation:save_team' %}" method="POST">
+            {% csrf_token %}
+
+            <div class="modal-body">
+                <div class="card border-primary">
+                    <div class="card-header" style="background-color: rgb(4,102,169);">
+                        <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Información</h6>
+                    </div>
+                    <div class="card-body m-2">
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Zona</label>
+                                <select class="form-control" id="id-zone" name="id-zone"
+                                        required>
+                                    <option value="0">Seleccione</option>
+                                    {% for z in zone_set %}
+                                        <option value="{{ z.id }}">{{ z.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Nombre equipo</label>
+                                <input type="text"
+                                       class="form-control" name="id-name" id="id-name"
+                                       placeholder="" required
+                                       value="" maxlength="200">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Descripcion</label>
+                                <input type="text"
+                                       class="form-control" name="id-description" id="id-description"
+                                       placeholder="" required
+                                       value="" maxlength="200">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Reservorio</label>
+                                <input type="text"
+                                       class="form-control" name="id-reservoir" id="id-reservoir"
+                                       placeholder="" required
+                                       value="" maxlength="200">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Factor Correccion</label>
+                                <input type="number"
+                                       class="form-control" name="id-correction_factor" id="id-correction_factor"
+                                       placeholder="" required
+                                       value="" maxlength="20">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Estado</label>
+                                <select class="form-control" id="id-state" name="id-state"
+                                        required>
+                                    <option value="0">Seleccione</option>
+                                    {% for s in state_set %}
+                                        <option value="{{ s.id }}">{{ s.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- modal-body -->
+                <div class="modal-footer p-1">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                    &nbsp;
+                    <button id="save-team" type="submit" class="btn btn-sm btn-success"> Registrar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $('#form-team').submit(function (event) {
+        event.preventDefault();
+        let data = new FormData($('#form-team').get(0));
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            headers: {"X-CSRFToken": '{{ csrf_token }}'},
+            success: function (response) {
+                if (response.success) {
+                    toastr.success('Informacion registrada con exito');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 400);
+                }
+            },
+            error: function (response) {
+                toastr.error('La informacion no se logro regitrar');
+            }
+        });
+    });
+
+</script>

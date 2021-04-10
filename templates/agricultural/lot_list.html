@@ -6,18 +6,18 @@
 
 {% block body %}
 
-    <div class="card-header p-1 m-0 small roboto-medium">
+    <div class="card-header p-1 m-0 small roboto-condensed-regular">
         <button type="button" onclick="showModalView('modal_lot_save')"
-                class="btn btn-outline-success" style="font-size: 13px;"><i class="fas fa-database"></i> Nuevo lote
+                class="btn btn-outline-success"><i class="fas fa-database"></i> Nuevo lote
         </button>
     </div>
-    <div class="container-fluid montserrat p-0 pb-4 roboto-medium">
+    <div class="container-fluid p-0 pb-4 roboto-condensed-regular">
         <div id="lot-grid-list" style="overflow-y: scroll; height: 480px; width: auto;">{% include "agricultural/lot_grid_list.html" %}</div>
     </div>
-    <div class="modal fade roboto-medium" id="modal-lot-save" tabindex="-1" role="dialog"
+    <div class="modal fade roboto-condensed-regular" id="modal-lot-save" tabindex="-1" role="dialog"
          aria-labelledby="ModalHelpTitle"
          aria-hidden="true"></div>
-    <div class="modal fade roboto-medium" id="modal-lot-update" tabindex="-1" role="dialog"
+    <div class="modal fade roboto-condensed-regular" id="modal-lot-update" tabindex="-1" role="dialog"
          aria-labelledby="ModalHelpTitle"
          aria-hidden="true"></div>
 {% endblock body %}
@@ -66,6 +66,28 @@
                     toastr.error('Ocurrio un problema al mostrar el formulario', '¡Mensaje!');
                 }
             });
+        });
+        $(document).on('change', '#id-domain', function () {
+            let _val = $(this).val();
+            $('#id-module').empty();
+            $('#id-module').append('<option value="0">' + "Seleccione" + '</option>');
+            if (_val != 0) {
+                $.ajax({
+                    url: '/agricultural/get_module_by_domain/',
+                    async: true,
+                    dataType: 'json',
+                    type: 'GET',
+                    data: {'_pk': _val},
+                    success: function (response) {
+                        let module_list = JSON.parse(response['modules_set']);
+                        module_list.forEach(
+                            element =>
+                                $('#id-module').append(
+                                    '<option value="' + element['pk'] + '">' + element['fields']['name'] + '</option>')
+                        );
+                    },
+                });
+            }
         });
     </script>
 {% endblock extrajs %}

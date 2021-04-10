@@ -2,20 +2,20 @@
 
     <div class="modal-content">
         <div class="modal-header" style="background-color: rgba(4,102,169, 1.0);">
-            <h5 class="modal-title  text-white" style="font-size: 13px;">Actualizacion de lote</h5>
+            <h6 class="modal-title  text-white roboto-condensed-regular">Actualizacion de lote</h6>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
 
         <form id="form-lot" class="embed-responsive" enctype="multipart/form-data"
-              style="font-size: 13px;" action="{% url 'agricultural:update_lot' %}" method="POST">
+              action="{% url 'agricultural:update_lot' %}" method="POST">
             {% csrf_token %}
 
             <div class="modal-body">
                 <div class="card border-primary">
                     <div class="card-header" style="background-color: rgb(4,102,169);">
-                        <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Información</h6>
+                        <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Información</h6>
                     </div>
                     <div class="card-body m-2">
                         <div class="row col-md-12 m-0 p-0">
@@ -29,6 +29,22 @@
                                        class="form-control" name="id-pk" id="id-pk"
                                        placeholder="" required
                                        value="{{ lot_obj.id }}">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12 align-self-center">
+                                <label class="m-0">Fundo</label>
+                                <select class="form-control" id="id-domain" name="id-domain"
+                                        required>
+                                    <option disabled selected value="">Seleccione</option>
+                                    {% for d in domain_set %}
+                                        {% if lot_obj.module.domain.id == d.id %}
+                                            <option selected value="{{ d.id }}">{{ d.name }}</option>
+                                        {% else %}
+                                            <option value="{{ d.id }}">{{ d.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
@@ -61,22 +77,6 @@
                                        class="form-control" name="id-longitude" id="id-longitude"
                                        placeholder=""
                                        value="{{ lot_obj.longitude|safe }}" maxlength="60">
-                            </div>
-                        </div>
-                        <div class="row col-md-12 m-0 p-0">
-                            <div class="col-md-6  align-self-center">
-                                <label class="m-0">Codigo 1</label>
-                                <input type="text"
-                                       class="form-control" name="id-code1" id="id-code1"
-                                       placeholder=""
-                                       value="{{ lot_obj.code_alternate1 }}" maxlength="20">
-                            </div>
-                            <div class="col-md-6  align-self-center">
-                                <label class="m-0">Codigo 2</label>
-                                <input type="text"
-                                       class="form-control" name="id-code2" id="id-code2"
-                                       placeholder=""
-                                       value="{{ lot_obj.code_alternate2 }}" maxlength="20">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">

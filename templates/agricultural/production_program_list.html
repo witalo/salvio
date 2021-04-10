@@ -8,11 +8,13 @@
 
     <div class="card-header p-1 m-0 small roboto-condensed-regular">
         <button type="button" onclick="showModalView('program_production_save')"
-                class="btn btn-outline-success" style="font-size: 13px;"><i class="fas fa-database"></i> Registrar Programa Produccion
+                class="btn btn-outline-success"><i class="fas fa-database"></i> Registrar
+            Programa Produccion
         </button>
     </div>
-    <div class="container-fluid montserrat p-0 pb-4 roboto-condensed-regular">
-        <div id="program-grid-list" style="overflow-y: scroll; height: 480px; width: auto;">{% include "agricultural/production_program_grid.html" %}</div>
+    <div class="container-fluid p-0 pb-4 roboto-condensed-regular">
+        <div id="program-grid-list"
+             style="overflow-y: scroll; height: 480px; width: auto;">{% include "agricultural/production_program_grid.html" %}</div>
     </div>
     <div class="modal fade roboto-condensed-regular" id="modal-program-form" tabindex="-1" role="dialog"
          aria-labelledby="ModalHelpTitle"
@@ -62,6 +64,94 @@
                 },
                 fail: function (response) {
                     toastr.error('Problemas al mostrar formulario', '¡Mensaje!');
+                }
+            });
+        });
+
+
+        $(document).on('change', '#id_domain', function () {
+            let _val = $(this).val();
+            $('#id_module').empty();
+            $('#id_module').append('<option value="0">' + "Seleccione" + '</option>');
+            if (_val != 0) {
+                $.ajax({
+                    url: '/agricultural/get_module_by_domain/',
+                    async: true,
+                    dataType: 'json',
+                    type: 'GET',
+                    data: {'_pk': _val},
+                    success: function (response) {
+                        let module_list = JSON.parse(response['modules_set']);
+                        module_list.forEach(
+                            element =>
+                                $('#id_module').append(
+                                    '<option value="' + element['pk'] + '">' + element['fields']['name'] + '</option>')
+                        );
+                    },
+                });
+            }
+        });
+        $(document).on('change', '#id_module', function () {
+            let _val = $(this).val();
+            $('#id_lot').empty();
+            $('#id_lot').append('<option value="0">' + "Seleccione" + '</option>');
+            if (_val != 0) {
+                $.ajax({
+                    url: '/agricultural/get_lot_by_module/',
+                    async: true,
+                    dataType: 'json',
+                    type: 'GET',
+                    data: {'_pk': _val},
+                    success: function (response) {
+                        let lot_list = JSON.parse(response['lot_set']);
+                        lot_list.forEach(
+                            element =>
+                                $('#id_lot').append(
+                                    '<option value="' + element['pk'] + '">' + element['fields']['name'] + '</option>')
+                        );
+                    },
+                });
+            }
+        });
+
+        $(document).on('change', '#id_cultivation', function () {
+            let _val = $(this).val();
+            $('#id_variety').empty();
+            $('#id_variety').append('<option value="0">' + "Seleccione" + '</option>');
+            if (_val != 0) {
+                $.ajax({
+                    url: '/agricultural/get_variety_by_cultivation/',
+                    async: true,
+                    dataType: 'json',
+                    type: 'GET',
+                    data: {'_pk': _val},
+                    success: function (response) {
+                        let variety_list = JSON.parse(response['variety_set']);
+                        variety_list.forEach(
+                            element =>
+                                $('#id_variety').append(
+                                    '<option value="' + element['pk'] + '">' + element['fields']['name'] + '</option>')
+                        );
+                    },
+                });
+            }
+        });
+        $(document).on('click', '.btn-update-program', function () {
+            let search = $(this).attr('pk');
+            $.ajax({
+                url: '/agricultural/modal_update_form/',
+                dataType: 'json',
+                type: 'GET',
+                data: {'pk': search},
+                success: function (response) {
+                    console.log(response);
+                    if (response.success) {
+                        $('#modal-program-form').html(response.form);
+                        $('#modal-program-form').modal('show');
+                    }
+                },
+                fail: function (response) {
+                   toastr.error('Problemas al mostrar formulario', '¡Mensaje!');
                 }
             });
         });

@@ -1,0 +1,60 @@
+{% if group_set %}
+    <div class="card border-primary">
+        <div class="card-header" style="background-color: rgba(6,107,184, 0.9);">
+            <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Listado de grupos de riego</h6>
+        </div>
+        <div class="card-body pb-1">
+            <div class="table-responsive small dataTables_wrapper">
+                <table id="table-group-list"
+                       class="table   align-content-center table-bordered"
+                       cellspacing="0" width="100%" style="border-collapse:collapse;">
+                    <thead>
+                    <tr class="text-center  text-white"
+                        style="background-color: rgba(6,107,184, 0.9);">
+                        <th class="th-sm font-weight-normal">N°</th>
+                        <th class="th-sm font-weight-normal">Subgrupo</th>
+                        <th class="th-sm font-weight-normal">Partida RC</th>
+                        <th class="th-sm font-weight-normal">Familia</th>
+                        <th class="th-sm font-weight-normal">Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody style="font-size: 12px;">
+                    {% for g in group_set %}
+                        <tr class="text-center">
+                            <td class="align-middle">{{ g.id }}</td>
+                            <td class="align-middle">{{ g.subgroup }}</td>
+                            <td class="align-middle">{{ g.departure_rc }}</td>
+                            <td class="align-middle">{{ g.family }}</td>
+                            <td class="p-1 align-middle">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success  dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            style="font-size: 12px;">
+                                        Acción
+                                    </button>
+                                    <div class="dropdown-menu border-info">
+                                        <a class="dropdown-item btn-update-group"
+                                           style="cursor: pointer; font-size: 12px;" pk="{{ g.id }}"><i
+                                                class="fas fa-edit pr-1"></i> Modificar grupo </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center text-white" style="background-color: rgb(12,106,177);">
+                        <th class="th-sm font-weight-normal">N°</th>
+                        <th class="th-sm font-weight-normal">Subgrupo</th>
+                        <th class="th-sm font-weight-normal">Partida RC</th>
+                        <th class="th-sm font-weight-normal">Familia</th>
+                        <th class="th-sm font-weight-normal">Acción</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <h6>No existen grupos de riego registrados</h6>
+{% endif %}

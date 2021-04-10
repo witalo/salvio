@@ -1,13 +1,13 @@
 {% load static %}
 {% if employee_set %}
-    <div class="card border-info">
+    <div class="card border-info roboto-condensed-regular">
         <div class="card-header" style="background-color: rgba(11,119,169,0.8);">
-            <h6 class="card-title text-center text-white mb-0" style="font-size: 14px;">Listado de usuarios</h6>
+            <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Listado de usuarios</h6>
         </div>
         <div class="card-body pb-1">
             <div class="table-responsive small dataTables_wrapper">
                 <table id="table-employee-list"
-                       class="table   align-content-center table-bordered response"
+                       class="table   align-content-center table-bordered"
                        cellspacing="0" width="100%" style="border-collapse:collapse;">
                     <thead>
                     <tr class="text-center  text-white"
@@ -26,7 +26,7 @@
                     <tbody style="font-size: 13px;">
                     {% for u in employee_set %}
                         <tr class="text-center">
-                            <td class="align-middle"><strong>{{ u.id }}</strong></td>
+                            <td class="align-middle">{{ u.id }}</td>
                             <td class="align-middle">
                                 {% if u.person %}
                                     {{ u.person.document }}
@@ -87,9 +87,9 @@
                                             style="font-size: 12px;">
                                         Acción
                                     </button>
-                                    <div class="dropdown-menu border-info font-italic">
+                                    <div class="dropdown-menu border-info">
                                         <a class="dropdown-item btn-update-person"
-                                           style="cursor: pointer; font-size: 11px;" pk="{{ u.id }}"><i
+                                           style="cursor: pointer; font-size: 12px;" pk="{{ u.id }}"><i
                                                 class="fas fa-edit pr-1"></i> Modificar datos </a>
                                     </div>
                                 </div>

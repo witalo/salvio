@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'imagekit',
     'apps.agricultural',
+    'apps.irrigation',
     'apps.user',
 ]
 

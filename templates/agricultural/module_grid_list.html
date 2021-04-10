@@ -1,12 +1,12 @@
 {% if module_set %}
-    <div class="card border-primary">
+    <div class="card border-primary roboto-condensed-regular">
         <div class="card-header" style="background-color: rgba(6,107,184, 0.9);">
-            <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Listado de modulos</h6>
+            <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Listado de modulos</h6>
         </div>
         <div class="card-body pb-1">
             <div class="table-responsive small dataTables_wrapper">
                 <table id="table-module-list"
-                       class="table   align-content-center table-bordered response"
+                       class="table   align-content-center table-bordered"
                        cellspacing="0" width="100%" style="border-collapse:collapse;">
                     <thead>
                     <tr class="text-center  text-white"
@@ -21,7 +21,7 @@
                     <tbody style="font-size: 12px;">
                     {% for m in module_set %}
                         <tr class="text-center">
-                            <td class="align-middle"><strong>{{ m.id }}</strong></td>
+                            <td class="align-middle">{{ m.id }}</td>
                             <td class="align-middle">{{ m.domain.name }}</td>
                             <td class="align-middle">{{ m.name }}</td>
                             <td class="align-middle">{{ m.state.name }}</td>
@@ -29,12 +29,12 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success  dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            style="font-size: 11px;">
+                                            style="font-size: 12px;">
                                         Acción
                                     </button>
-                                    <div class="dropdown-menu border-info font-italic">
+                                    <div class="dropdown-menu border-info">
                                         <a class="dropdown-item btn-update-module"
-                                           style="cursor: pointer; font-size: 11px;" pk="{{ m.id }}"><i
+                                           style="cursor: pointer; font-size: 12px;" pk="{{ m.id }}"><i
                                                 class="fas fa-edit pr-1"></i> Modificar modulo </a>
                                     </div>
                                 </div>

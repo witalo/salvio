@@ -26,6 +26,7 @@ urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('agricultural/', include(('apps.agricultural.urls', 'agricultural'))),
                   path('user/', include(('apps.user.urls', 'user'))),
+                  path('irrigation/', include(('apps.irrigation.urls', 'irrigation'))),
 
                   path('', login_required(Home.as_view()), name='home'),
                   path('accounts/login/', Login.as_view(), name='login'),

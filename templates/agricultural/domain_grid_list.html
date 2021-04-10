@@ -1,12 +1,12 @@
 {% if domain_set %}
     <div class="card border-primary">
         <div class="card-header" style="background-color: rgba(6,107,184, 0.9);">
-            <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Listado de fundos</h6>
+            <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Listado de fundos</h6>
         </div>
         <div class="card-body pb-1">
             <div class="table-responsive small dataTables_wrapper">
                 <table id="table-domain-list"
-                       class="table   align-content-center table-bordered response"
+                       class="table align-content-center table-bordered"
                        cellspacing="0" width="100%" style="border-collapse:collapse;">
                     <thead>
                     <tr class="text-center  text-white"
@@ -23,7 +23,7 @@
                     <tbody style="font-size: 12px;">
                     {% for d in domain_set %}
                         <tr class="text-center">
-                            <td class="align-middle"><strong>{{ d.id }}</strong></td>
+                            <td class="align-middle">{{ d.id }}</td>
                             <td class="align-middle">{{ d.abbreviation }}</td>
                             <td class="align-middle">{{ d.name }}</td>
                             <td class="align-middle">{{ d.zone.name }}</td>
@@ -33,12 +33,12 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success  dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            style="font-size: 11px;">
+                                            style="font-size: 12px;">
                                         Acción
                                     </button>
-                                    <div class="dropdown-menu border-info font-italic">
+                                    <div class="dropdown-menu border-info">
                                         <a class="dropdown-item btn-update-domain"
-                                           style="cursor: pointer; font-size: 11px;" pk="{{ d.id }}"><i
+                                           style="cursor: pointer; font-size: 12px;" pk="{{ d.id }}"><i
                                                 class="fas fa-edit pr-1"></i> Modificar Fundo </a>
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@
                     </tbody>
                     <tfoot>
                     <tr class="text-center text-white" style="background-color: rgb(12,106,177);">
-                         <th class="th-sm font-weight-normal">N°</th>
+                        <th class="th-sm font-weight-normal">N°</th>
                         <th class="th-sm font-weight-normal">Abreviacion</th>
                         <th class="th-sm font-weight-normal">Nombre</th>
                         <th class="th-sm font-weight-normal">Zona</th>

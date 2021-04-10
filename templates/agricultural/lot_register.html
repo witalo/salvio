@@ -2,20 +2,20 @@
 
     <div class="modal-content">
         <div class="modal-header" style="background-color: rgba(4,102,169, 1.0);">
-            <h5 class="modal-title  text-white" style="font-size: 13px;">Registro de lote</h5>
+            <h6 class="modal-title  text-white roboto-condensed-regular">Registro de lote</h6>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
 
         <form id="form-lot" class="embed-responsive" enctype="multipart/form-data"
-              style="font-size: 13px;" action="{% url 'agricultural:save_lot' %}" method="POST">
+              action="{% url 'agricultural:save_lot' %}" method="POST">
             {% csrf_token %}
 
             <div class="modal-body">
                 <div class="card border-primary">
                     <div class="card-header" style="background-color: rgb(4,102,169);">
-                        <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Información</h6>
+                        <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Información</h6>
                     </div>
                     <div class="card-body m-2">
                         <div class="row col-md-12 m-0 p-0">
@@ -44,8 +44,7 @@
                                 <label class="m-0">Modulo</label>
                                 <select class="form-control" id="id-module" name="id-module"
                                         required>
-                                    <option disabled selected value="">Seleccione</option>
-
+                                    <option value="0">Seleccione</option>
                                 </select>
                             </div>
                         </div>
@@ -116,33 +115,5 @@
             }
         });
     });
-    $('#id-domain').change(function () {
-        let _search = $(this).val();
-        $('#id-module').empty();
-        $('#id-module').append(
-            '<option value="">Seleccione</option>'
-        )
-        if (_search === '') {
-            return false;
-        }
-        $.ajax({
-            url: '/agricultural/get_module_by_domain/',
-            async: true,
-            dataType: 'json',
-            type: 'GET',
-            data: {'ip': _search},
-            // si va bien retorna la data
-            success: function (response) {
-                //le da formato array
-                let module = JSON.parse(response['module']);
-                module.forEach(
-                    element =>
-                        $('#id-module').append(
-                            '<option value="' + element['pk'] + '">' + element['fields']['name'] + '</option>')
-                )
-            },
 
-        });
-
-    })
 </script>

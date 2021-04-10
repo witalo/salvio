@@ -9,19 +9,20 @@
         </div>
 
         <form id="form-program" class="embed-responsive" enctype="multipart/form-data"
-              style="font-size: 13px;" action="{% url 'agricultural:save_zone' %}" method="POST">
+              style="font-size: 13px;" action="{% url 'agricultural:save_program' %}" method="POST">
             {% csrf_token %}
 
             <div class="modal-body">
                 <div class="card border-primary">
                     <div class="card-header" style="background-color: rgb(4,102,169);">
-                        <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Información</h6>
+                        <h6 class="card-title text-center text-white mb-0" style="font-size: 15px;">Información</h6>
                     </div>
                     <div class="card-body m-1">
                         <div class="form-row">
-                            <div class="form-group col-sm-12 col-md-12 col-lg-12 m-1">
+                            <div class="form-group col-sm-12 col-md-12 col-lg-12">
                                 <label for="id_domain" class="mb-1">Fundo</label>
                                 <select id="id_domain" name="id_domain" class="form-control form-control-sm">
+                                    <option value="0">Seleccione</option>
                                     {% for d in domain_set %}
                                         <option value="{{ d.id }}">{{ d.name }}</option>
                                     {% endfor %}
@@ -29,81 +30,105 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-sm-12 col-md-12 col-lg-12 m-1">
-                                <label for="id_domain" class="mb-1">Modulo</label>
-                                <select id="id_domain" name="id_domain" class="form-control form-control-sm">
+                            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+                                <label for="id_module" class="mb-1">Modulo</label>
+                                <select id="id_module" name="id_module" class="form-control form-control-sm">
                                     <option value="0">Seleccione</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-sm-12 col-md-12 col-lg-12 m-1">
-                                <label for="id_domain" class="mb-1">Lote</label>
-                                <select id="id_domain" name="id_domain" class="form-control form-control-sm">
+                            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+                                <label for="id_lot" class="mb-1">Lote</label>
+                                <select id="id_lot" name="id_lot" class="form-control form-control-sm">
                                     <option value="0">Seleccione</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-sm-12 col-md-12 col-lg-12 m-1">
-                                <label for="id_domain" class="mb-1">Numero campaña</label>
-                                <input type="number" class="form-control form-control-sm" value="" placeholder="">
+                            <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
+                                <label for="number_campaign" class="mb-1">Numero campaña</label>
+                                <input type="number" id="number_campaign" name="number_campaign"
+                                       class="form-control form-control-sm" maxlength="20" value="" placeholder="">
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
+                                <label for="year_campaign" class="mb-1">Año campaña</label>
+                                <input type="number" id="year_campaign" name="year_campaign"
+                                       class="form-control form-control-sm" maxlength="20" value="" placeholder="">
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-sm-12 col-md-12 col-lg-12 m-1">
-                                <label for="id_domain" class="mb-1">Año campaña</label>
-                                <input type="year" class="form-control form-control-sm" value="" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-sm-12 col-md-12 col-lg-12 m-1">
-                                <label for="id_domain" class="mb-1">Año campaña</label>
-                                <select id="id_domain" name="id_domain" class="form-control form-control-sm">
-                                    {% for d in domain_set %}
-                                        <option value="{{ d.id }}">{{ d.name }}</option>
+                            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+                                <label for="id_cultivation" class="mb-1">Cultivo</label>
+                                <select id="id_cultivation" name="id_cultivation" class="form-control form-control-sm">
+                                    <option value="0">Seleccione</option>
+                                    {% for c in cultivation_set %}
+                                        <option value="{{ c.id }}">{{ c.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-sm-12 col-md-12 col-lg-12 m-1">
-                                <label for="id_domain" class="mb-1">Año campaña</label>
-                                <select id="id_domain" name="id_domain" class="form-control form-control-sm">
-                                    {% for d in domain_set %}
-                                        <option value="{{ d.id }}">{{ d.name }}</option>
+                            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+                                <label for="id_variety" class="mb-1">Variedad</label>
+                                <select id="id_variety" name="id_variety" class="form-control form-control-sm">
+                                    <option value="0">Seleccione</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
+                                <label for="id_area" class="mb-1">Area</label>
+                                <input type="number" id="id_area" name="id_area"
+                                       class="form-control form-control-sm" maxlength="32" value="" placeholder="">
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
+                                <label for="date_campaign" class="mb-1">Cierre campaña</label>
+                                <input type="date" id="date_campaign" name="date_campaign"
+                                       class="form-control form-control-sm" maxlength="20" value="" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
+                                <label for="density" class="mb-1">Densidad</label>
+                                <input type="number" id="density" name="density" maxlength="20"
+                                       class="form-control form-control-sm" value="" placeholder="">
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
+                                <label for="id_sowing" class="mb-1">Siembra</label>
+                                <select id="id_sowing" name="id_sowing" class="form-control form-control-sm">
+                                    <option value="0">Seleccione</option>
+                                    {% for s in sowing_set %}
+                                        <option value="{{ s.0 }}">{{ s.1 }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-sm-12 col-md-12 col-lg-12 m-1">
-                                <label for="id_domain" class="mb-1">Año campaña</label>
-                                <select id="id_domain" name="id_domain" class="form-control form-control-sm">
-                                    {% for d in domain_set %}
-                                        <option value="{{ d.id }}">{{ d.name }}</option>
+                            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+                                <label for="id_state" class="mb-1">Estado</label>
+                                <select id="id_state" name="id_state" class="form-control form-control-sm">
+                                    <option value="0">Seleccione</option>
+                                    {% for s in state_set %}
+                                        <option value="{{ s.0 }}">{{ s.1 }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-sm-12 col-md-12 col-lg-12 m-1">
-                                <label for="id_domain" class="mb-1">Año campaña</label>
-                                <select id="id_domain" name="id_domain" class="form-control form-control-sm">
-                                    {% for d in domain_set %}
-                                        <option value="{{ d.id }}">{{ d.name }}</option>
-                                    {% endfor %}
-                                </select>
+                            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+                                <label for="id_responsible" class="mb-1">Responsable</label>
+                                <input type="text" maxlength="200" class="form-control form-control-sm" id="id_responsible" name="id_responsible" required>
                             </div>
                         </div>
-                    </div><!-- modal-body -->
-                    <div class="modal-footer p-1">
-                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
-                        &nbsp;
-                        <button id="save-zone" type="submit" class="btn btn-sm btn-success"> Registrar
-                        </button>
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer p-1">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                &nbsp;
+                <button id="save-zone" type="submit" class="btn btn-sm btn-success"> Registrar
+                </button>
             </div>
         </form>
     </div>
@@ -123,14 +148,14 @@
             headers: {"X-CSRFToken": '{{ csrf_token }}'},
             success: function (response) {
                 if (response.success) {
-                    toastr.success('Informacion registrada con exito');
+                    toastr.success('Programa de produccion registrada');
                     setTimeout(() => {
                         location.reload();
                     }, 400);
                 }
             },
             error: function (response) {
-                toastr.error('La informacion no se logro regitrar');
+                toastr.error('El prorama de produccion no se registro');
             }
         });
     });

@@ -64,9 +64,9 @@
                                     <option disabled selected value="">Seleccione</option>
                                     {% for b in business_set %}
                                         {% if domain_obj.business.id == b.id %}
-                                            <option selected value="{{ b.id }}">{{ b.name }}</option>
+                                            <option selected value="{{ b.id }}">{{ b.business_name }}</option>
                                         {% else %}
-                                            <option value="{{ b.id }}">{{ b.name }}</option>
+                                            <option value="{{ b.id }}">{{ b.business_name }}</option>
                                         {% endif %}
                                     {% endfor %}
                                 </select>

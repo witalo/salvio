@@ -1,0 +1,105 @@
+{% if law_set %}
+    <div class="card border-primary">
+        <div class="card-header" style="background-color: rgba(6,107,184, 0.9);">
+            <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Listado ley de nutricion</h6>
+        </div>
+        <div class="card-body pb-1">
+            <div class="table-responsive small dataTables_wrapper">
+                <table id="table-law-list"
+                       class="table   align-content-center table-bordered"
+                       cellspacing="0" width="100%" style="border-collapse:collapse;">
+                    <thead>
+                    <tr class="text-center  text-white"
+                        style="background-color: rgba(6,107,184, 0.9);">
+                        <th class="th-sm font-weight-normal">N°</th>
+                        <th class="th-sm font-weight-normal">Codigo</th>
+                        <th class="th-sm font-weight-normal">Producto</th>
+                        <th class="th-sm font-weight-normal">Nombre</th>
+                        <th class="th-sm font-weight-normal">UM</th>
+                        <th class="th-sm font-weight-normal">N</th>
+                        <th class="th-sm font-weight-normal">P2O5</th>
+                        <th class="th-sm font-weight-normal">K2O</th>
+                        <th class="th-sm font-weight-normal">CAO</th>
+                        <th class="th-sm font-weight-normal">MGO</th>
+                        <th class="th-sm font-weight-normal">S</th>
+                        <th class="th-sm font-weight-normal">FE</th>
+                        <th class="th-sm font-weight-normal">MN</th>
+                        <th class="th-sm font-weight-normal">B</th>
+                        <th class="th-sm font-weight-normal">ZN</th>
+                        <th class="th-sm font-weight-normal">MO</th>
+                        <th class="th-sm font-weight-normal">CI</th>
+                        <th class="th-sm font-weight-normal">CU</th>
+                        <th class="th-sm font-weight-normal">H2O</th>
+                        <th class="th-sm font-weight-normal">Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody style="font-size: 12px;">
+                    {% for l in law_set %}
+                        <tr class="text-center">
+                            <td class="align-middle">{{ l.id }}</td>
+                            <td class="align-middle">{{ l.code }}</td>
+                            <td class="align-middle">{{ l.irrigation_group.departure_rc }}</td>
+                            <td class="align-middle">{{ l.name }}</td>
+                            <td class="align-middle">{{ l.um }}</td>
+                            <td class="align-middle">{{ l.n|safe }}</td>
+                            <td class="align-middle">{{ l.p2o5|safe }}</td>
+                            <td class="align-middle">{{ l.k2o|safe }}</td>
+                            <td class="align-middle">{{ l.cao|safe }}</td>
+                            <td class="align-middle">{{ l.mgo|safe }}</td>
+                            <td class="align-middle">{{ l.s|safe }}</td>
+                            <td class="align-middle">{{ l.fe|safe }}</td>
+                            <td class="align-middle">{{ l.mn|safe }}</td>
+                            <td class="align-middle">{{ l.b|safe }}</td>
+                            <td class="align-middle">{{ l.zn|safe }}</td>
+                            <td class="align-middle">{{ l.mo|safe }}</td>
+                            <td class="align-middle">{{ l.ci|safe }}</td>
+                            <td class="align-middle">{{ l.cu|safe }}</td>
+                            <td class="align-middle">{{ l.h2o|safe }}</td>
+                            <td class="p-1 align-middle">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success  dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            style="font-size: 12px;">
+                                        Acción
+                                    </button>
+                                    <div class="dropdown-menu border-info">
+                                        <a class="dropdown-item btn-update-law"
+                                           style="cursor: pointer; font-size: 12px;" pk="{{ l.id }}"><i
+                                                class="fas fa-edit pr-1"></i> Modificar ley nutricion </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center text-white" style="background-color: rgb(12,106,177);">
+                        <th class="th-sm font-weight-normal">N°</th>
+                        <th class="th-sm font-weight-normal">Codigo</th>
+                        <th class="th-sm font-weight-normal">Producto</th>
+                        <th class="th-sm font-weight-normal">Nombre</th>
+                        <th class="th-sm font-weight-normal">UM</th>
+                        <th class="th-sm font-weight-normal">N</th>
+                        <th class="th-sm font-weight-normal">P2O5</th>
+                        <th class="th-sm font-weight-normal">K2O</th>
+                        <th class="th-sm font-weight-normal">CAO</th>
+                        <th class="th-sm font-weight-normal">MGO</th>
+                        <th class="th-sm font-weight-normal">S</th>
+                        <th class="th-sm font-weight-normal">FE</th>
+                        <th class="th-sm font-weight-normal">MN</th>
+                        <th class="th-sm font-weight-normal">B</th>
+                        <th class="th-sm font-weight-normal">ZN</th>
+                        <th class="th-sm font-weight-normal">MO</th>
+                        <th class="th-sm font-weight-normal">CI</th>
+                        <th class="th-sm font-weight-normal">CU</th>
+                        <th class="th-sm font-weight-normal">H2O</th>
+                        <th class="th-sm font-weight-normal">Acción</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <h6>No existen ley de nutricion registrados</h6>
+{% endif %}

@@ -1,12 +1,12 @@
 {% if cultivation_set %}
     <div class="card border-primary">
         <div class="card-header" style="background-color: rgba(6,107,184, 0.9);">
-            <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Listado de cultivos</h6>
+            <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Listado de cultivos</h6>
         </div>
         <div class="card-body pb-1">
             <div class="table-responsive small dataTables_wrapper">
                 <table id="table-cultivation-list"
-                       class="table   align-content-center table-bordered response"
+                       class="table   align-content-center table-bordered"
                        cellspacing="0" width="100%" style="border-collapse:collapse;">
                     <thead>
                     <tr class="text-center  text-white"
@@ -21,7 +21,7 @@
                     <tbody style="font-size: 12px;">
                     {% for c in cultivation_set %}
                         <tr class="text-center">
-                            <td class="align-middle"><strong>{{ c.id }}</strong></td>
+                            <td class="align-middle">{{ c.id }}</td>
                             <td class="align-middle">{{ c.abbreviation }}</td>
                             <td class="align-middle">{{ c.name }}</td>
                             <td class="align-middle">{{ c.state.name }}</td>
@@ -29,12 +29,12 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success  dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            style="font-size: 11px;">
+                                            style="font-size: 12px;">
                                         Acción
                                     </button>
-                                    <div class="dropdown-menu border-info font-italic">
+                                    <div class="dropdown-menu border-info">
                                         <a class="dropdown-item btn-update-cultivation"
-                                           style="cursor: pointer; font-size: 11px;" pk="{{ c.id }}"><i
+                                           style="cursor: pointer; font-size: 12px;" pk="{{ c.id }}"><i
                                                 class="fas fa-edit pr-1"></i> Modificar cultivo </a>
                                     </div>
                                 </div>

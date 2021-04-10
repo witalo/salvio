@@ -108,7 +108,7 @@
 
         <!-- Heading -->
         <div class="sidebar-heading">
-            Capacitacion
+            Riego
         </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
@@ -116,12 +116,15 @@
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                aria-expanded="true" aria-controls="collapsePages">
                 <i class="fas fa-fw fa-folder"></i>
-                <span>Capacitacion</span>
+                <span>Riego</span>
             </a>
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Capacitacion</h6>
-                    <a class="collapse-item" href="#"><i class="fab fa-accusoft"></i> Capacitacion</a>
+                    <h6 class="collapse-header">Riego - fertilizacion</h6>
+                    <a class="collapse-item" href="{% url 'irrigation:method_list' %}"><i class="fab fa-accusoft"></i> Metodo</a>
+                    <a class="collapse-item" href="{% url 'irrigation:group_list' %}"><i class="fab fa-accusoft"></i> Grupo - Riego</a>
+                    <a class="collapse-item" href="{% url 'irrigation:team_list' %}"><i class="fab fa-accusoft"></i> Equipo</a>
+                    <a class="collapse-item" href="{% url 'irrigation:law_list' %}"><i class="fab fa-accusoft"></i> Ley - Nutrición</a>
                 </div>
             </div>
         </li>

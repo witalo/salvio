@@ -1,12 +1,12 @@
 {% if variety_set %}
     <div class="card border-primary">
         <div class="card-header" style="background-color: rgba(6,107,184, 0.9);">
-            <h6 class="card-title text-center text-white mb-0" style="font-size: 13px;">Listado de variedades</h6>
+            <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Listado de variedades</h6>
         </div>
         <div class="card-body pb-1">
             <div class="table-responsive small dataTables_wrapper">
                 <table id="table-variety-list"
-                       class="table   align-content-center table-bordered response"
+                       class="table   align-content-center table-bordered"
                        cellspacing="0" width="100%" style="border-collapse:collapse;">
                     <thead>
                     <tr class="text-center  text-white"
@@ -22,7 +22,7 @@
                     <tbody style="font-size: 12px;">
                     {% for v in variety_set %}
                         <tr class="text-center">
-                            <td class="align-middle"><strong>{{ v.id }}</strong></td>
+                            <td class="align-middle">{{ v.id }}</td>
                             <td class="align-middle">{{ v.abbreviation }}</td>
                             <td class="align-middle">{{ v.name }}</td>
                             <td class="align-middle">{{ v.cultivation.name }}</td>
@@ -31,12 +31,12 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success  dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            style="font-size: 11px;">
+                                            style="font-size: 12px;">
                                         Acción
                                     </button>
-                                    <div class="dropdown-menu border-info font-italic">
+                                    <div class="dropdown-menu border-info">
                                         <a class="dropdown-item btn-update-variety"
-                                           style="cursor: pointer; font-size: 11px;" pk="{{ v.id }}"><i
+                                           style="cursor: pointer; font-size: 12px;" pk="{{ v.id }}"><i
                                                 class="fas fa-edit pr-1"></i> Modificar variedad </a>
                                     </div>
                                 </div>
