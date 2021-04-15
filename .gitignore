@@ -7,7 +7,7 @@ __pycache__
 # Backup files #
 *.bak
 salvio/settings.py
-static
+#static
 media
 migrations
 .idea
