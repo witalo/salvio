@@ -1,0 +1,69 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Lista | Operadores
+{% endblock title %}
+
+{% block body %}
+
+    <div class="card-header p-1 m-0 small roboto-condensed-regular">
+        <button type="button" onclick="showModalView('modal_operators_save')"
+                class="btn btn-outline-success"><i class="fas fa-database"></i> Nuevo operador
+        </button>
+    </div>
+    <div class="container-fluid p-0 pb-4 roboto-condensed-regular">
+        <div id="operators-grid-list" style="overflow-y: scroll; height: 550px; width: auto;">{% include "irrigation/operators_grid_list.html" %}</div>
+    </div>
+    <div class="modal fade roboto-condensed-regular" id="modal-operators-save" tabindex="-1" role="dialog"
+         aria-labelledby="ModalHelpTitle"
+         aria-hidden="true"></div>
+    <div class="modal fade roboto-condensed-regular" id="modal-operators-update" tabindex="-1" role="dialog"
+         aria-labelledby="ModalHelpTitle"
+         aria-hidden="true"></div>
+{% endblock body %}
+
+{% block extrajs %}
+    <script type="text/javascript">
+        $('#table-operators-list').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+            },
+            fixedHeader: {
+                header: true,
+            }
+        });
+        function showModalView(route) {
+            $.ajax({
+                url: '/irrigation/' + route + '/',
+                dataType: 'json',
+                type: 'GET',
+                data: {},
+                success: function (response) {
+                    $('#modal-operators-save').html(response.form);
+                    $('#modal-operators-save').modal('show');
+                },
+                fail: function (response) {
+                    toastr.error('Ocurrio un problema al mostrar el formulario', '¡Mensaje!');
+                }
+            });
+        };
+        $(document).on('click', '.btn-update-operators', function () {
+            let search = $(this).attr('pk');
+            $.ajax({
+                url: '/irrigation/modal_operators_update/',
+                dataType: 'json',
+                type: 'GET',
+                data: {'pk': search},
+                success: function (response) {
+                    if (response.success) {
+                        $('#modal-operators-update').html(response.form);
+                        $('#modal-operators-update').modal('show');
+                    }
+                },
+                fail: function (response) {
+                    toastr.error('Ocurrio un problema al mostrar el formulario', '¡Mensaje!');
+                }
+            });
+        });
+    </script>
+{% endblock extrajs %}

@@ -26,4 +26,10 @@ urlpatterns = [
     path('modal_law_update/', login_required(modal_law_update), name='modal_law_update'),
     path('save_law/', login_required(save_law), name='save_law'),
     path('update_law/', login_required(update_law), name='update_law'),
+
+    path('operators_list/', login_required(get_operators_list), name='operators_list'),
+    path('modal_operators_save/', login_required(modal_operators_save), name='modal_operators_save'),
+    path('modal_operators_update/', login_required(modal_operators_update), name='modal_operators_update'),
+    path('save_operators/', login_required(save_operators), name='save_operators'),
+    path('update_operators/', login_required(update_operators), name='update_operators'),
 ]

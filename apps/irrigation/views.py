@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from apps.agricultural.models import Zone, State
-from apps.irrigation.models import Method, Team, IrrigationGroup, NutritionLaw
+from apps.irrigation.models import Method, Team, IrrigationGroup, NutritionLaw, Operator
 import decimal
 from datetime import datetime
 from http import HTTPStatus
@@ -395,6 +395,106 @@ def update_law(request):
         law_obj.h2o = _v14
         law_obj.user = user_obj
         law_obj.save()
+
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+# -------------------Operators----------------
+def get_operators_list(request):
+    if request.method == 'GET':
+        operators_set = Operator.objects.all()
+        return render(request, 'irrigation/operators_list.html', {
+            'operators_set': operators_set
+        })
+
+
+def modal_operators_save(request):
+    if request.method == 'GET':
+        zone_set = Zone.objects.all()
+        state_set = State.objects.all()
+        t = loader.get_template('irrigation/operators_register.html')
+        c = ({
+            'zone_set': zone_set,
+            'state_set': state_set,
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def save_operators(request):
+    if request.method == 'POST':
+        _zone = request.POST.get('id-zone', '')
+        zone_obj = Zone.objects.get(id=int(_zone))
+        _code = request.POST.get('id-code', '')
+        _document = request.POST.get('id-document', '')
+        _description = request.POST.get('id-description', '')
+        _function = request.POST.get('id-function', '')
+        _state = request.POST.get('id-state', '')
+        state_obj = State.objects.get(id=int(_state))
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        operator_obj = Operator(
+            zone=zone_obj,
+            code_sap=_code,
+            document=_document,
+            description=_description,
+            function=_function,
+            state=state_obj,
+            user=user_obj
+        )
+        operator_obj.save()
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+def modal_operators_update(request):
+    if request.method == 'GET':
+        pk = request.GET.get('pk', '')
+        operator_obj = Operator.objects.get(id=int(pk))
+        zone_set = Zone.objects.all()
+        state_set = State.objects.all()
+        t = loader.get_template('irrigation/operators_update.html')
+        c = ({
+            'zone_set': zone_set,
+            'state_set': state_set,
+            'operator_obj': operator_obj,
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def update_operators(request):
+    if request.method == 'POST':
+        _id = int(request.POST.get('id-pk', ''))
+        operator_obj = Operator.objects.get(id=int(_id))
+        _zone = request.POST.get('id-zone', '')
+        zone_obj = Zone.objects.get(id=int(_zone))
+        _code = request.POST.get('id-code', '')
+        _document = request.POST.get('id-document', '')
+        _description = request.POST.get('id-description', '')
+        _function = request.POST.get('id-function', '')
+        _state = request.POST.get('id-state', '')
+        state_obj = State.objects.get(id=int(_state))
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+
+        operator_obj.zone = zone_obj
+        operator_obj.code_sap = _code
+        operator_obj.document = _document
+        operator_obj.description = _description
+        operator_obj.function = _function
+        operator_obj.state = state_obj
+        operator_obj.user = user_obj
+        operator_obj.save()
 
         return JsonResponse({
             'success': True,

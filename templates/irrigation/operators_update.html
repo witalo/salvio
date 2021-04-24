@@ -1,0 +1,130 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: rgba(4,102,169, 1.0);">
+            <h6 class="modal-title  text-white roboto-condensed-regular">Actualizacion de operadores</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <form id="form-operators" class="embed-responsive" enctype="multipart/form-data"
+              action="{% url 'irrigation:update_operators' %}" method="POST">
+            {% csrf_token %}
+
+            <div class="modal-body">
+                <div class="card border-primary">
+                    <div class="card-header" style="background-color: rgb(4,102,169);">
+                        <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Información</h6>
+                    </div>
+                    <div class="card-body m-2">
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Zona</label>
+                                <select class="form-control" id="id-zone" name="id-zone"
+                                        required>
+                                    <option value="">Seleccione</option>
+                                    {% for z in zone_set %}
+                                        {% if operator_obj.zone.id == z.id %}
+                                            <option selected value="{{ z.id }}">{{ z.name }}</option>
+                                        {% else %}
+                                            <option value="{{ z.id }}">{{ z.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <input type="hidden"
+                                       class="form-control" name="id-pk" id="id-pk"
+                                       placeholder="" required
+                                       value="{{ operator_obj.id }}">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Codigo sap</label>
+                                <input type="text"
+                                       class="form-control" name="id-code" id="id-code"
+                                       placeholder="" required
+                                       value="{{ operator_obj.code_sap }}" maxlength="20">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Documento</label>
+                                <input type="text"
+                                       class="form-control" name="id-document" id="id-document"
+                                       placeholder="" required
+                                       value="{{ operator_obj.document }}" maxlength="15">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Nombre operador</label>
+                                <input type="text"
+                                       class="form-control" name="id-description" id="id-description"
+                                       placeholder="" required
+                                       value="{{ operator_obj.description }}" maxlength="200">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Funcion</label>
+                                <input type="text"
+                                       class="form-control" name="id-function" id="id-function"
+                                       placeholder=""
+                                       value="{{ operator_obj.function }}" maxlength="100">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Estado</label>
+                                <select class="form-control" id="id-state" name="id-state"
+                                        required>
+                                    <option value="">Seleccione</option>
+                                    {% for s in state_set %}
+                                        {% if operator_obj.state.id == s.id %}
+                                            <option selected value="{{ s.id }}">{{ s.name }}</option>
+                                        {% else %}
+                                            <option value="{{ s.id }}">{{ s.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- modal-body -->
+                <div class="modal-footer p-1">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                    &nbsp;
+                    <button id="update-operators" type="submit" class="btn btn-sm btn-success"> Actualizar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    $('#form-operators').submit(function (event) {
+        event.preventDefault();
+        let data = new FormData($('#form-operators').get(0));
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            headers: {"X-CSRFToken": '{{ csrf_token }}'},
+            success: function (response) {
+                if (response.success) {
+                    toastr.success('Informacion actualizada con exito');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 400);
+                }
+            },
+            error: function (response) {
+                toastr.error('La informacion no se logro actualizar');
+            }
+        });
+    });
+</script>
