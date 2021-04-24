@@ -11108,3 +11108,6 @@ color: #009688;
   border-radius: 20px;
   border: 2px solid #fdfdfd;
 }
+*::-webkit-scrollbar:horizontal {
+    height: 7px;
+}
