@@ -37,6 +37,10 @@
     <link rel="stylesheet" href="{% static 'css/switch.css' %}">
     <link rel="stylesheet" href="{% static 'css/menu.css' %}">
     <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <!-- Datatable responsivo con icono + ---->
+    <link rel="stylesheet" href="{% static 'css/responsive.bootstrap4.min.css' %}">
+    <!-- Datatable ajustar columnas al contenido ---->
+    <link rel="stylesheet" href="{% static 'css/fixedColumns.min.css' %}">
 </head>
 
 <body id="page-top" class="roboto-medium">
@@ -97,7 +101,8 @@
                         Variedad</a>
                     <a class="collapse-item" href="{% url 'agricultural:phenology_list' %}"><i class="fa fa-home"></i>
                         Fenologia</a>
-                    <a class="collapse-item" href="{% url 'agricultural:program_production' %}"><i class="fa fa-home"></i>
+                    <a class="collapse-item" href="{% url 'agricultural:program_production' %}"><i
+                            class="fa fa-home"></i>
                         Programa - Produccion</a>
                 </div>
             </div>
@@ -121,11 +126,16 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Riego - fertilizacion</h6>
-                    <a class="collapse-item" href="{% url 'irrigation:method_list' %}"><i class="fab fa-accusoft"></i> Metodo</a>
-                    <a class="collapse-item" href="{% url 'irrigation:group_list' %}"><i class="fab fa-accusoft"></i> Grupo - Riego</a>
-                    <a class="collapse-item" href="{% url 'irrigation:team_list' %}"><i class="fab fa-accusoft"></i> Equipo</a>
-                    <a class="collapse-item" href="{% url 'irrigation:law_list' %}"><i class="fab fa-accusoft"></i> Ley - Nutrición</a>
-                    <a class="collapse-item" href="{% url 'irrigation:operators_list' %}"><i class="fab fa-accusoft"></i> Operadores </a>
+                    <a class="collapse-item" href="{% url 'irrigation:method_list' %}"><i class="fab fa-accusoft"></i>
+                        Metodo</a>
+                    <a class="collapse-item" href="{% url 'irrigation:group_list' %}"><i class="fab fa-accusoft"></i>
+                        Grupo - Riego</a>
+                    <a class="collapse-item" href="{% url 'irrigation:team_list' %}"><i class="fab fa-accusoft"></i>
+                        Equipo</a>
+                    <a class="collapse-item" href="{% url 'irrigation:law_list' %}"><i class="fab fa-accusoft"></i> Ley
+                        - Nutrición</a>
+                    <a class="collapse-item" href="{% url 'irrigation:operators_list' %}"><i
+                            class="fab fa-accusoft"></i> Operadores </a>
                 </div>
             </div>
         </li>
@@ -673,6 +683,11 @@
 <script src="{% static 'js/datatables.fixed.header.min.js' %}"></script>
 <!--columnas y filas estaticas con table-->
 <script src="{% static 'js/change_color.js' %}"></script>
+<!-- Datatable responsivo con icono + ---->
+<script src="{% static 'js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'js/responsive.bootstrap4.min.js' %}"></script>
+<!--ajustar columnas al contenido-->
+<script src="{% static 'js/dataTables.fixedColumns.min.js' %}"></script>
 <script type="text/javascript">
 
 </script>
