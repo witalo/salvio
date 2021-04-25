@@ -20,17 +20,18 @@
                     <div class="card-body m-2">
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">Codigo</label>
+                                <label class="mb-0">Codigo</label>
                                 <input type="text"
-                                       class="form-control" name="id-code" id="id-code"
+                                       class="form-control form-control-sm" name="id-code" id="id-code"
                                        placeholder="" required
                                        value="{{ law_obj.code }}" maxlength="20">
+                                <input type="hidden" class="form-control form-control-sm" name="id-pk" id="id-pk" value="{{ law_obj.id }}">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">Grupo riego</label>
-                                <select class="form-control" id="id-group" name="id-group"
+                                <label class="mb-0">Grupo riego</label>
+                                <select class="form-control form-control-sm" id="id-group" name="id-group"
                                         required>
                                     <option value="0">Seleccione</option>
                                     {% for g in group_set %}
@@ -45,146 +46,146 @@
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">Nombre</label>
+                                <label class="mb-0">Nombre</label>
                                 <input type="text"
-                                       class="form-control" name="id-name" id="id-name"
+                                       class="form-control form-control-sm" name="id-name" id="id-name"
                                        placeholder="" required
                                        value="{{ law_obj.name }}" maxlength="200">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">UM</label>
+                                <label class="mb-0">UM</label>
                                 <input type="text"
-                                       class="form-control" name="id-um" id="id-um"
+                                       class="form-control form-control-sm" name="id-um" id="id-um"
                                        placeholder=""
                                        value="{{ law_obj.um }}" maxlength="200">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">N</label>
-                                <input type="number"
-                                       class="form-control" name="id-v1" id="id-v1"
+                                <label class="mb-0">N</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-v1" id="id-v1"
                                        placeholder=""
-                                       value="{{ law_obj.n }}" maxlength="20">
+                                       value="{{ law_obj.n|safe }}" maxlength="20">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">P2O5</label>
-                                <input type="number"
-                                       class="form-control" name="id-v2" id="id-v2"
+                                <label class="mb-0">P2O5</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-v2" id="id-v2"
                                        placeholder=""
-                                       value="{{ law_obj.p2o5 }}" maxlength="20">
+                                       value="{{ law_obj.p2o5|safe }}" maxlength="20">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">K2O</label>
-                                <input type="number"
-                                       class="form-control" name="id-v3" id="id-v3"
+                                <label class="mb-0">K2O</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-v3" id="id-v3"
                                        placeholder=""
-                                       value="{{ law_obj.k2o }}" maxlength="20">
+                                       value="{{ law_obj.k2o|safe }}" maxlength="20">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">CAO</label>
-                                <input type="number"
-                                       class="form-control" name="id-v4" id="id-v4"
+                                <label class="mb-0">CAO</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-v4" id="id-v4"
                                        placeholder=""
-                                       value="{{ law_obj.cao }}" maxlength="20">
+                                       value="{{ law_obj.cao|safe }}" maxlength="20">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">MGO</label>
-                                <input type="number"
-                                       class="form-control" name="id-v5" id="id-v5"
+                                <label class="mb-0">MGO</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-v5" id="id-v5"
                                        placeholder=""
-                                       value="{{ law_obj.mgo }}" maxlength="20">
+                                       value="{{ law_obj.mgo|safe }}" maxlength="20">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">S</label>
-                                <input type="number"
-                                       class="form-control" name="id-v6" id="id-v6"
+                                <label class="mb-0">S</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-v6" id="id-v6"
                                        placeholder=""
-                                       value="{{ law_obj.s }}" maxlength="20">
+                                       value="{{ law_obj.s|safe }}" maxlength="20">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">FE</label>
-                                <input type="number"
-                                       class="form-control" name="id-v7" id="id-v7"
+                                <label class="mb-0">FE</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-v7" id="id-v7"
                                        placeholder=""
-                                       value="{{ law_obj.fe }}" maxlength="20">
+                                       value="{{ law_obj.fe|safe }}" maxlength="20">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">MN</label>
-                                <input type="number"
-                                       class="form-control" name="id-v8" id="id-v8"
+                                <label class="mb-0">MN</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-v8" id="id-v8"
                                        placeholder=""
-                                       value="{{ law_obj.mn }}" maxlength="20">
+                                       value="{{ law_obj.mn|safe }}" maxlength="20">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">B</label>
-                                <input type="number"
-                                       class="form-control" name="id-v9" id="id-v9"
+                                <label class="mb-0">B</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-v9" id="id-v9"
                                        placeholder=""
-                                       value="{{ law_obj.b }}" maxlength="20">
+                                       value="{{ law_obj.b|safe }}" maxlength="20">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">ZN</label>
-                                <input type="number"
-                                       class="form-control" name="id-v10" id="id-v10"
+                                <label class="mb-0">ZN</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-v10" id="id-v10"
                                        placeholder=""
-                                       value="{{ law_obj.zn }}" maxlength="20">
+                                       value="{{ law_obj.zn|safe }}" maxlength="20">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">MO</label>
-                                <input type="number"
-                                       class="form-control" name="id-v11" id="id-v11"
+                                <label class="mb-0">MO</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-v11" id="id-v11"
                                        placeholder=""
-                                       value="{{ law_obj.mo }}" maxlength="20">
+                                       value="{{ law_obj.mo|safe }}" maxlength="20">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">CI</label>
-                                <input type="number"
-                                       class="form-control" name="id-v12" id="id-v12"
+                                <label class="mb-0">CI</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-v12" id="id-v12"
                                        placeholder=""
-                                       value="{{ law_obj.ci }}" maxlength="20">
+                                       value="{{ law_obj.ci|safe }}" maxlength="20">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">CU</label>
-                                <input type="number"
-                                       class="form-control" name="id-v13" id="id-v13"
+                                <label class="mb-0">CU</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-v13" id="id-v13"
                                        placeholder=""
-                                       value="{{ law_obj.cu }}" maxlength="20">
+                                       value="{{ law_obj.cu|safe }}" maxlength="20">
                             </div>
                         </div>
                         <div class="row col-md-12 m-0 p-0">
                             <div class="col-md-12  align-self-center">
-                                <label class="m-0">H2O</label>
-                                <input type="number"
-                                       class="form-control" name="id-v14" id="id-v14"
+                                <label class="mb-0">H2O</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-v14" id="id-v14"
                                        placeholder=""
-                                       value="{{ law_obj.h2o }}" maxlength="20">
+                                       value="{{ law_obj.h2o|safe }}" maxlength="20">
                             </div>
                         </div>
                     </div>
@@ -200,6 +201,12 @@
     </div>
 </div>
 <script type="text/javascript">
+    $("input.decimal").keyup(function (e) {
+        let val = $(this).val();
+        if (isNaN(val)) {
+            $(this).val('');
+        }
+    });
     $('#form-law').submit(function (event) {
         event.preventDefault();
         let data = new FormData($('#form-law').get(0));

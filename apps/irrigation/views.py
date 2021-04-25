@@ -374,7 +374,6 @@ def update_law(request):
         _v14 = request.POST.get('id-v14', '')
         user_id = request.user.id
         user_obj = User.objects.get(id=int(user_id))
-
         law_obj.code = _code
         law_obj.irrigation_group = group_obj
         law_obj.name = _name
