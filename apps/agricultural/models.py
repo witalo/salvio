@@ -185,6 +185,7 @@ class ProgramProduction(models.Model):
     area = models.DecimalField('Area', max_digits=30, decimal_places=2, default=0)
     campaign_closure = models.DateField('Cierre campaña', null=True, blank=True)
     density = models.IntegerField('Densidad', null=True, blank=True)
+    cost = models.IntegerField('Centro de costo', null=True, blank=True)
     sowing = models.IntegerField('Siembra', choices=SOWING_CHOICES, default=2)
     responsible = models.CharField('Responsable', max_length=200, null=True, blank=True)
     status = models.CharField('Estado', max_length=1, choices=STATUS_CHOICES, default='A', )

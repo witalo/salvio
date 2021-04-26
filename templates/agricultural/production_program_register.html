@@ -21,7 +21,7 @@
                         <div class="form-row">
                             <div class="form-group col-sm-12 col-md-12 col-lg-12">
                                 <label for="id_domain" class="mb-1">Fundo</label>
-                                <select id="id_domain" name="id_domain" class="form-control form-control-sm">
+                                <select id="id_domain" name="id_domain" class="form-control form-control-sm" required>
                                     <option value="0">Seleccione</option>
                                     {% for d in domain_set %}
                                         <option value="{{ d.id }}">{{ d.name }}</option>
@@ -48,12 +48,12 @@
                         <div class="form-row">
                             <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
                                 <label for="number_campaign" class="mb-1">Numero campaña</label>
-                                <input type="number" id="number_campaign" name="number_campaign"
+                                <input type="number" id="number_campaign" name="number_campaign" required
                                        class="form-control form-control-sm" maxlength="20" value="" placeholder="">
                             </div>
                             <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
                                 <label for="year_campaign" class="mb-1">Año campaña</label>
-                                <input type="number" id="year_campaign" name="year_campaign"
+                                <input type="number" id="year_campaign" name="year_campaign" required
                                        class="form-control form-control-sm" maxlength="20" value="" placeholder="">
                             </div>
                         </div>
@@ -80,23 +80,24 @@
                             <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
                                 <label for="id_area" class="mb-1">Area</label>
                                 <input type="text" id="id_area" name="id_area"
-                                       class="form-control form-control-sm decimal" maxlength="32" value="" placeholder="">
+                                       class="form-control form-control-sm decimal" maxlength="32" value=""
+                                       placeholder="">
                             </div>
                             <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
                                 <label for="date_campaign" class="mb-1">Cierre campaña</label>
-                                <input type="date" id="date_campaign" name="date_campaign"
+                                <input type="date" id="date_campaign" name="date_campaign" required
                                        class="form-control form-control-sm" maxlength="20" value="" placeholder="">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
                                 <label for="density" class="mb-1">Densidad</label>
-                                <input type="number" id="density" name="density" maxlength="20"
+                                <input type="number" id="density" name="density" maxlength="20" required
                                        class="form-control form-control-sm" value="" placeholder="">
                             </div>
                             <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
                                 <label for="id_sowing" class="mb-1">Siembra</label>
-                                <select id="id_sowing" name="id_sowing" class="form-control form-control-sm">
+                                <select id="id_sowing" name="id_sowing" class="form-control form-control-sm" required>
                                     <option value="0">Seleccione</option>
                                     {% for s in sowing_set %}
                                         <option value="{{ s.0 }}">{{ s.1 }}</option>
@@ -105,9 +106,14 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-sm-12 col-md-12 col-lg-12">
+                            <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
+                                <label for="id-cost" class="mb-1">Centro de costo</label>
+                                <input type="number" id="id-cost" name="id-cost" maxlength="20"
+                                       class="form-control form-control-sm" value="" placeholder="" required>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
                                 <label for="id_state" class="mb-1">Estado</label>
-                                <select id="id_state" name="id_state" class="form-control form-control-sm">
+                                <select id="id_state" name="id_state" class="form-control form-control-sm" required>
                                     <option value="0">Seleccione</option>
                                     {% for s in state_set %}
                                         <option value="{{ s.0 }}">{{ s.1 }}</option>
@@ -118,7 +124,8 @@
                         <div class="form-row">
                             <div class="form-group col-sm-12 col-md-12 col-lg-12">
                                 <label for="id_responsible" class="mb-1">Responsable</label>
-                                <input type="text" maxlength="200" class="form-control form-control-sm" id="id_responsible" name="id_responsible" required>
+                                <input type="text" maxlength="200" class="form-control form-control-sm"
+                                       id="id_responsible" name="id_responsible" required>
                             </div>
                         </div>
                     </div>

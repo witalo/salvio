@@ -977,6 +977,7 @@ def save_program(request):
         id_area = decimal.Decimal(request.POST.get('id_area', ''))
         date_campaign = request.POST.get('date_campaign', '')
         id_density = request.POST.get('density', '')
+        id_cost = request.POST.get('id-cost', '')
         id_sowing = request.POST.get('id_sowing', '')
         id_state = request.POST.get('id_state', '')
         id_responsible = request.POST.get('id_responsible', '')
@@ -990,6 +991,7 @@ def save_program(request):
             area=id_area,
             campaign_closure=date_campaign,
             density=id_density,
+            cost=id_cost,
             sowing=id_sowing,
             responsible=id_responsible,
             status=id_state,
@@ -1015,6 +1017,7 @@ def update_program(request):
         id_area = decimal.Decimal(request.POST.get('id_area', ''))
         date_campaign = request.POST.get('date_campaign', '')
         id_density = request.POST.get('density', '')
+        id_cost = request.POST.get('id-cost', '')
         id_sowing = request.POST.get('id_sowing', '')
         id_state = request.POST.get('id_state', '')
         id_responsible = request.POST.get('id_responsible', '')
@@ -1027,6 +1030,7 @@ def update_program(request):
         program_obj.area = id_area
         program_obj.campaign_closure = date_campaign
         program_obj.density = id_density
+        program_obj.cost = id_cost
         program_obj.sowing = id_sowing
         program_obj.status = id_state
         program_obj.responsible = id_responsible
