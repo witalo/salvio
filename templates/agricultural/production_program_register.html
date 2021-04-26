@@ -79,8 +79,8 @@
                         <div class="form-row">
                             <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
                                 <label for="id_area" class="mb-1">Area</label>
-                                <input type="number" id="id_area" name="id_area"
-                                       class="form-control form-control-sm" maxlength="32" value="" placeholder="">
+                                <input type="text" id="id_area" name="id_area"
+                                       class="form-control form-control-sm decimal" maxlength="32" value="" placeholder="">
                             </div>
                             <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
                                 <label for="date_campaign" class="mb-1">Cierre campaña</label>
@@ -134,7 +134,12 @@
     </div>
 </div>
 <script type="text/javascript">
-
+    $("input.decimal").keyup(function (e) {
+        let val = $(this).val();
+        if (isNaN(val)) {
+            $(this).val('');
+        }
+    });
     $('#form-program').submit(function (event) {
         event.preventDefault();
         let data = new FormData($('#form-program').get(0));

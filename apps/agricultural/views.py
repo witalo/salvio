@@ -540,12 +540,6 @@ def save_lot(request):
         _name = request.POST.get('id-lot', '')
         _module_pk = request.POST.get('id-module', '')
         module_obj = Module.objects.get(id=int(_module_pk))
-        _latitude = None
-        _longitude = None
-        if request.POST.get('id-latitude', '') != '':
-            _latitude = decimal.Decimal((request.POST.get('id-latitude', '')).replace(',', '.'))
-        if request.POST.get('id-longitude', '') != '':
-            _longitude = decimal.Decimal((request.POST.get('id-longitude', '')).replace(',', '.'))
         _state_pk = request.POST.get('id-state', '')
         state_obj = State.objects.get(id=int(_state_pk))
         user_id = request.user.id
@@ -553,8 +547,6 @@ def save_lot(request):
         lot_obj = Lot(
             name=_name,
             module=module_obj,
-            latitude=_latitude,
-            longitude=_longitude,
             state=state_obj,
             user=user_obj
         )
@@ -592,12 +584,6 @@ def update_lot(request):
         _name = request.POST.get('id-lot', '')
         _module_pk = request.POST.get('id-module', '')
         module_obj = Module.objects.get(id=int(_module_pk))
-        _latitude = None
-        _longitude = None
-        if request.POST.get('id-latitude', '') != '':
-            _latitude = decimal.Decimal((request.POST.get('id-latitude', '')).replace(',', '.'))
-        if request.POST.get('id-longitude', '') != '':
-            _longitude = decimal.Decimal((request.POST.get('id-longitude', '')).replace(',', '.'))
         _code1 = request.POST.get('id-code1', '')
         _code2 = request.POST.get('id-code2', '')
         _state_pk = request.POST.get('id-state', '')
@@ -607,8 +593,6 @@ def update_lot(request):
 
         lot_obj.name = _name
         lot_obj.module = module_obj
-        lot_obj.latitude = _latitude
-        lot_obj.longitude = _longitude
         lot_obj.code_alternate1 = _code1
         lot_obj.code_alternate2 = _code2
         lot_obj.state = state_obj
