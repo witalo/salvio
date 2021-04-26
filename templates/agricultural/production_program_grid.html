@@ -5,7 +5,7 @@
             <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Programas de produccion</h6>
         </div>
         <div class="card-body pb-1">
-            <div class="table-responsive small dataTables_wrapper">
+            <div class="small dataTables_wrapper">
                 <table id="table-program-list"
                        class="table   align-content-center table-bordered"
                        cellspacing="0" width="100%" style="border-collapse:collapse;">
@@ -19,9 +19,13 @@
                         <th class="font-weight-normal">Lote</th>
                         <th class="font-weight-normal">Campaña</th>
                         <th class="font-weight-normal">Año campaña</th>
+                        <th class="font-weight-normal">Cierre campaña</th>
+                        <th class="font-weight-normal">Siembra</th>
                         <th class="font-weight-normal">Cultivo</th>
                         <th class="font-weight-normal">Variedad</th>
                         <th class="font-weight-normal">Area</th>
+                        <th class="font-weight-normal">Densidad</th>
+                        <th class="font-weight-normal">Centro de costo</th>
                         <th class="font-weight-normal">Responsable</th>
                         <th class="font-weight-normal">Estado</th>
                         <th class="font-weight-normal">Acción</th>
@@ -37,9 +41,13 @@
                             <td class="align-middle">{{ p.lot.name }}</td>
                             <td class="align-middle">{{ p.campaign_number }}</td>
                             <td class="align-middle">{{ p.campaign_year }}</td>
+                            <td class="align-middle">{{ p.campaign_closure }}</td>
+                            <td class="align-middle">{{ p.get_sowing_display }}</td>
                             <td class="align-middle">{{ p.variety.cultivation.name }}</td>
                             <td class="align-middle">{{ p.variety.name }}</td>
-                            <td class="align-middle">{{ p.area }}</td>
+                            <td class="align-middle">{{ p.area|safe }}</td>
+                            <td class="align-middle">{{ p.density }}</td>
+                            <td class="align-middle">{{ p.cost }}</td>
                             <td class="align-middle">{{ p.responsible }}</td>
                             <td class="align-middle">{{ p.get_status_display }}</td>
                             <td class="p-1 align-middle">
