@@ -1,0 +1,84 @@
+{% if irrigation_set %}
+    <div class="card border-primary">
+        <div class="card-header" style="background-color: rgba(6,107,184, 0.9);">
+            <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Listado de riego y fertilizacion</h6>
+        </div>
+        <div class="card-body pb-1">
+            <div class="small dataTables_wrapper">
+                <table id="table-irrigation-list"
+                       class="table   align-content-center table-bordered"
+                       cellspacing="0" width="100%" style="border-collapse:collapse;">
+                    <thead>
+                    <tr class="text-center  text-white"
+                        style="background-color: rgba(6,107,184, 0.9);">
+                        <th class="th-sm font-weight-normal">N°</th>
+                        <th class="th-sm font-weight-normal">Cec</th>
+                        <th class="th-sm font-weight-normal">Año</th>
+                        <th class="th-sm font-weight-normal">Semana</th>
+                        <th class="th-sm font-weight-normal">Cultivo</th>
+                        <th class="th-sm font-weight-normal">Zona</th>
+                        <th class="th-sm font-weight-normal">Fundo</th>
+                        <th class="th-sm font-weight-normal">Metodo</th>
+                        <th class="th-sm font-weight-normal">Equipo</th>
+                        <th class="th-sm font-weight-normal">Area</th>
+                        <th class="th-sm font-weight-normal">Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody style="font-size: 12px;">
+                    {% for i in irrigation_set %}
+                        <tr class="text-center">
+                            <td class="align-middle">{{ i.id }}</td>
+                            <td class="align-middle">{{ i.number }}</td>
+                            <td class="align-middle">{{ i.year }}</td>
+                            <td class="align-middle">{{ i.week }}</td>
+                            <td class="align-middle">{{ i.cultivation.name }}</td>
+                            <td class="align-middle">{{ i.zone.name }}</td>
+                            <td class="align-middle">{{ i.domain.name }}</td>
+                            <td class="align-middle">{{ i.method.name }}</td>
+                            <td class="align-middle">{{ i.team.name }}</td>
+                            <td class="align-middle {% if i.area > 0 %} bg-success text-white {% endif %}">{{ i.area|safe }}</td>
+                            <td class="p-1 align-middle">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success  dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            style="font-size: 12px;">
+                                        Acción
+                                    </button>
+                                    <div class="dropdown-menu border-info btn-primary">
+                                        <a class="dropdown-item btn-update-irrigation"
+                                           style="cursor: pointer; font-size: 12px;" pk="{{ i.id }}"><i
+                                                class="fas fa-edit pr-1"></i> Modificar Registro </a>
+                                        <a class="dropdown-item btn-update-irrigation"
+                                           style="cursor: pointer; font-size: 12px;" pk="{{ i.id }}"><i
+                                                class="fas fa-copy pr-1"></i> Detalle Registro Ferilizantes </a>
+                                        <a class="dropdown-item btn-update-irrigation"
+                                           style="cursor: pointer; font-size: 12px;" pk="{{ i.id }}"><i
+                                                class="fa fa-pencil-ruler pr-1"></i> Detalle Requerimiento</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center text-white" style="background-color: rgb(12,106,177);">
+                        <th class="th-sm font-weight-normal">N°</th>
+                        <th class="th-sm font-weight-normal">Cec</th>
+                        <th class="th-sm font-weight-normal">Año</th>
+                        <th class="th-sm font-weight-normal">Semana</th>
+                        <th class="th-sm font-weight-normal">Cultivo</th>
+                        <th class="th-sm font-weight-normal">Zona</th>
+                        <th class="th-sm font-weight-normal">Fundo</th>
+                        <th class="th-sm font-weight-normal">Metodo</th>
+                        <th class="th-sm font-weight-normal">Equipo</th>
+                        <th class="th-sm font-weight-normal">Area</th>
+                        <th class="th-sm font-weight-normal">Acción</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <h6>No existen ley de nutricion registrados</h6>
+{% endif %}

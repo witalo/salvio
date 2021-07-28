@@ -107,13 +107,16 @@ class Operator(models.Model):
 
 class Registration(models.Model):
     id = models.AutoField(primary_key=True)
-    number = models.CharField('Numero reserva', max_length=20, null=True, blank=True)
-    date = models.DateField('Fecha', null=True, blank=True)
+    number = models.CharField('Centro de costo', max_length=20, null=True, blank=True)
+    week = models.IntegerField('Semana', null=True, blank=True)
+    year = models.IntegerField('Año', null=True, blank=True)
+    # date = models.DateField('Fecha', null=True, blank=True)
     cultivation = models.ForeignKey(Cultivation, on_delete=models.CASCADE, null=True, blank=True)
     domain = models.ForeignKey(Domain, verbose_name='Fundo', on_delete=models.CASCADE, null=True, blank=True)
     zone = models.ForeignKey(Zone, verbose_name='Zona', on_delete=models.CASCADE, null=True, blank=True)
     method = models.ForeignKey('Method', verbose_name='Metodo', on_delete=models.CASCADE, null=True, blank=True)
     team = models.ForeignKey('Team', verbose_name='Equipo', on_delete=models.CASCADE, null=True, blank=True)
+    area = models.DecimalField('Area', max_digits=30, decimal_places=2, default=0)
     user = models.ForeignKey(User, verbose_name='Usuario', on_delete=models.SET_NULL, null=True, blank=True)
     create_at = models.DateTimeField(auto_now=True)
 
@@ -121,5 +124,58 @@ class Registration(models.Model):
         return str(self.number)
 
     class Meta:
-        verbose_name = 'Registro'
-        verbose_name_plural = 'Regisros'
+        verbose_name = 'Registro y fertilizacion'
+        verbose_name_plural = 'Registros y fertilizaciones'
+
+
+class DetailRegistration(models.Model):
+    id = models.AutoField(primary_key=True)
+    registration = models.ForeignKey(Registration, on_delete=models.CASCADE, null=True, blank=True)
+    date = models.DateField('Fecha', null=True, blank=True)
+    turn = models.CharField('Turno', max_length=30, null=True, blank=True)
+    associated_valve = models.CharField('Valvula Asociada', max_length=50, null=True, blank=True)
+    eto = models.DecimalField('ETO Acumulado', max_digits=30, decimal_places=3, default=0)
+    ha = models.DecimalField('HA', max_digits=30, decimal_places=2, default=0)
+    kc = models.DecimalField('KC', max_digits=30, decimal_places=2, default=0)
+    M3 = models.DecimalField('M3', max_digits=30, decimal_places=2, default=0)
+    proportion = models.DecimalField('Proporcion', max_digits=30, decimal_places=3, default=0)
+    mother_solution = models.DecimalField('Solucion Madre', max_digits=30, decimal_places=3, default=0)
+    # tank = models.ForeignKey(Zone, verbose_name='Tanque', on_delete=models.CASCADE, null=True, blank=True)
+    pulse_one = models.DecimalField('Pulso uno', max_digits=30, decimal_places=2, default=0)
+    pulse_two = models.DecimalField('Pulso dos', max_digits=30, decimal_places=2, default=0)
+    pulse_three = models.DecimalField('Pulso tres', max_digits=30, decimal_places=2, default=0)
+    pulse_four = models.DecimalField('Pulso cuatro', max_digits=30, decimal_places=2, default=0)
+    pulse_five = models.DecimalField('Pulso cinco', max_digits=30, decimal_places=2, default=0)
+    user = models.ForeignKey(User, verbose_name='Usuario', on_delete=models.SET_NULL, null=True, blank=True)
+    create_at = models.DateTimeField(auto_now=True)
+
+    def _str_(self):
+        return str(self.date)
+
+    class Meta:
+        verbose_name = 'Detalle Registro'
+        verbose_name_plural = 'Detalles Registros'
+
+
+class DetailRequirement(models.Model):
+    id = models.AutoField(primary_key=True)
+    registration = models.ForeignKey(Registration, on_delete=models.CASCADE, null=True, blank=True)
+    # product = models.ForeignKey(Prodcut, on_delete=models.CASCADE, null=True, blank=True)
+
+    proportion = models.DecimalField('Proporcion', max_digits=30, decimal_places=3, default=0)
+    mother_solution = models.DecimalField('Solucion Madre', max_digits=30, decimal_places=3, default=0)
+    # tank = models.ForeignKey(Zone, verbose_name='Tanque', on_delete=models.CASCADE, null=True, blank=True)
+    pulse_one = models.DecimalField('Pulso uno', max_digits=30, decimal_places=2, default=0)
+    pulse_two = models.DecimalField('Pulso dos', max_digits=30, decimal_places=2, default=0)
+    pulse_three = models.DecimalField('Pulso tres', max_digits=30, decimal_places=2, default=0)
+    pulse_four = models.DecimalField('Pulso cuatro', max_digits=30, decimal_places=2, default=0)
+    pulse_five = models.DecimalField('Pulso cinco', max_digits=30, decimal_places=2, default=0)
+    user = models.ForeignKey(User, verbose_name='Usuario', on_delete=models.SET_NULL, null=True, blank=True)
+    create_at = models.DateTimeField(auto_now=True)
+
+    def _str_(self):
+        return str(self.date)
+
+    class Meta:
+        verbose_name = 'Requerimiento producto y fertilizante'
+        verbose_name_plural = 'Requerimientos productos y fertilizantes'

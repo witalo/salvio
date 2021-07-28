@@ -32,4 +32,10 @@ urlpatterns = [
     path('modal_operators_update/', login_required(modal_operators_update), name='modal_operators_update'),
     path('save_operators/', login_required(save_operators), name='save_operators'),
     path('update_operators/', login_required(update_operators), name='update_operators'),
+
+    path('irrigation_list/', login_required(get_irrigation_list), name='irrigation_list'),
+    path('modal_irrigation_save/', login_required(modal_irrigation_save), name='modal_irrigation_save'),
+    path('save_irrigation/', login_required(save_irrigation), name='save_irrigation'),
+    path('modal_irrigation_update/', login_required(modal_irrigation_update), name='modal_irrigation_update'),
+    path('update_irrigation/', login_required(update_irrigation), name='update_irrigation'),
 ]

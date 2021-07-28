@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
-from apps.agricultural.models import Zone, State
-from apps.irrigation.models import Method, Team, IrrigationGroup, NutritionLaw, Operator
+from apps.agricultural.models import Zone, State, Cultivation, Domain
+from apps.irrigation.models import Method, Team, IrrigationGroup, NutritionLaw, Operator, Registration
 import decimal
 from datetime import datetime
 from http import HTTPStatus
@@ -494,6 +494,137 @@ def update_operators(request):
         operator_obj.state = state_obj
         operator_obj.user = user_obj
         operator_obj.save()
+
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+# -----------Riego y Fertilizacion---------------------
+def get_irrigation_list(request):
+    if request.method == 'GET':
+        irrigation_set = Registration.objects.all()
+        return render(request, 'irrigation/irrigation_list.html', {
+            'irrigation_set': irrigation_set
+        })
+
+
+def modal_irrigation_save(request):
+    if request.method == 'GET':
+        cultivation_set = Cultivation.objects.all()
+        zone_set = Zone.objects.all()
+        domain_set = Domain.objects.all()
+        method_set = Method.objects.all()
+        team_set = Team.objects.all()
+        year_now = (datetime.now()).strftime("%Y")
+        t = loader.get_template('irrigation/irrigation_register.html')
+        c = ({
+            'cultivation_set': cultivation_set,
+            'zone_set': zone_set,
+            'domain_set': domain_set,
+            'method_set': method_set,
+            'team_set': team_set,
+            'year_now': year_now,
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def save_irrigation(request):
+    if request.method == 'POST':
+        _year = request.POST.get('id-year', '')
+        _week = request.POST.get('id-week', '')
+        _number = request.POST.get('id-number', '')
+        _pk1 = request.POST.get('id-cultivation', '')
+        cultivation_obj = Cultivation.objects.get(id=int(_pk1))
+        _pk2 = request.POST.get('id-zone', '')
+        zone_obj = Zone.objects.get(id=int(_pk2))
+        _pk3 = request.POST.get('id-domain', '')
+        domain_obj = Domain.objects.get(id=int(_pk3))
+        _pk4 = request.POST.get('id-method', '')
+        method_obj = Method.objects.get(id=int(_pk4))
+        _pk5 = request.POST.get('id-team', '')
+        team_obj = Team.objects.get(id=int(_pk5))
+        _area = request.POST.get('id-area', '')
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        registration_obj = Registration(
+            number=_number,
+            week=_week,
+            year=_year,
+            cultivation=cultivation_obj,
+            domain=domain_obj,
+            zone=zone_obj,
+            method=method_obj,
+            team=team_obj,
+            area=decimal.Decimal(_area),
+            user=user_obj
+        )
+        registration_obj.save()
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+def modal_irrigation_update(request):
+    if request.method == 'GET':
+        pk = request.GET.get('pk', '')
+        registration_obj = Registration.objects.get(id=int(pk))
+        cultivation_set = Cultivation.objects.all()
+        zone_set = Zone.objects.all()
+        domain_set = Domain.objects.all()
+        method_set = Method.objects.all()
+        team_set = Team.objects.all()
+        t = loader.get_template('irrigation/irrigation_update.html')
+        c = ({
+            'registration_obj': registration_obj,
+            'cultivation_set': cultivation_set,
+            'zone_set': zone_set,
+            'domain_set': domain_set,
+            'method_set': method_set,
+            'team_set': team_set
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def update_irrigation(request):
+    if request.method == 'POST':
+        _id = int(request.POST.get('id-pk', ''))
+        registration_obj = Registration.objects.get(id=int(_id))
+        _year = request.POST.get('id-year', '')
+        _week = request.POST.get('id-week', '')
+        _number = request.POST.get('id-number', '')
+        _pk1 = request.POST.get('id-cultivation', '')
+        cultivation_obj = Cultivation.objects.get(id=int(_pk1))
+        _pk2 = request.POST.get('id-zone', '')
+        zone_obj = Zone.objects.get(id=int(_pk2))
+        _pk3 = request.POST.get('id-domain', '')
+        domain_obj = Domain.objects.get(id=int(_pk3))
+        _pk4 = request.POST.get('id-method', '')
+        method_obj = Method.objects.get(id=int(_pk4))
+        _pk5 = request.POST.get('id-team', '')
+        team_obj = Team.objects.get(id=int(_pk5))
+        _area = request.POST.get('id-area', '')
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        registration_obj.number = _number
+        registration_obj.week = _week
+        registration_obj.year = _year
+        registration_obj.cultivation = cultivation_obj
+        registration_obj.zone = zone_obj
+        registration_obj.domain = domain_obj
+        registration_obj.team = team_obj
+        registration_obj.method = method_obj
+        registration_obj.area = decimal.Decimal(_area)
+        registration_obj.user = user_obj
+        registration_obj.save()
 
         return JsonResponse({
             'success': True,
