@@ -1,0 +1,123 @@
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+
+    <div class="modal-content roboto-condensed-regular">
+        <div class="modal-header" style="background-color: rgba(4,102,169, 1.0);">
+            <h6 class="modal-title  text-white roboto-condensed-regular">Registro de Consumos</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form id="form-request-consumed" class="embed-responsive" enctype="multipart/form-data"
+              action="" method="POST">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div class="card border-primary">
+                    <div class="card-header" style="background-color: rgb(4,102,169);">
+                        <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Información del
+                            del consumo</h6>
+                    </div>
+                    <div class="card-body m-2">
+                        <div class="row col-sm-12 col-md-12 m-0 p-0">
+                            <div class="col-sm-4 col-md-4  align-self-center">
+                                <label class="m-0">Fecha</label>
+                                <input type="date"
+                                       class="form-control form-control-sm" name="id-dates" id="id-dates"
+                                       placeholder="" required
+                                       value="{{ date_now }}">
+                                <input type="hidden"
+                                       class="form-control form-control-sm" name="id-pk" id="id-pk"
+                                       placeholder="" required
+                                       value="{{ detail_requirement_obj.id }}">
+                                <input type="hidden" id="pk_consumed" name="pk_consumed"
+                                       value="">
+                            </div>
+                            <div class="col-sm-4 col-md-4  align-self-center">
+                                <label class="m-0">Consumo</label>
+                                <input type="number"
+                                       class="form-control form-control-sm" name="id-consumed" id="id-consumed"
+                                       placeholder="" required step="0.001"
+                                       value="0.000">
+                            </div>
+                            <div class="col-sm-4 col-md-4 text-center align-middle">
+                                <button id="save-consumed" type="submit" class="btn btn-success"> Registrar
+                                    Consumo
+                                </button>
+                                <button id="update-consumed" type="button" class="btn btn-warning"> Actualizar
+                                    Consumo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- modal-body -->
+            </div>
+        </form>
+        <div class="row p-2">
+            <div class="col-sm-12 col-md-12 text-center align-self-center" id="request-detail-list"></div>
+        </div>
+        {#        <div class="row p-2">#}
+        {#            <div class="col-sm-12 col-md-12 text-right">#}
+        <div class="modal-footer pr-2"> &nbsp;
+            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+        {#            </div>#}
+        {#        </div>#}
+    </div>
+</div>
+<script type="text/javascript">
+    $('#update-consumed').fadeOut();
+    $('#form-request-consumed').submit(function (event) {
+        event.preventDefault();
+        let data = new FormData($('#form-request-consumed').get(0));
+        $.ajax({
+            url: '/irrigation/set_consumed_requirement/',
+            type: "POST",
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (response, textStatus, xhr) {
+                if (xhr.status == 200) {
+                    $('#request-detail-list').html(response.grid);
+                    toastr.success(response['message'], 'Mensaje');
+                    $('#id-consumed').val(('0.000'));
+
+                }
+            },
+            error: function (jqXhr, textStatus, xhr) {
+                if (jqXhr.status == 500) {
+                    toastr.error(jqXhr.responseJSON.error, 'error');
+                }
+            }
+        });
+    });
+
+    $('#update-consumed').on('click', function () {
+        var datos = new FormData($('#form-request-consumed').get(0));
+        $("#update-consumed").attr("disabled", "true");
+        $.ajax({
+            url: '/irrigation/update_consumed_requirement/',
+            type: "POST",
+            data: datos,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (response, textStatus, xhr) {
+                if (xhr.status == 200) {
+                    $('#request-detail-list').html(response.grid);
+                    toastr.success(response['message'], '¡Bien hecho!');
+                    $('#pk_consumed').val('');
+                    $('#id-consumed').val(('0.000'));
+                }
+            },
+            error: function (jqXhr, textStatus, xhr) {
+                if (jqXhr.status == 500) {
+                    toastr.error(jqXhr.responseJSON.error, '¡Inconcebible!');
+                }
+            }
+        });
+        $("#update-consumed").removeAttr("disabled", "false");
+        $('#save-consumed').fadeIn();
+        $('#update-consumed').fadeOut();
+
+    });
+</script>

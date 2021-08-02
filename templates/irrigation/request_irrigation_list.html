@@ -1,0 +1,187 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    Requerimiento | Producto
+{% endblock title %}
+
+{% block body %}
+
+    <div class="card-header p-1 m-0 small roboto-condensed-regular">
+        <button type="button" onclick="showModalView('modal_request_irrigation_save')"
+                class="btn btn-outline-success"><i class="fas fa-database"></i> Requerimientos productos fertilizantes
+        </button>
+        <input class="form-control form-control-sm" type="hidden" value="{{ irrigation_obj.id }}" id="id-dt-pk">
+    </div>
+    <div class="container-fluid p-0 pb-4 roboto-condensed-regular">
+        <div id="request-irrigation-grid-list"
+             style="overflow-y: scroll; height: 550px; width: auto;">{% include "irrigation/request_irrigation_grid_list.html" %}
+        </div>
+    </div>
+    <div class="modal fade roboto-condensed-regular" id="modal-request-irrigation-save" tabindex="-1" role="dialog"
+         aria-labelledby="ModalHelpTitle"
+         aria-hidden="true"></div>
+    <div class="modal fade roboto-condensed-regular" id="modal-request-irrigation-update" tabindex="-1" role="dialog"
+         aria-labelledby="ModalHelpTitle"
+         aria-hidden="true"></div>
+    <div class="modal fade" id="modal-request-consumed" tabindex="-1" role="dialog" aria-labelledby="ModalHelpTitle" aria-hidden="true"></div>
+
+{% endblock body %}
+
+{% block extrajs %}
+    <script type="text/javascript">
+        let index = 0
+
+        function Difference(v1, v2) {
+            let S = parseFloat(v1 - v2);
+            return S;
+        };
+
+        $('#table-request-irrigation-list tbody.table-body tr').each(function () {
+            index = index + 1
+            let _total = $(this).find('td.item_total').text();
+            $(this).find('td.item_number').text(index);
+            if (isNaN(_total)) {
+                _total = '0.000'
+            }
+            let _consumed = $(this).find('td.item_consumed').text();
+            if (isNaN(_consumed)) {
+                _consumed = '0.000'
+            }
+            let _remaining = Difference(parseFloat(_total), parseFloat(_consumed)).toFixed(3);
+            $(this).find('td.item_balance').text(_remaining.toString());
+        });
+        $('#table-request-irrigation-list').DataTable({
+            "language": {
+                "url": '{% static "language.datatable.txt" %}'
+            },
+            responsive: true,
+            autoWidth: false
+        });
+
+        function showModalView(route) {
+            let dt = $('#id-dt-pk').val()
+            $.ajax({
+                url: '/irrigation/' + route + '/',
+                dataType: 'json',
+                type: 'GET',
+                data: {'pk': dt},
+                success: function (response) {
+                    $('#modal-request-irrigation-save').html(response.form);
+                    $('#modal-request-irrigation-save').modal('show');
+                },
+                fail: function (response) {
+                    toastr.error('Ocurrio un problema', '¡Mensaje!');
+                }
+            });
+        };
+        $(document).on('click', '.btn-update-detail-irrigation', function () {
+            let search = $(this).attr('pk');
+            $.ajax({
+                url: '/irrigation/modal_detail_irrigation_update/',
+                dataType: 'json',
+                type: 'GET',
+                data: {'pk': search},
+                success: function (response) {
+                    if (response.success) {
+                        $('#modal_detail1_irrigation_update').html(response.form);
+                        $('#modal_detail1_irrigation_update').modal('show');
+                    }
+                },
+                fail: function (response) {
+                    toastr.error('Ocurrio un problema al mostrar el formulario', '¡Mensaje!');
+                }
+            });
+        });
+        {#$(document).on('click', '.btn-detail-pulses', function () {#}
+        {#    let _pk = $(this).attr('pk');#}
+        {#    let _table = $(this).parent('div').parent('div').parent('td').parent('tr').next('tr').children('td.table-row-pulses');#}
+        {#    $('#table-detail1-irrigation-list tbody.table-body tr td.table-row-pulses').parent('tr').slideUp(1000);#}
+        {#    $('#table-detail1-irrigation-list tbody.table-body tr td.table-row-pulses').empty();#}
+        {#    $.ajax({#}
+        {#        url: '/irrigation/detail_pulses/',#}
+        {#        async: true,#}
+        {#        dataType: 'json',#}
+        {#        type: 'GET',#}
+        {#        data: {'pk': _pk},#}
+        {#        success: function (response) {#}
+        {#            _table.html(response.grid);#}
+        {#            _table.parent('tr').slideDown(1000);#}
+        {#        },#}
+        {#    });#}
+        {# });#}
+        {#$(document).on('click', '.btn-new-pulses', function () {#}
+        {#    let search = $(this).attr('dp');#}
+        {#    $.ajax({#}
+        {#        url: '/irrigation/modal_save_pulses/',#}
+        {#        dataType: 'json',#}
+        {#        type: 'GET',#}
+        {#        data: {'pk': search},#}
+        {#        success: function (response) {#}
+        {#            if (response.success) {#}
+        {#                $('#modal_save_pulses').html(response.form);#}
+        {#                $('#modal_save_pulses').modal('show');#}
+        {#            }#}
+        {#        },#}
+        {#        fail: function (response) {#}
+        {#            toastr.error('Ocurrio un problema', '¡Mensaje!');#}
+        {#        }#}
+        {#    });#}
+        {# });#}
+        {##}
+        {#function OpenDetailPulses(pk) {#}
+        {#    let rows = $('table#table-detail1-irrigation-list tbody.table-body').find("tr[dt=" + pk + "]")#}
+        {#    rows.slideUp(1000);#}
+        {#    let _td = rows.children('td.table-row-pulses')#}
+        {#    _td.empty();#}
+        {#    $.ajax({#}
+        {#        url: '/irrigation/detail_pulses/',#}
+        {#        async: true,#}
+        {#        dataType: 'json',#}
+        {#        type: 'GET',#}
+        {#        data: {'pk': pk},#}
+        {#        success: function (response) {#}
+        {#            _td.html(response.grid);#}
+        {#            _td.parent('tr').slideDown(1000);#}
+        {#        },#}
+        {#    });#}
+        {# };#}
+        {##}
+        {#$(document).on('click', '.btn-pulse-edit', function () {#}
+        {#    let search = $(this).attr('pd');#}
+        {#    $.ajax({#}
+        {#        url: '/irrigation/modal_update_pulses/',#}
+        {#        dataType: 'json',#}
+        {#        type: 'GET',#}
+        {#        data: {'pk': search},#}
+        {#        success: function (response) {#}
+        {#            if (response.success) {#}
+        {#                $('#modal_update_pulses').html(response.form);#}
+        {#                $('#modal_update_pulses').modal('show');#}
+        {#            }#}
+        {#        },#}
+        {#        fail: function (response) {#}
+        {#            toastr.error('Ocurrio un problema', '¡Mensaje!');#}
+        {#        }#}
+        {#    });#}
+        {# });#}
+        $(document).on('click', '.btn-detail-consumed', function () {
+            let search = $(this).attr('pk');
+            $.ajax({
+                url: '/irrigation/set_consumed_requirement/',
+                dataType: 'json',
+                type: 'GET',
+                data: {'pk': search},
+                success: function (response) {
+                    if (response.success) {
+                        $('#modal-request-consumed').html(response.form);
+                        $('#request-detail-list').html(response.grid);
+                        $('#modal-request-consumed').modal('show');
+                    }
+                },
+                fail: function (response) {
+                    console.log(response);
+                }
+            });
+        });
+    </script>
+{% endblock extrajs %}

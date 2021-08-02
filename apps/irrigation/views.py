@@ -1,7 +1,9 @@
+from django.db import DatabaseError, IntegrityError
 from django.shortcuts import render
 
 from apps.agricultural.models import Zone, State, Cultivation, Domain
-from apps.irrigation.models import Method, Team, IrrigationGroup, NutritionLaw, Operator, Registration
+from apps.irrigation.models import Method, Team, IrrigationGroup, NutritionLaw, Operator, Registration, \
+    DetailRegistration, RegisterPulses, DetailRequirement, ConsumptionRequirement
 import decimal
 from datetime import datetime
 from http import HTTPStatus
@@ -188,7 +190,7 @@ def save_team(request):
     if request.method == 'POST':
         zone_id = request.POST.get('id-zone', '')
         zone_obj = Zone.objects.get(id=int(zone_id))
-        state_id = request.POST.get('id-zone', '')
+        state_id = request.POST.get('id-state', '')
         state_obj = State.objects.get(id=int(state_id))
         _name = request.POST.get('id-name', '')
         _description = request.POST.get('id-description', '')
@@ -236,7 +238,7 @@ def update_team(request):
         team_obj = Team.objects.get(id=int(_id))
         zone_id = request.POST.get('id-zone', '')
         zone_obj = Zone.objects.get(id=int(zone_id))
-        state_id = request.POST.get('id-zone', '')
+        state_id = request.POST.get('id-state', '')
         state_obj = State.objects.get(id=int(state_id))
         _name = request.POST.get('id-name', '')
         _description = request.POST.get('id-description', '')
@@ -288,21 +290,49 @@ def save_law(request):
         _group = request.POST.get('id-group', '')
         group_obj = IrrigationGroup.objects.get(id=int(_group))
         _name = request.POST.get('id-name', '')
-        _um = request.POST.get('id-um', '')
-        _v1 = request.POST.get('id-v1', '')
-        _v2 = request.POST.get('id-v2', '')
-        _v3 = request.POST.get('id-v3', '')
-        _v4 = request.POST.get('id-v4', '')
-        _v5 = request.POST.get('id-v5', '')
-        _v6 = request.POST.get('id-v6', '')
-        _v7 = request.POST.get('id-v7', '')
-        _v8 = request.POST.get('id-v8', '')
-        _v9 = request.POST.get('id-v9', '')
-        _v10 = request.POST.get('id-v10', '')
-        _v11 = request.POST.get('id-v11', '')
-        _v12 = request.POST.get('id-v12', '')
-        _v13 = request.POST.get('id-v13', '')
-        _v14 = request.POST.get('id-v14', '')
+        _um = (request.POST.get('id-um', ''))
+        _v1 = (request.POST.get('id-v1', '0'))
+        if _v1 == '':
+            _v1 = 0
+        _v2 = (request.POST.get('id-v2', '0'))
+        if _v2 == '':
+            _v2 = 0
+        _v3 = (request.POST.get('id-v3', '0'))
+        if _v3 == '':
+            _v3 = 0
+        _v4 = (request.POST.get('id-v4', '0'))
+        if _v4 == '':
+            _v4 = 0
+        _v5 = (request.POST.get('id-v5', '0'))
+        if _v5 == '':
+            _v5 = 0
+        _v6 = (request.POST.get('id-v6', '0'))
+        if _v6 == '':
+            _v6 = 0
+        _v7 = (request.POST.get('id-v7', '0'))
+        if _v7 == '':
+            _v7 = 0
+        _v8 = (request.POST.get('id-v8', '0'))
+        if _v8 == '':
+            _v8 = 0
+        _v9 = (request.POST.get('id-v9', '0'))
+        if _v9 == '':
+            _v9 = 0
+        _v10 = (request.POST.get('id-v10', '0'))
+        if _v10 == '':
+            _v10 = 0
+        _v11 = (request.POST.get('id-v11', '0'))
+        if _v11 == '':
+            _v11 = 0
+        _v12 = (request.POST.get('id-v12', '0'))
+        if _v12 == '':
+            _v12 = 0
+        _v13 = (request.POST.get('id-v13', '0'))
+        if _v13 == '':
+            _v13 = 0
+        _v14 = (request.POST.get('id-v14', '0'))
+        if _v14 == '':
+            _v14 = 0
         user_id = request.user.id
         user_obj = User.objects.get(id=int(user_id))
         law_obj = NutritionLaw(
@@ -310,20 +340,20 @@ def save_law(request):
             irrigation_group=group_obj,
             name=_name,
             um=_um,
-            n=_v1,
-            p2o5=_v2,
-            k2o=_v3,
-            cao=_v4,
-            mgo=_v5,
-            s=_v6,
-            fe=_v7,
-            mn=_v8,
-            b=_v9,
-            zn=_v10,
-            mo=_v11,
-            ci=_v12,
-            cu=_v13,
-            h2o=_v14,
+            n=decimal.Decimal(_v1),
+            p2o5=decimal.Decimal(_v2),
+            k2o=decimal.Decimal(_v3),
+            cao=decimal.Decimal(_v4),
+            mgo=decimal.Decimal(_v5),
+            s=decimal.Decimal(_v6),
+            fe=decimal.Decimal(_v7),
+            mn=decimal.Decimal(_v8),
+            b=decimal.Decimal(_v9),
+            zn=decimal.Decimal(_v10),
+            mo=decimal.Decimal(_v11),
+            ci=decimal.Decimal(_v12),
+            cu=decimal.Decimal(_v13),
+            h2o=decimal.Decimal(_v14),
             user=user_obj
         )
         law_obj.save()
@@ -357,41 +387,69 @@ def update_law(request):
         _group = request.POST.get('id-group', '')
         group_obj = IrrigationGroup.objects.get(id=int(_group))
         _name = request.POST.get('id-name', '')
-        _um = request.POST.get('id-um', '')
-        _v1 = request.POST.get('id-v1', '')
-        _v2 = request.POST.get('id-v2', '')
-        _v3 = request.POST.get('id-v3', '')
-        _v4 = request.POST.get('id-v4', '')
-        _v5 = request.POST.get('id-v5', '')
-        _v6 = request.POST.get('id-v6', '')
-        _v7 = request.POST.get('id-v7', '')
-        _v8 = request.POST.get('id-v8', '')
-        _v9 = request.POST.get('id-v9', '')
-        _v10 = request.POST.get('id-v10', '')
-        _v11 = request.POST.get('id-v11', '')
-        _v12 = request.POST.get('id-v12', '')
-        _v13 = request.POST.get('id-v13', '')
-        _v14 = request.POST.get('id-v14', '')
+        _um = (request.POST.get('id-um', ''))
+        _v1 = (request.POST.get('id-v1', '0'))
+        if _v1 == '':
+            _v1 = 0
+        _v2 = (request.POST.get('id-v2', '0'))
+        if _v2 == '':
+            _v2 = 0
+        _v3 = (request.POST.get('id-v3', '0'))
+        if _v3 == '':
+            _v3 = 0
+        _v4 = (request.POST.get('id-v4', '0'))
+        if _v4 == '':
+            _v4 = 0
+        _v5 = (request.POST.get('id-v5', '0'))
+        if _v5 == '':
+            _v5 = 0
+        _v6 = (request.POST.get('id-v6', '0'))
+        if _v6 == '':
+            _v6 = 0
+        _v7 = (request.POST.get('id-v7', '0'))
+        if _v7 == '':
+            _v7 = 0
+        _v8 = (request.POST.get('id-v8', '0'))
+        if _v8 == '':
+            _v8 = 0
+        _v9 = (request.POST.get('id-v9', '0'))
+        if _v9 == '':
+            _v9 = 0
+        _v10 = (request.POST.get('id-v10', '0'))
+        if _v10 == '':
+            _v10 = 0
+        _v11 = (request.POST.get('id-v11', '0'))
+        if _v11 == '':
+            _v11 = 0
+        _v12 = (request.POST.get('id-v12', '0'))
+        if _v12 == '':
+            _v12 = 0
+        _v13 = (request.POST.get('id-v13', '0'))
+        if _v13 == '':
+            _v13 = 0
+        _v14 = (request.POST.get('id-v14', '0'))
+        if _v14 == '':
+            _v14 = 0
         user_id = request.user.id
         user_obj = User.objects.get(id=int(user_id))
         law_obj.code = _code
         law_obj.irrigation_group = group_obj
         law_obj.name = _name
         law_obj.um = _um
-        law_obj.n = _v1
-        law_obj.p2o5 = _v2
-        law_obj.k2o = _v3
-        law_obj.cao = _v4
-        law_obj.mgo = _v5
-        law_obj.s = _v6
-        law_obj.fe = _v7
-        law_obj.mn = _v8
-        law_obj.b = _v9
-        law_obj.zn = _v10
-        law_obj.mo = _v11
-        law_obj.ci = _v12
-        law_obj.cu = _v13
-        law_obj.h2o = _v14
+        law_obj.n = decimal.Decimal(_v1)
+        law_obj.p2o5 = decimal.Decimal(_v2)
+        law_obj.k2o = decimal.Decimal(_v3)
+        law_obj.cao = decimal.Decimal(_v4)
+        law_obj.mgo = decimal.Decimal(_v5)
+        law_obj.s = decimal.Decimal(_v6)
+        law_obj.fe = decimal.Decimal(_v7)
+        law_obj.mn = decimal.Decimal(_v8)
+        law_obj.b = decimal.Decimal(_v9)
+        law_obj.zn = decimal.Decimal(_v10)
+        law_obj.mo = decimal.Decimal(_v11)
+        law_obj.ci = decimal.Decimal(_v12)
+        law_obj.cu = decimal.Decimal(_v13)
+        law_obj.h2o = decimal.Decimal(_v14)
         law_obj.user = user_obj
         law_obj.save()
 
@@ -629,3 +687,359 @@ def update_irrigation(request):
         return JsonResponse({
             'success': True,
         }, status=HTTPStatus.OK)
+
+
+# -----------Detalle 1 Riego y Fertilizacion---------------------
+def get_detail_irrigation_list(request, pk):
+    if request.method == 'GET':
+        # _pk = request.GET.get('pk', '')
+        irrigation_obj = Registration.objects.get(id=int(pk))
+        detail_irrigation_set = DetailRegistration.objects.filter(registration=irrigation_obj)
+        return render(request, 'irrigation/detail_irrigation_list.html', {
+            'detail_irrigation_set': detail_irrigation_set,
+            'irrigation_obj': irrigation_obj
+        })
+
+
+def modal_detail_irrigation_save(request):
+    if request.method == 'GET':
+        _pk = request.GET.get('pk', '')
+        date_now = (datetime.now()).strftime("%Y-%m-%d")
+        t = loader.get_template('irrigation/detail_irrigation_register.html')
+        c = ({
+            'date_now': date_now,
+            'pk': _pk,
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def save_detail_irrigation(request):
+    if request.method == 'POST':
+        _pk = request.POST.get('id-register', '')
+        register_obj = Registration.objects.get(id=int(_pk))
+        _date = request.POST.get('id-date', '')
+        _turn = request.POST.get('id-turn', '')
+        _valve = request.POST.get('id-valve', '')
+        _eto = request.POST.get('id-eto', '')
+        _ha = request.POST.get('id-ha', '')
+        _kc = request.POST.get('id-kc', '')
+        _m3 = request.POST.get('id-m3', '')
+        _proportion = request.POST.get('id-proportion', '')
+        _solution = request.POST.get('id-solution', '')
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        detail_registration_obj = DetailRegistration(
+            registration=register_obj,
+            date=_date,
+            turn=_turn,
+            associated_valve=_valve,
+            eto=_eto,
+            ha=_ha,
+            kc=_kc,
+            M3=_m3,
+            proportion=_proportion,
+            mother_solution=decimal.Decimal(_solution),
+            user=user_obj
+        )
+        detail_registration_obj.save()
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+def modal_detail_irrigation_update(request):
+    if request.method == 'GET':
+        pk = request.GET.get('pk', '')
+        detail_irrigation_obj = DetailRegistration.objects.get(id=int(pk))
+        t = loader.get_template('irrigation/detail_irrigation_update.html')
+        c = ({
+            'detail_irrigation_obj': detail_irrigation_obj
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def update_detail_irrigation(request):
+    if request.method == 'POST':
+        _pk = request.POST.get('id-pk', '')
+        detail_register_obj = DetailRegistration.objects.get(id=int(_pk))
+        _date = request.POST.get('id-date', '')
+        _turn = request.POST.get('id-turn', '')
+        _valve = request.POST.get('id-valve', '')
+        _eto = request.POST.get('id-eto', '')
+        _ha = request.POST.get('id-ha', '')
+        _kc = request.POST.get('id-kc', '')
+        _m3 = request.POST.get('id-m3', '')
+        _proportion = request.POST.get('id-proportion', '')
+        _solution = request.POST.get('id-solution', '')
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        detail_register_obj.date = _date
+        detail_register_obj.turn = _turn
+        detail_register_obj.associated_valve = _valve
+        detail_register_obj.eto = _eto
+        detail_register_obj.ha = _ha
+        detail_register_obj.kc = _kc
+        detail_register_obj.M3 = _m3
+        detail_register_obj.proportion = _proportion
+        detail_register_obj.mother_solution = _solution
+        detail_register_obj.user = user_obj
+        detail_register_obj.save()
+
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+def get_detail_pulses(request):
+    if request.method == 'GET':
+        id_detail_registration = request.GET.get('pk', '')
+        detail_registration_obj = DetailRegistration.objects.get(pk=int(id_detail_registration))
+        register_pulses_set = RegisterPulses.objects.filter(detail_registration=detail_registration_obj)
+        t = loader.get_template('irrigation/detail_pulses_grid_list.html')
+        c = ({
+            'register_pulses_set': register_pulses_set,
+        })
+        return JsonResponse({
+            'grid': t.render(c, request),
+        }, status=HTTPStatus.OK)
+
+
+def modal_save_pulses(request):
+    if request.method == 'GET':
+        _pk = request.GET.get('pk', '')
+        t = loader.get_template('irrigation/detail_pulses_register.html')
+        c = ({
+            'pk': _pk,
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def save_detail_pulses(request):
+    if request.method == 'POST':
+        _p = request.POST.get('id-dp', '')
+        detail_register_obj = DetailRegistration.objects.get(id=int(_p))
+        _name = request.POST.get('id-name-pulse', '')
+        _pulse = request.POST.get('id-pulse', '')
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        register_pulse_obj = RegisterPulses(
+            detail_registration=detail_register_obj,
+            name=_name,
+            pulse=_pulse,
+            user=user_obj
+        )
+        register_pulse_obj.save()
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+def modal_update_pulses(request):
+    if request.method == 'GET':
+        _pk = request.GET.get('pk', '')
+        register_pulses_obj = RegisterPulses.objects.get(id=int(_pk))
+        t = loader.get_template('irrigation/detail_pulses_update.html')
+        c = ({
+            'register_pulses_obj': register_pulses_obj,
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def update_detail_pulses(request):
+    if request.method == 'POST':
+        _rp = request.POST.get('id-pk', '')
+        _name = request.POST.get('id-name-pulse', '')
+        _pulse = request.POST.get('id-pulse', '')
+        register_pulses_obj = RegisterPulses.objects.get(id=int(_rp))
+        register_pulses_obj.name = _name
+        register_pulses_obj.pulse = _pulse
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        register_pulses_obj.user = user_obj
+        register_pulses_obj.save()
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+# -----------Detalle 2 Requerimiento y Fertilizacion---------------------
+def request_irrigation_list(request, pk):
+    if request.method == 'GET':
+        irrigation_obj = Registration.objects.get(id=int(pk))
+        request_irrigation_set = DetailRequirement.objects.filter(registration=irrigation_obj)
+        return render(request, 'irrigation/request_irrigation_list.html', {
+            'request_irrigation_set': request_irrigation_set,
+            'irrigation_obj': irrigation_obj
+        })
+
+
+def modal_request_irrigation_save(request):
+    if request.method == 'GET':
+        _pk = request.GET.get('pk', '')
+        nutrition_set = NutritionLaw.objects.all()
+        t = loader.get_template('irrigation/request_irrigation_register.html')
+        c = ({
+            'nutrition_set': nutrition_set,
+            'pk': _pk
+        })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+        })
+
+
+@csrf_exempt
+def save_request_irrigation(request):
+    if request.method == 'POST':
+        _p = request.POST.get('id-dp', '')
+        registration_obj = Registration.objects.get(id=int(_p))
+        pk = request.POST.get('id-product', '')
+        nutrition_obj = NutritionLaw.objects.get(id=int(pk))
+        _monday = request.POST.get('id-monday', '')
+        _tuesday = request.POST.get('id-tuesday', '')
+        _wednesday = request.POST.get('id-wednesday', '')
+        _thursday = request.POST.get('id-thursday', '')
+        _friday = request.POST.get('id-friday', '')
+        _saturday = request.POST.get('id-saturday', '')
+        _sunday = request.POST.get('id-sunday', '')
+        user_id = request.user.id
+        user_obj = User.objects.get(id=int(user_id))
+        request_irrigation_obj = DetailRequirement(
+            registration=registration_obj,
+            nutrition=nutrition_obj,
+            monday=_monday,
+            tuesday=_tuesday,
+            wednesday=_wednesday,
+            thursday=_thursday,
+            friday=_friday,
+            saturday=_saturday,
+            sunday=_sunday,
+            user=user_obj
+        )
+        request_irrigation_obj.save()
+        return JsonResponse({
+            'success': True,
+        }, status=HTTPStatus.OK)
+
+
+@csrf_exempt
+def set_consumed_requirement(request):
+    data = {}
+    if request.method == 'GET':
+        pk = request.GET.get('pk', '')
+        try:
+            detail_requirement_obj = DetailRequirement.objects.get(id=pk)
+        except DetailRequirement.DoesNotExist:
+            data['error'] = "Problemas al obtener datos!"
+            response = JsonResponse(data)
+            response.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
+            return response
+        date_now = (datetime.now()).strftime("%Y-%m-%d")
+        t = loader.get_template('irrigation/request_consumed_list.html')
+        c = ({
+            'detail_requirement_obj': detail_requirement_obj,
+            'date_now': date_now,
+        })
+
+        consumption_requirement_set = ConsumptionRequirement.objects.filter(
+            detail_requirement=detail_requirement_obj).order_by('id')
+        tpl2 = loader.get_template('irrigation/request_consumed_grid_list.html')
+        context2 = ({'consumption_requirement_set': consumption_requirement_set, })
+        return JsonResponse({
+            'success': True,
+            'form': t.render(c, request),
+            'grid': tpl2.render(context2)
+        }, status=HTTPStatus.OK)
+    else:
+        if request.method == 'POST':
+            _date = request.POST.get('id-dates', '')
+            _consumed = request.POST.get('id-consumed', '')
+            _pk = request.POST.get('id-pk', '')
+            detail_requirement_obj = DetailRequirement.objects.get(id=int(_pk))
+
+            if decimal.Decimal(_consumed) == 0:
+                data['error'] = "Ingrese valores validos."
+                response = JsonResponse(data)
+                response.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
+                return response
+            user_id = request.user.id
+            user_obj = User.objects.get(id=int(user_id))
+            try:
+                consumption_requirement_obj = ConsumptionRequirement(
+                    detail_requirement=detail_requirement_obj,
+                    date=_date,
+                    consumption=decimal.Decimal(_consumed),
+                    user=user_obj
+                )
+                consumption_requirement_obj.save()
+            except DatabaseError as e:
+                data['error'] = str(e)
+                response = JsonResponse(data)
+                response.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
+                return response
+            except IntegrityError as e:
+                data['error'] = str(e)
+                response = JsonResponse(data)
+                response.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
+                return response
+
+            consumption_requirement_set = ConsumptionRequirement.objects.filter(
+                detail_requirement=detail_requirement_obj).order_by('id')
+            tpl2 = loader.get_template('irrigation/request_consumed_grid_list.html')
+            context2 = ({'consumption_requirement_set': consumption_requirement_set, })
+
+            return JsonResponse({
+                'message': 'Se registro con exito.',
+                'grid': tpl2.render(context2),
+            }, status=HTTPStatus.OK)
+
+
+def get_consumed_detail(request):
+    if request.method == 'GET':
+        pk = request.GET.get('pk', '')
+        consumed_requirement_obj = ConsumptionRequirement.objects.filter(id=int(pk))
+        serialized_obj = serializers.serialize('json', consumed_requirement_obj)
+        return JsonResponse({'obj': serialized_obj}, status=HTTPStatus.OK)
+    return JsonResponse({'message': 'Error de peticion.'}, status=HTTPStatus.BAD_REQUEST)
+
+
+def update_consumed_requirement(request):
+    data = dict()
+    if request.method == 'POST':
+        _pk = request.POST.get('pk_consumed', '')
+        consumption_requirement_obj = ConsumptionRequirement.objects.get(id=int(_pk))
+        _dates = request.POST.get('id-dates', '')
+        _consumed = request.POST.get('id-consumed', '')
+        if decimal.Decimal(_consumed) == 0:
+            data['error'] = "Ingrese valores validos."
+            response = JsonResponse(data)
+            response.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
+            return response
+        consumption_requirement_obj.date = _dates
+        consumption_requirement_obj.consumption = _consumed
+        consumption_requirement_obj.save()
+        consumption_requirement_set = ConsumptionRequirement.objects.filter(
+            detail_requirement=consumption_requirement_obj.detail_requirement).order_by('id')
+        tpl2 = loader.get_template('irrigation/request_consumed_grid_list.html')
+        context2 = ({'consumption_requirement_set': consumption_requirement_set, })
+        return JsonResponse({
+            'message': 'Informacion actualizada con exito.',
+            'grid': tpl2.render(context2),
+        }, status=HTTPStatus.OK)
+    return JsonResponse({'message': 'Error de peticion.'}, status=HTTPStatus.BAD_REQUEST)

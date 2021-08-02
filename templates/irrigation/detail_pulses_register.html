@@ -1,0 +1,82 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: rgba(4,102,169, 1.0);">
+            <h6 class="modal-title  text-white roboto-condensed-regular">Registro de pulsos</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <form id="form-detail-pulses" class="embed-responsive" enctype="multipart/form-data"
+              action="{% url 'irrigation:save_detail_pulses' %}" method="POST">
+            {% csrf_token %}
+
+            <div class="modal-body">
+                <div class="card border-primary">
+                    <div class="card-header" style="background-color: rgb(4,102,169);">
+                        <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Información del
+                            registro</h6>
+                        <input type="hidden"
+                               class="form-control form-control-sm" name="id-dp" id="id-dp" required
+                               value="{{ pk }}">
+                    </div>
+                    <div class="card-body m-2">
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Nombre Pulso</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-name-pulse" id="id-name-pulse"
+                                       placeholder="" required
+                                       value="" maxlength="30">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Valor del Pulso</label>
+                                <input type="number"
+                                       class="form-control form-control-sm" name="id-pulse" id="id-pulse" step="0.01"
+                                       placeholder="" required
+                                       value="0.00" maxlength="5">
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- modal-body -->
+                <div class="modal-footer p-1">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                    &nbsp;
+                    <button id="save-pulses" type="submit" class="btn btn-sm btn-success"> Registrar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    $('#form-detail-pulses').submit(function (event) {
+        event.preventDefault();
+        let data = new FormData($('#form-detail-pulses').get(0));
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            headers: {"X-CSRFToken": '{{ csrf_token }}'},
+            success: function (response) {
+                if (response.success) {
+                    toastr.success('Informacion registrada con exito');
+
+                    OpenDetailPulses($('#id-dp').val())
+                    {#setTimeout(() => {#}
+                    {#    location.reload();#}
+                    {# }, 400);#}
+                }
+            },
+            error: function (response) {
+                toastr.error('La informacion no se logro registrar');
+            }
+        });
+    });
+</script>

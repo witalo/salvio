@@ -1,0 +1,97 @@
+{% if detail_irrigation_set %}
+    <div class="card border-primary">
+        <div class="card-header" style="background-color: rgba(6,107,184, 0.9);">
+            <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Listado de detalle riego y
+                fertilizacion</h6>
+        </div>
+        <div class="card-body pb-1">
+            <div class="small dataTables_wrapper">
+                <table id="table-detail1-irrigation-list"
+                       class="table   align-content-center table-bordered"
+                       cellspacing="0" width="100%" style="border-collapse:collapse;">
+                    <thead>
+                    <tr class="text-center  text-white"
+                        style="background-color: rgba(6,107,184, 0.9);">
+                        <th class="th-sm font-weight-normal">N°</th>
+                        <th class="th-sm font-weight-normal">Registro</th>
+                        <th class="th-sm font-weight-normal">Fecha</th>
+                        <th class="th-sm font-weight-normal">Turno</th>
+                        <th class="th-sm font-weight-normal">Valvula Asociada</th>
+                        <th class="th-sm font-weight-normal">ETO</th>
+                        <th class="th-sm font-weight-normal">HA</th>
+                        <th class="th-sm font-weight-normal">KC</th>
+                        <th class="th-sm font-weight-normal">M3</th>
+                        <th class="th-sm font-weight-normal">Proporcion</th>
+                        <th class="th-sm font-weight-normal">Solucion</th>
+                        <th class="th-sm font-weight-normal">Usuario</th>
+                        <th class="th-sm font-weight-normal">Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-body" style="font-size: 12px;">
+                    {% for di in detail_irrigation_set %}
+                        <tr class="text-center">
+                            <td class="align-middle">{{ di.id }}</td>
+                            <td class="align-middle">{{ di.registration.number }}</td>
+                            <td class="align-middle">{{ di.date }}</td>
+                            <td class="align-middle">{{ di.turn }}</td>
+                            <td class="align-middle">{{ di.associated_valve }}</td>
+                            <td class="align-middle">{{ di.eto|safe }}</td>
+                            <td class="align-middle">{{ di.ha|safe }}</td>
+                            <td class="align-middle">{{ di.kc|safe }}</td>
+                            <td class="align-middle">{{ di.M3|safe }}</td>
+                            <td class="align-middle">{{ di.proportion|safe }}</td>
+                            <td class="align-middle">{{ di.mother_solution|safe }}</td>
+                            <td class="align-middle">{{ di.user.username }}</td>
+                            <td class="p-1 align-middle">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success  dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            style="font-size: 12px;">
+                                        Acción
+                                    </button>
+                                    <div class="dropdown-menu border-info btn-primary">
+                                        <a class="dropdown-item btn-update-detail-irrigation"
+                                           style="cursor: pointer; font-size: 12px;" pk="{{ di.id }}"><i
+                                                class="fas fa-edit pr-1"></i> Modificar Detalle Registro </a>
+                                        <a class="dropdown-item btn-detail-pulses"
+                                           style="cursor: pointer; font-size: 12px;" pk="{{ di.id }}"><i
+                                                class="fas fa-copy pr-1"></i> Ver Registro de Pulsos </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr style="display: none" dt="{{ di.id }}">
+                            <td colspan="3" class="p-1 align-middle text-center">
+                                <button class="btn-sm btn-primary btn-new-pulses" dp="{{ di.id }}">Registrar pulso</button>
+                            </td>
+                            <td colspan="10" class="table-row-pulses bg-white p-1 align-middle text-center"></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center text-white" style="background-color: rgb(12,106,177);">
+                        <th class="th-sm font-weight-normal">N°</th>
+                        <th class="th-sm font-weight-normal">Registro</th>
+                        <th class="th-sm font-weight-normal">Fecha</th>
+                        <th class="th-sm font-weight-normal">Turno</th>
+                        <th class="th-sm font-weight-normal">Valvula Asociada</th>
+                        <th class="th-sm font-weight-normal">Eto</th>
+                        <th class="th-sm font-weight-normal">HA</th>
+                        <th class="th-sm font-weight-normal">KC</th>
+                        <th class="th-sm font-weight-normal">M3</th>
+                        <th class="th-sm font-weight-normal">Proporcion</th>
+                        <th class="th-sm font-weight-normal">Solucion</th>
+                        <th class="th-sm font-weight-normal">Usuario</th>
+                        <th class="th-sm font-weight-normal">Acción</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <h6>No existen detalles de registro y fertilizantes</h6>
+{% endif %}
+<script type="text/javascript">
+
+</script>

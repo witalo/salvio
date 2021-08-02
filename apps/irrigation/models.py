@@ -1,5 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Sum
+from django.db.models.functions import Coalesce
+
 from apps.agricultural.models import Cultivation, Zone, Domain, State
 
 
@@ -141,11 +144,6 @@ class DetailRegistration(models.Model):
     proportion = models.DecimalField('Proporcion', max_digits=30, decimal_places=3, default=0)
     mother_solution = models.DecimalField('Solucion Madre', max_digits=30, decimal_places=3, default=0)
     # tank = models.ForeignKey(Zone, verbose_name='Tanque', on_delete=models.CASCADE, null=True, blank=True)
-    pulse_one = models.DecimalField('Pulso uno', max_digits=30, decimal_places=2, default=0)
-    pulse_two = models.DecimalField('Pulso dos', max_digits=30, decimal_places=2, default=0)
-    pulse_three = models.DecimalField('Pulso tres', max_digits=30, decimal_places=2, default=0)
-    pulse_four = models.DecimalField('Pulso cuatro', max_digits=30, decimal_places=2, default=0)
-    pulse_five = models.DecimalField('Pulso cinco', max_digits=30, decimal_places=2, default=0)
     user = models.ForeignKey(User, verbose_name='Usuario', on_delete=models.SET_NULL, null=True, blank=True)
     create_at = models.DateTimeField(auto_now=True)
 
@@ -157,19 +155,53 @@ class DetailRegistration(models.Model):
         verbose_name_plural = 'Detalles Registros'
 
 
+class RegisterPulses(models.Model):
+    id = models.AutoField(primary_key=True)
+    detail_registration = models.ForeignKey(DetailRegistration, on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField('Nombre Pulso', max_length=30, null=True, blank=True)
+    pulse = models.DecimalField('Pulso', max_digits=30, decimal_places=2, default=0)
+    user = models.ForeignKey(User, verbose_name='Usuario', on_delete=models.SET_NULL, null=True, blank=True)
+    create_at = models.DateTimeField(auto_now=True)
+
+
 class DetailRequirement(models.Model):
     id = models.AutoField(primary_key=True)
     registration = models.ForeignKey(Registration, on_delete=models.CASCADE, null=True, blank=True)
-    # product = models.ForeignKey(Prodcut, on_delete=models.CASCADE, null=True, blank=True)
+    nutrition = models.ForeignKey(NutritionLaw, on_delete=models.CASCADE, null=True, blank=True)
+    monday = models.DecimalField('Lunes', max_digits=30, decimal_places=3, default=0)
+    tuesday = models.DecimalField('Martes', max_digits=30, decimal_places=3, default=0)
+    wednesday = models.DecimalField('Miercoles', max_digits=30, decimal_places=3, default=0)
+    thursday = models.DecimalField('Jueves', max_digits=30, decimal_places=3, default=0)
+    friday = models.DecimalField('Viernes', max_digits=30, decimal_places=3, default=0)
+    saturday = models.DecimalField('Sabado', max_digits=30, decimal_places=3, default=0)
+    sunday = models.DecimalField('Domingo', max_digits=30, decimal_places=3, default=0)
+    user = models.ForeignKey(User, verbose_name='Usuario', on_delete=models.SET_NULL, null=True, blank=True)
+    create_at = models.DateTimeField(auto_now=True)
 
-    proportion = models.DecimalField('Proporcion', max_digits=30, decimal_places=3, default=0)
-    mother_solution = models.DecimalField('Solucion Madre', max_digits=30, decimal_places=3, default=0)
-    # tank = models.ForeignKey(Zone, verbose_name='Tanque', on_delete=models.CASCADE, null=True, blank=True)
-    pulse_one = models.DecimalField('Pulso uno', max_digits=30, decimal_places=2, default=0)
-    pulse_two = models.DecimalField('Pulso dos', max_digits=30, decimal_places=2, default=0)
-    pulse_three = models.DecimalField('Pulso tres', max_digits=30, decimal_places=2, default=0)
-    pulse_four = models.DecimalField('Pulso cuatro', max_digits=30, decimal_places=2, default=0)
-    pulse_five = models.DecimalField('Pulso cinco', max_digits=30, decimal_places=2, default=0)
+    def __str__(self):
+        return str(self.monday)
+
+    def get_total(self):
+        total = 0
+        total = self.monday + self.tuesday + self.wednesday + self.thursday + self.friday + self.saturday + self.sunday
+        return round(total, 3)
+
+    def get_consumed(self):
+        total = 0
+        total = ConsumptionRequirement.objects.filter(detail_requirement__id=self.id).aggregate(
+            r=Coalesce(Sum('consumption'), 0)).get('r')
+        return round(total, 3)
+
+    class Meta:
+        verbose_name = 'Requerimiento producto y fertilizante'
+        verbose_name_plural = 'Requerimientos productos y fertilizantes'
+
+
+class ConsumptionRequirement(models.Model):
+    id = models.AutoField(primary_key=True)
+    detail_requirement = models.ForeignKey(DetailRequirement, on_delete=models.CASCADE, null=True, blank=True)
+    date = models.DateField('Fecha', null=True, blank=True)
+    consumption = models.DecimalField('Consumo', max_digits=30, decimal_places=3, default=0)
     user = models.ForeignKey(User, verbose_name='Usuario', on_delete=models.SET_NULL, null=True, blank=True)
     create_at = models.DateTimeField(auto_now=True)
 
@@ -177,5 +209,5 @@ class DetailRequirement(models.Model):
         return str(self.date)
 
     class Meta:
-        verbose_name = 'Requerimiento producto y fertilizante'
-        verbose_name_plural = 'Requerimientos productos y fertilizantes'
+        verbose_name = 'Consumo Requerimiento y Fertilizacion'
+        verbose_name_plural = 'Consumos Requerimientos y Fertilizaciones'

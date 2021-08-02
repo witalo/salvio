@@ -1,0 +1,36 @@
+{% if register_pulses_set %}
+    <table class="table table-sm align-content-center table-bordered  table-pulses m-0 roboto-condensed-regular"
+           style="width: 100%;">
+        <thead>
+        <tr class="text-center m-0 p-0" style="font-size: 12px;">
+            <td class="text-center">Nª</td>
+            <td class="text-center">Nombre Pulso</td>
+            <td class="text-center">Pulso</td>
+            <td class="text-center">Fecha</td>
+            <td class="text-center">Opcion</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for p in register_pulses_set %}
+            <tr class="text-center" id="{{ p.detail_registration.id }}" style="font-size: 12px;">
+                <td class="align-middle">{{ p.id }}</td>
+                <td class="align-middle">{{ p.name }}</td>
+                <td class="align-middle">{{ p.pulse|safe }}</td>
+                <td class="align-middle">{{ p.create_at }}</td>
+                <td class="align-middle">
+                    <button type="button" class="btn btn-outline-warning btn-pulse-edit" pd="{{ p.id }}"
+                            fk="{{ p.detail_registration.id }}">
+                        <i class="fas fa-edit"></i>
+                        Editar
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="col-sm-12 col-md-12 p-0"><h6 class="text-primary roboto-condensed-regular">No hay registro de pulsos</h6></div>
+{% endif %}
+<script>
+
+</script>

@@ -1,0 +1,60 @@
+{% if consumption_requirement_set %}
+    <table class="table table-sm  table-striped table-bordered m-0" id="table-request-consumed">
+        <thead>
+        <tr class="text-center text-white m-0 p-0 text-uppercase" style="background-color: rgba(6,107,184, 0.9);">
+            <td class="text-center">Nº</td>
+            <td class="text-center">Fecha</td>
+            <td class="text-center">Consumo</td>
+            <td class="text-center">Accion</td>
+        </tr>
+        </thead>
+        <tbody class="roboto-condensed-regular">
+        {% for dt in consumption_requirement_set %}
+            <tr class="">
+                <td class="text-center align-middle item-consumed"></td>
+                <td class="text-center align-middle"> {{ dt.date|date:'d-m-Y' }}</td>
+                <td class="text-center align-middle">{{ dt.consumption|safe }}</td>
+                <td class="text-center align-middle">
+                    <a class="edit-consumed-detail" pk="{{ dt.id }}"><i class="fa fa-pencil-alt"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <script type="text/javascript">
+        Count();
+
+        function Count() {
+            let number = 0
+            $('#table-request-consumed tbody tr').each(function () {
+                number = number + 1
+                $(this).find('td.item-consumed').text(number);
+            });
+        }
+
+        $('.edit-consumed-detail').on('click', function () {
+            $('#save-consumed').fadeOut();
+            $('#update-consumed').fadeIn();
+            let search = $(this).attr('pk');
+            $.ajax({
+                url: '/irrigation/get_consumed_detail/',
+                dataType: 'json',
+                type: 'GET',
+                data: {'pk': search},
+                success: function (response, textStatus, xhr) {
+                    if (xhr.status == 200) {
+                        var myObj = JSON.parse(response.obj);
+                        $('#pk_consumed').val(myObj[0]['pk']);
+                        $('#id-dates').val(myObj[0]['fields']['date']);
+                        $('#id-consumed').val(myObj[0]['fields']['consumption']);
+                    }
+                },
+                fail: function (response) {
+                    console.log(response);
+                }
+            });
+        });
+    </script>
+{% else %}
+    <div class="col-sm-12 col-md-12 roboto-condensed-regular text-primary">No existen registros de consumo</div>
+{% endif %}

@@ -1,0 +1,188 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: rgba(4,102,169, 1.0);">
+            <h6 class="modal-title  text-white roboto-condensed-regular">Registro de requerimientos y fertilizacion</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <form id="form-request-register" class="embed-responsive" enctype="multipart/form-data"
+              action="{% url 'irrigation:save_request_irrigation' %}" method="POST">
+            {% csrf_token %}
+
+            <div class="modal-body">
+                <div class="card border-primary">
+                    <div class="card-header" style="background-color: rgb(4,102,169);">
+                        <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Información del
+                            registro</h6>
+                        <input type="hidden"
+                               class="form-control form-control-sm" name="id-dp" id="id-dp" required
+                               value="{{ pk }}">
+                    </div>
+                    <div class="card-body m-2">
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="mb-0">Producto</label>
+                                <select class="form-control form-control-sm combo" id="id-product" name="id-product"
+                                        required>
+                                    <option value="0">Seleccione</option>
+                                    {% for n in nutrition_set %}
+                                        <option value="{{ n.id }}">{{ n.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Lunes</label>
+                                <input type="number"
+                                       class="form-control form-control-sm decimal" name="id-monday" id="id-monday" step="0.001"
+                                       placeholder="" required
+                                       value="0.000" maxlength="10">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Martes</label>
+                                <input type="number"
+                                       class="form-control form-control-sm decimal" name="id-tuesday" id="id-tuesday"
+                                       step="0.001"
+                                       placeholder="" required
+                                       value="0.000" maxlength="10">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Miercoles</label>
+                                <input type="number"
+                                       class="form-control form-control-sm decimal" name="id-wednesday" id="id-wednesday"
+                                       step="0.001"
+                                       placeholder="" required
+                                       value="0.000" maxlength="10">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Jueves</label>
+                                <input type="number"
+                                       class="form-control form-control-sm decimal" name="id-thursday" id="id-thursday"
+                                       step="0.001"
+                                       placeholder="" required
+                                       value="0.000" maxlength="10">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Viernes</label>
+                                <input type="number"
+                                       class="form-control form-control-sm decimal" name="id-friday" id="id-friday"
+                                       step="0.001"
+                                       placeholder="" required
+                                       value="0.000" maxlength="10">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Sabado</label>
+                                <input type="number"
+                                       class="form-control form-control-sm decimal" name="id-saturday" id="id-saturday"
+                                       step="0.001"
+                                       placeholder="" required
+                                       value="0.000" maxlength="10">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Domingo</label>
+                                <input type="number"
+                                       class="form-control form-control-sm decimal" name="id-sunday" id="id-sunday"
+                                       step="0.001"
+                                       placeholder="" required
+                                       value="0.000" maxlength="10">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Total Producto</label>
+                                <input type="number"
+                                       class="form-control form-control-sm" name="id-total" id="id-total"
+                                       step="0.001"
+                                       placeholder="" readonly
+                                       value="0.000" maxlength="10">
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- modal-body -->
+                <div class="modal-footer p-1">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                    &nbsp;
+                    <button id="save-request" type="submit" class="btn btn-sm btn-success"> Registrar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    $("input.decimal").change(function (e) {
+        if (isNaN($(this).val())) {
+            $(this).val('0.000');
+        }
+        let _monday = parseFloat($('#id-monday').val());
+        if(_monday == ''){
+            _monday = parseFloat('0.000')
+        }
+        let _tuesday = parseFloat($('#id-tuesday').val());
+        if(_tuesday == ''){
+            _tuesday = parseFloat('0.000')
+        }
+        let _wednesday = parseFloat($('#id-wednesday').val());
+        if(_wednesday == ''){
+            _wednesday = parseFloat('0.000')
+        }
+        let _thursday = parseFloat($('#id-thursday').val());
+        if(_thursday == ''){
+            _thursday = parseFloat('0.000')
+        }
+        let _friday = parseFloat($('#id-friday').val());
+        if(_friday == ''){
+            _friday = parseFloat('0.000')
+        }
+        let _saturday = parseFloat($('#id-saturday').val());
+        if(_saturday == ''){
+            _saturday = parseFloat('0.000')
+        }
+        let _sunday = parseFloat($('#id-sunday').val());
+        if(_sunday == ''){
+            _sunday = parseFloat('0.000')
+        }
+        let _total = _monday + _tuesday + _wednesday + _thursday + _friday + _saturday + _sunday
+        $('#id-total').val(_total.toFixed(3));
+    });
+    $('#form-request-register').submit(function (event) {
+        event.preventDefault();
+        let data = new FormData($('#form-request-register').get(0));
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            headers: {"X-CSRFToken": '{{ csrf_token }}'},
+            success: function (response) {
+                if (response.success) {
+                    toastr.success('Informacion registrada con exito');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 500);
+                }
+            },
+            error: function (response) {
+                toastr.error('La informacion no se logro registrar');
+            }
+        });
+    });
+</script>

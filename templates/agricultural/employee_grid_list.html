@@ -36,7 +36,8 @@
                             </td>
                             <td class="align-middle">
                                 {% if u.person %}
-                                    {{ u.first_name }}
+                                    {{ u.first_name }}<br>
+                                    {{ u.last_name }}
                                 {% else %}
                                     Administrador
                                 {% endif %}

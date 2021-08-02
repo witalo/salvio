@@ -30,7 +30,7 @@ class Person(models.Model):
 class Business(models.Model):
     id = models.AutoField(primary_key=True)
     ruc = models.CharField(max_length=11)
-    business_name = models.CharField('Razón social', max_length=45, null=True, blank=True)
+    business_name = models.CharField('Razón social', max_length=200, null=True, blank=True)
     address = models.CharField(max_length=200, null=True, blank=True)
     phone = models.CharField(max_length=45, null=True, blank=True)
     legal_representative_name = models.CharField(max_length=100, null=True, blank=True)

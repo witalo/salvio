@@ -1,0 +1,150 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: rgba(4,102,169, 1.0);">
+            <h6 class="modal-title  text-white roboto-condensed-regular">Detalle Registro de Riego y Fertilizacion</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <form id="form-detail-irrigation" class="embed-responsive" enctype="multipart/form-data"
+              action="{% url 'irrigation:save_detail_irrigation' %}" method="POST">
+            {% csrf_token %}
+
+            <div class="modal-body">
+                <div class="card border-primary">
+                    <div class="card-header" style="background-color: rgb(4,102,169);">
+                        <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Información del
+                            registro</h6>
+                    </div>
+                    <div class="card-body m-2">
+                        <div class="row col-md-12 m-0 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Fecha</label>
+                                <input type="date"
+                                       class="form-control form-control-sm" name="id-date" id="id-date"
+                                       placeholder="" required
+                                       value="{{ date_now }}">
+                                <input class="form-control form-control-sm" id="id-register" name="id-register"
+                                       type="hidden" required
+                                       value="{{ pk }}">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Turno</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-turn" id="id-turn"
+                                       placeholder="" required
+                                       value="" maxlength="30">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">Valvula Asociada</label>
+                                <input type="text"
+                                       class="form-control form-control-sm" name="id-valve" id="id-valve"
+                                       placeholder="" required
+                                       value="" maxlength="50">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="m-0">ETO-Acumulado</label>
+                                <input type="number"
+                                       class="form-control form-control-sm" name="id-eto" id="id-eto"
+                                       placeholder="" required step="0.001"
+                                       value="0.000" maxlength="20">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="mb-0">HA</label>
+                                <input type="number"
+                                       class="form-control form-control-sm decimal" name="id-ha" id="id-ha"
+                                       placeholder="" required step="0.01"
+                                       value="0.00" maxlength="20">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="mb-0">KC</label>
+                                <input type="number"
+                                       class="form-control form-control-sm decimal" name="id-kc" id="id-kc"
+                                       placeholder="" required step="0.01"
+                                       value="0.00" maxlength="20">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="mb-0">M3</label>
+                                <input type="number"
+                                       class="form-control form-control-sm decimal" name="id-m3" id="id-m3"
+                                       placeholder="" required step="0.01"
+                                       value="0.00" maxlength="20">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="mb-0">Proporcion</label>
+                                <input type="number"
+                                       class="form-control form-control-sm decimal" name="id-proportion"
+                                       id="id-proportion"
+                                       placeholder="" required step="0.001"
+                                       value="0.000" maxlength="20">
+                            </div>
+                        </div>
+                        <div class="row col-md-12 m-0 mt-2 p-0">
+                            <div class="col-md-12  align-self-center">
+                                <label class="mb-0">Solucion Madre</label>
+                                <input type="number"
+                                       class="form-control form-control-sm decimal" name="id-solution" id="id-solution"
+                                       placeholder="" required step="0.001"
+                                       value="0.000" maxlength="20">
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- modal-body -->
+                <div class="modal-footer p-1">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                    &nbsp;
+                    <button id="save-detail-irrigation" type="submit" class="btn btn-sm btn-success"> Registrar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    {#$("input.decimal").keyup(function (e) {#}
+    {#    let val = $(this).val();#}
+    {#    if (isNaN(val) || val == '') {#}
+    {#        $(this).val('0.00');#}
+    {#    }#}
+    {# });#}
+    $('#form-detail-irrigation').submit(function (event) {
+        event.preventDefault();
+        let data = new FormData($('#form-detail-irrigation').get(0));
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            headers: {"X-CSRFToken": '{{ csrf_token }}'},
+            success: function (response) {
+                if (response.success) {
+                    toastr.success('Informacion registrada con exito');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 500);
+                }
+            },
+            error: function (response) {
+                toastr.error('Ocurrio problemas al registrar');
+            }
+        });
+    });
+</script>

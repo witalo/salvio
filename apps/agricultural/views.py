@@ -134,15 +134,31 @@ def update_person(request):
             user_obj.set_password(_password)
             user_obj.save()
 
-            person_obj = Person.objects.get(user=user_obj)
-            person_obj.document = _document
-            person_obj.birth_date = _birth_date
-            person_obj.charge = _charge
-            person_obj.telephone = _telephone
-            person_obj.address = _address
-            if _photo is not False:
-                person_obj.photo = _photo
-            person_obj.save()
+            person_set = Person.objects.filter(user=user_obj)
+            if person_set:
+                person_obj = person_set.last()
+                person_obj.document = _document
+                person_obj.birth_date = _birth_date
+                person_obj.charge = _charge
+                person_obj.telephone = _telephone
+                person_obj.address = _address
+                if _photo is not False:
+                    person_obj.photo = _photo
+                person_obj.save()
+            else:
+                photo_ = 'person/employee0.jpg'
+                if _photo is not False:
+                    photo_ = _photo
+                person_obj = Person(
+                    user=user_obj,
+                    document=_document,
+                    birth_date=_birth_date,
+                    telephone=_telephone,
+                    address=_address,
+                    charge=_charge,
+                    photo=photo_,
+                )
+                person_obj.save()
             return JsonResponse({
                 'success': True,
             }, status=HTTPStatus.OK)

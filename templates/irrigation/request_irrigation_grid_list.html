@@ -1,0 +1,81 @@
+{#{% load operations %}#}
+{% if request_irrigation_set %}
+    <div class="card border-primary">
+        <div class="card-header" style="background-color: rgba(6,107,184, 0.9);">
+            <h6 class="card-title text-center text-white mb-0 roboto-condensed-regular">Listado de requerimientos
+                productos fertilizantes</h6>
+        </div>
+        <div class="card-body pb-1">
+            <div class="small dataTables_wrapper">
+                <table id="table-request-irrigation-list"
+                       class="table   align-content-center table-bordered"
+                       cellspacing="0" width="100%" style="border-collapse:collapse;">
+                    <thead>
+                    <tr class="text-center  text-white"
+                        style="background-color: rgba(6,107,184, 0.9);">
+                        <th class="th-sm font-weight-normal">N°</th>
+                        <th class="th-sm font-weight-normal">Ley</th>
+                        <th class="th-sm font-weight-normal">Total Producto</th>
+                        <th class="th-sm font-weight-normal">Consumido</th>
+                        <th class="th-sm font-weight-normal">Saldo</th>
+                        <th class="th-sm font-weight-normal">Fecha Creacion</th>
+                        <th class="th-sm font-weight-normal">Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-body" style="font-size: 13px;">
+                    {% for di in request_irrigation_set %}
+                        <tr class="text-center" detail="{{ di.id }}">
+                            <td class="align-middle item_number"></td>
+                            <td class="align-middle">{{ di.nutrition.name }}</td>
+                            <td class="align-middle item_total">{{ di.get_total|safe }}</td>
+                            <td class="align-middle item_consumed">{{ di.get_consumed|safe }}</td>
+                            <td class="align-middle item_balance"></td>
+                            <td class="align-middle">{{ di.create_at }}</td>
+                            <td class="p-1 align-middle">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success  dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            style="font-size: 12px;">
+                                        Acción
+                                    </button>
+                                    <div class="dropdown-menu border-info btn-primary">
+{#                                        <a class="dropdown-item btn-update-request"#}
+{#                                           style="cursor: pointer; font-size: 12px;" pk="{{ di.id }}"><i#}
+{#                                                class="fas fa-edit pr-1"></i> Modificar Requerimiento</a>#}
+                                        <a class="dropdown-item btn-detail-consumed"
+                                           style="cursor: pointer; font-size: 12px;" pk="{{ di.id }}"><i
+                                                class="fas fa-copy pr-1"></i>Consumos</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+{#                        <tr style="display: none" dt="{{ di.id }}">#}
+{#                            <td colspan="3" class="p-1 align-middle text-center">#}
+{#                                <button class="btn-sm btn-primary btn-new-pulses" dp="{{ di.id }}">Registrar pulso#}
+{#                                </button>#}
+{#                            </td>#}
+{#                            <td colspan="10" class="table-row-pulses bg-white p-1 align-middle text-center"></td>#}
+{#                        </tr>#}
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr class="text-center text-white" style="background-color: rgb(12,106,177);">
+                        <th class="th-sm font-weight-normal">N°</th>
+                        <th class="th-sm font-weight-normal">Ley</th>
+                        <th class="th-sm font-weight-normal">Total Producto</th>
+                        <th class="th-sm font-weight-normal">Consumido</th>
+                        <th class="th-sm font-weight-normal">Saldo</th>
+                        <th class="th-sm font-weight-normal">Fecha Creacion</th>
+                        <th class="th-sm font-weight-normal">Acción</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <h6>No existen detalles de requerimientos, productos y fertilizantes</h6>
+{% endif %}
+<script type="text/javascript">
+
+</script>

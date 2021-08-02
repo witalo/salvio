@@ -48,12 +48,12 @@
                                         <a class="dropdown-item btn-update-irrigation"
                                            style="cursor: pointer; font-size: 12px;" pk="{{ i.id }}"><i
                                                 class="fas fa-edit pr-1"></i> Modificar Registro </a>
-                                        <a class="dropdown-item btn-update-irrigation"
+                                        <a class="dropdown-item btn-detail1-irrigation" href="{% url 'irrigation:detail_irrigation_list' i.id %}"
                                            style="cursor: pointer; font-size: 12px;" pk="{{ i.id }}"><i
-                                                class="fas fa-copy pr-1"></i> Detalle Registro Ferilizantes </a>
-                                        <a class="dropdown-item btn-update-irrigation"
+                                                class="fas fa-copy pr-1"></i> Detalle Registro Fertilizantes </a>
+                                        <a class="dropdown-item btn-detail2-irrigation" href="{% url 'irrigation:request_irrigation_list' i.id %}"
                                            style="cursor: pointer; font-size: 12px;" pk="{{ i.id }}"><i
-                                                class="fa fa-pencil-ruler pr-1"></i> Detalle Requerimiento</a>
+                                                class="fa fa-pencil-ruler pr-1"></i> Requerimientos Productos Fertilizantes</a>
                                     </div>
                                 </div>
                             </td>
